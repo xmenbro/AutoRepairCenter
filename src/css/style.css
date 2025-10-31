@@ -86,6 +86,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .spacer {
@@ -111,12 +112,21 @@
     background-color: #0c4094;
 }
 
+.hover-container {
+    width: 100%;
+    height: 100%;
+}
+
+.hover-container:hover {
+    background-color: #0c4094;
+}
+
 .menu-icon {
     display: flex;
     flex-direction: column;
     gap: 4px;
     cursor: pointer;
-    padding: 0 15px;
+    padding: 20px 15px;
 }
 
 .menu-icon span {
@@ -134,4 +144,177 @@
 
 .menu-item:last-child a:hover {
     background-color: #0c4094;
+}
+
+/* Скрытое меню */
+.mobile-menu {
+    /* display: flex; */
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 70%;
+    height: 100%;
+    z-index: 1000;
+    background-color: white;
+}
+
+/* Левая часть */
+.left-part {
+    width: 300px;
+    height: 100%;
+    border-right: 3px solid #B8B8B8;
+    text-transform: uppercase;
+}
+
+.menu-list {
+    padding-left: 5%;
+    list-style-position: inside;
+    list-style-type: none;
+}
+
+.menu-title {
+    text-align: center;
+}
+
+.icon{
+    padding-left: 25%;
+}
+
+.arrow {
+    padding-left: 65%;
+}
+
+.list-item {
+    align-items: center;
+    height: 40px;
+    padding-left: 60px;
+    position: relative;
+}
+
+.list-item::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.list-item:nth-child(1)::before {
+    content: url("../images/icons/car-parts.png");
+}
+
+.list-item:nth-child(2)::before {
+    content: url("../images/icons/repair-tools.png");
+}
+
+.list-item:nth-child(3)::before {
+    content: url("../images/icons/fender.png");
+}
+
+.list-item:nth-child(4)::before {
+    content: url("../images/icons/motor.png");
+}
+
+.list-btn {
+    line-height: 40px;
+    height: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.list-btn:hover {
+    font-weight: bold;
+}
+
+/* Правая часть */
+.right-part {
+    width: 100%;
+    height: 100%;
+}
+
+/* Управление */
+.guidance {
+    padding: 0 50px;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-input {
+    border: none;
+    border-bottom: 1px solid #B8B8B8;
+    width: 500px;
+    height: 30px;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.search-tool-btn, .close-btn {
+    border: none;
+    background: transparent;
+}
+
+.search-tool-btn, .crossed {
+    width: 40px;
+    height: 40px;
+}
+
+.search-tool-img {
+    width: 25px;
+    height: 25px;
+}
+
+.crossed:hover, .search-tool-btn:hover {
+    background: #e2e2e23d;
+}
+
+/* Контент */
+.content {
+    padding: 5px 50px 0 50px;
+}
+
+.content-element {
+    text-transform: uppercase;
+}
+
+.grid-container {
+    margin-top: 35px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.coll-list {
+    list-style-type: none;
+    font-size: 14px;
+}
+
+.coll-list-element {
+   width: fit-content;
+   padding: 2px 0;
+}
+
+.coll-list-element:hover:not(.coll-list-element:first-child) {
+    color: #0F57C9;
+    cursor: pointer;
+}
+
+.coll-list-element:first-child {
+    font-weight: bold;
+    padding-bottom: 5px;
+    width: fit-content;
+}
+
+.content-element {
+    display: none;
+}
+
+.content-element:nth-child(1) {
+    display: inherit;
 }
