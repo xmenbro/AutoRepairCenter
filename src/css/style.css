@@ -150,13 +150,14 @@
 .mobile-menu {
     /* display: flex; */
     display: none;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 70%;
-    height: 100%;
-    z-index: 1000;
+    height: 100vh;
+    z-index: 10000;
     background-color: white;
+    overflow-y: auto;
 }
 
 /* Левая часть */
@@ -523,4 +524,83 @@
         background-color: rgba(255, 255, 255, 0.5);
         transform: scale(1);
     }
+}
+
+/* Подвал */
+.footer {
+    padding: 40px 0 20px;
+    z-index: 0;
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 50px;
+    padding: 40px 15px 0px 15px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.footer-section {
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.footer-section h4 {
+    margin-bottom: 20px;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section li {
+    margin-bottom: 15px;
+}
+
+.footer-section a {
+    text-decoration: none;
+}
+
+.footer-section a:visited {
+    color:black;
+}
+
+.footer-section a:hover {
+    color: #0c4094;
+}
+
+.footer-section.first {
+    width: 410px;
+}
+
+.footer-section.first h4, 
+.footer-section.first p {
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.flex-container {
+    margin-top: 20px;
+}
+
+.footer-section.first ul {
+    position: relative;
+    left: -12px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    padding: 0;
+}
+
+.footer-section.first li {
+    height: 40px;
+    width: 40px;
+    margin-bottom: 0;
 }
