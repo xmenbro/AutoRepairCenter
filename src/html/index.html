@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>ARC</title>
     <link rel="stylesheet" href="../css/style.css">
+    <script type="module" src="../js/main.js"></script>
 </head>
 <body>
     <!-- Шапка сайта -->
@@ -39,7 +40,7 @@
         <div class="nav-container">
             <ul class="nav-menu">
                 <li class="menu-item">
-                    <div class="hover-container">
+                    <div class="hover-container" id="menu-button">
                         <div class="menu-icon">
                             <span></span>
                             <span></span>
@@ -62,7 +63,7 @@
         </div>
     </nav>
     <!-- Скрытое меню -->
-    <div class="mobile-menu">
+    <div class="mobile-menu" id="mobile-menu">
         <div class="left-part">
             <img src="../images/icons/car.png" alt="car" class="icon">
             <h2 class="menu-title">Каталог</h2>
@@ -91,7 +92,7 @@
                     </button>
                 </div>
                 <div class="crossed">
-                    <button class="close-btn">
+                    <button class="close-btn" id="close-btn">
                         <img src="../images/icons/crossed.png" alt="close" class="close-img">
                     </button>
                 </div>
