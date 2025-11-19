@@ -1,0 +1,111 @@
+@import (reference) '../base/variables.less';
+@import (reference) '../base/mixins.less';
+
+// Основная шапка сайта
+.header-container {
+    margin-left: 200px;
+    max-width: @header-max-width;
+    width: 100%;
+    height: @header-height;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    .grid-center();
+}
+
+.header-elements {
+    padding-bottom: @spacing-md;
+    height: @header-elements-height;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: @spacing-gap;
+    align-items: center;
+    justify-content: left;
+}
+
+.header-element {
+    width: @element-width;
+    padding: @spacing-md 50% @spacing-md 0px;
+    border-right: 1px solid @primary-color;
+
+    img {
+        .icon-size(@icon-size-sm);
+    }
+
+    p {
+        .text-uppercase();
+        font-size: @font-size-sm;
+    }
+
+    a {
+        text-decoration: none;
+        color: @primary-color;
+        font-size: @font-size-xs;
+    }
+}
+
+.icons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: @spacing-xxl;
+    margin-left: @spacing-xxl;
+    width: @icons-width;
+
+    img {
+        .icon-size();
+    }
+
+    a {
+        .hover-scale();
+    }
+}
+
+// Responsive стили для шапки
+.breakpoint(1200px; {
+    .header-container {
+        margin-left: 100px;
+        max-width: 100%;
+    }
+
+    .header-elements {
+        gap: @spacing-xxxxl;
+    }
+
+    .header-element {
+        width: 180px;
+    }
+});
+
+.breakpoint(992px; {
+    .header-container {
+        margin-left: 50px;
+        grid-template-columns: repeat(3, 1fr);
+    }
+});
+
+.breakpoint(768px; {
+    .header-container {
+        margin-left: 20px;
+        grid-template-columns: 1fr;
+        height: auto;
+        padding: @spacing-md 0;
+    }
+
+    .header-elements {
+        grid-template-columns: 1fr;
+        gap: @spacing-md;
+        height: auto;
+    }
+
+    .header-element {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid @primary-color;
+        padding: @spacing-sm 0;
+    }
+
+    .icons {
+        justify-content: center;
+        margin-left: 0;
+        width: 100%;
+    }
+});
