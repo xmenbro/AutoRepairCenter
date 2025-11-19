@@ -1,0 +1,226 @@
+@import (reference) '../base/variables.less';
+@import (reference) '../base/mixins.less';
+
+// Основная секция
+.main {
+    padding: @spacing-gap 0;
+}
+
+.main-container {
+    max-width: @content-max-width;
+    margin: 0 auto;
+    padding: 0 @spacing-xl;
+}
+
+.section-title {
+    .text-center();
+    margin-bottom: 40px;
+    font-size: @font-size-xxl;
+    color: @primary-color;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: @spacing-xxxl;
+    flex: 1;
+}
+
+.product-card {
+    .product-card();
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-image {
+    .product-image();
+}
+
+.product-image img {
+    max-width: 100%;
+    max-height: 100px;
+}
+
+.product-title {
+    font-size: @font-size-lg;
+    font-weight: bold;
+    margin-bottom: @spacing-sm;
+    color: @gray-dark;
+}
+
+.product-brand {
+    color: @gray-medium;
+    font-size: @font-size-md;
+    margin-bottom: @spacing-sm;
+}
+
+.product-price {
+    font-size: @font-size-xl;
+    font-weight: bold;
+    color: @black;
+    margin-bottom: @spacing-md;
+}
+
+.product-availability {
+    .availability-status(@success-color);
+
+    &.in-stock {
+        color: @success-color;
+        
+        .availability-dot {
+            background: @success-color;
+        }
+    }
+    
+    &.out-of-stock {
+        color: @warning-color;
+        
+        .availability-dot {
+            background: @warning-color;
+        }
+    }
+}
+
+.product-btn {
+    width: 100%;
+    padding: @spacing-md;
+    .button-style();
+    font-weight: bold;
+    
+    &.btn-out-of-stock {
+        .button-disabled();
+    }
+}
+
+// Карусель
+.carousel-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.carousel-btn {
+    position: static;
+    transform: none; 
+    flex-shrink: 0; 
+    margin: 0 @spacing-gap;
+    .carousel-button();
+    
+    &.prev {
+        left: @spacing-xl;
+    }
+    
+    &.next {
+        right: @spacing-xl;
+    }
+}
+
+// Responsive стили для карточек
+.breakpoint(1200px; {
+    .main-container {
+        max-width: 100%;
+        padding: 0 @spacing-lg;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: @spacing-xxl;
+    }
+});
+
+.breakpoint(992px; {
+    .main {
+        padding: @spacing-xxxxl 0;
+    }
+    
+    .section-title {
+        font-size: @font-size-xl;
+        margin-bottom: @spacing-xxxxl;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: @spacing-xl;
+    }
+    
+    .product-card {
+        padding: @spacing-xl;
+    }
+});
+
+.breakpoint(768px; {
+    .main {
+        padding: @spacing-xxxl 0;
+    }
+    
+    .main-container {
+        padding: 0 @spacing-md;
+    }
+    
+    .section-title {
+        font-size: @font-size-lg;
+        margin-bottom: @spacing-xxxl;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: @spacing-lg;
+    }
+    
+    .product-card {
+        padding: @spacing-lg;
+    }
+    
+    .product-title {
+        font-size: @font-size-md;
+    }
+    
+    .product-brand {
+        font-size: @font-size-sm;
+    }
+    
+    .product-price {
+        font-size: @font-size-lg;
+    }
+    
+    .carousel-btn {
+        margin: 0 @spacing-md;
+        .icon-size(35px);
+    }
+});
+
+.breakpoint(480px; {
+    .main {
+        padding: @spacing-xxl 0;
+    }
+    
+    .section-title {
+        font-size: @font-size-lg;
+        margin-bottom: @spacing-xxl;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: @spacing-md;
+    }
+    
+    .product-card {
+        padding: @spacing-md;
+    }
+    
+    .product-image {
+        height: 100px;
+    }
+    
+    .product-image img {
+        max-height: 80px;
+    }
+    
+    .carousel-btn {
+        margin: 0 @spacing-sm;
+        .icon-size(30px);
+    }
+});
