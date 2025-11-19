@@ -1,0 +1,260 @@
+@import (reference) '../base/variables.less';
+@import (reference) '../base/mixins.less';
+
+// Слайдер
+.slider {
+    position: relative;
+    height: @slider-height;
+    overflow: hidden;
+    width: 100%;
+}
+
+.slides {
+    position: relative;
+    height: 100%;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    background-size: cover;
+    background-position: center;
+}
+
+.slide:nth-child(1) {
+    background: 
+        linear-gradient(rgba(0, 0, 0, @opacity-dark), rgba(0, 0, 0, @opacity-dark)),
+        url("../images/slides/1.png");
+    background-size: cover;
+    background-position: center;
+}
+
+.slide:nth-child(2) {
+    background: 
+        linear-gradient(rgba(0, 0, 0, @opacity-dark), rgba(0, 0, 0, @opacity-dark)),
+        url("../images/slides/aura_large.JPG");
+    background-size: cover;
+    background-position: center;
+}
+
+.slide:nth-child(3) {
+    background: 
+        linear-gradient(rgba(0, 0, 0, @opacity-medium), rgba(0, 0, 0, @opacity-medium)),
+        url("../images/slides/kopeyka.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+// Анимация слайдов
+@keyframes slideShow {
+    0% {
+        opacity: 0;
+        z-index: 0;
+    }
+    10% {
+        opacity: 1;
+        z-index: 1;
+    }
+    30% {
+        opacity: 1;
+        z-index: 1;
+    }
+    40% {
+        opacity: 0;
+        z-index: 0;
+    }
+    100% {
+        opacity: 0;
+        z-index: 0;
+    }
+}
+
+.slide:nth-child(1) {
+    animation: slideShow @slider-animation-time infinite linear;
+}
+
+.slide:nth-child(2) {
+    animation: slideShow @slider-animation-time infinite linear;
+    animation-delay: 5s;
+}
+
+.slide:nth-child(3) {
+    animation: slideShow @slider-animation-time infinite linear;
+    animation-delay: 10s;
+}
+
+.slide-content {
+    .absolute-center();
+    text-align: center;
+    color: @white;
+    max-width: 800px;
+    width: 90%;
+
+    h2 {
+        font-size: @font-size-xxxl;
+        .text-uppercase();
+        color: @primary-color;
+        margin-bottom: @spacing-xxl;
+    }
+
+    p {
+        font-size: @font-size-xl;
+        margin-bottom: @spacing-xxl;
+    }
+}
+
+.btn {
+    .button-style();
+    padding: @spacing-lg @spacing-gap;
+    font-size: @font-size-lg;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: @spacing-xxl;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: @spacing-md;
+    z-index: @z-index-dots;
+}
+
+.dot {
+    height: @dot-size;
+    width: @dot-size;
+    background-color: rgba(255, 255, 255, @opacity-light);
+    border-radius: @border-radius-round;
+    display: inline-block;
+    cursor: pointer;
+    .transition-all();
+
+    &:nth-child(1) {
+        animation: dotActive @slider-animation-time infinite;
+    }
+
+    &:nth-child(2) {
+        animation: dotActive2 @slider-animation-time infinite;
+    }
+
+    &:nth-child(3) {
+        animation: dotActive3 @slider-animation-time infinite;
+    }
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.8);
+        transform: scale(1.2);
+    }
+}
+
+@keyframes dotActive {
+    0%, 33% {
+        background-color: @white;
+        transform: scale(1.3);
+    }
+    34%, 100% {
+        background-color: rgba(255, 255, 255, @opacity-light);
+        transform: scale(1);
+    }
+}
+
+@keyframes dotActive2 {
+    0%, 33% {
+        background-color: rgba(255, 255, 255, @opacity-light);
+        transform: scale(1);
+    }
+    34%, 66% {
+        background-color: @white;
+        transform: scale(1.3);
+    }
+    67%, 100% {
+        background-color: rgba(255, 255, 255, @opacity-light);
+        transform: scale(1);
+    }
+}
+
+@keyframes dotActive3 {
+    0%, 66% {
+        background-color: rgba(255, 255, 255, @opacity-light);
+        transform: scale(1);
+    }
+    67%, 99% {
+        background-color: @white;
+        transform: scale(1.3);
+    }
+    100% {
+        background-color: rgba(255, 255, 255, @opacity-light);
+        transform: scale(1);
+    }
+}
+
+// Responsive стили для слайдера
+.breakpoint(992px; {
+    .slider {
+        height: 400px;
+    }
+
+    .slide-content {
+        h2 {
+            font-size: @font-size-xxl;
+            margin-bottom: @spacing-xl;
+        }
+
+        p {
+            font-size: @font-size-lg;
+            margin-bottom: @spacing-xl;
+        }
+    }
+});
+
+.breakpoint(768px; {
+    .slider {
+        height: 350px;
+    }
+
+    .slide-content {
+        h2 {
+            font-size: @font-size-xl;
+            margin-bottom: @spacing-lg;
+        }
+
+        p {
+            font-size: @font-size-md;
+            margin-bottom: @spacing-lg;
+        }
+    }
+
+    .btn {
+        padding: @spacing-md @spacing-xxxl;
+        font-size: @font-size-md;
+    }
+});
+
+.breakpoint(480px; {
+    .slider {
+        height: 300px;
+    }
+
+    .slide-content {
+        h2 {
+            font-size: @font-size-lg;
+        }
+
+        p {
+            font-size: @font-size-sm;
+        }
+    }
+
+    .btn {
+        padding: @spacing-sm @spacing-xxl;
+        font-size: @font-size-sm;
+    }
+
+    .slider-dots {
+        bottom: @spacing-xl;
+    }
+});
