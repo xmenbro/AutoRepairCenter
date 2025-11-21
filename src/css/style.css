@@ -13,12 +13,10 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 50px;
-  align-items: center;
-  justify-content: left;
 }
 .header-element {
   width: 210px;
-  padding: 10px 50% 10px 0px;
+  padding-top: 10px;
   border-right: 1px solid #0f57c9;
 }
 .header-element img {
@@ -1014,4 +1012,9 @@
     height: 20px;
     width: 20px;
   }
+}
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }

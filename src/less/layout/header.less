@@ -7,7 +7,6 @@
     max-width: @header-max-width;
     width: 100%;
     height: @header-height;
-    display: grid;
     grid-template-columns: repeat(5, 1fr);
     .grid-center();
 }
@@ -18,13 +17,11 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: @spacing-gap;
-    align-items: center;
-    justify-content: left;
 }
 
 .header-element {
     width: @element-width;
-    padding: @spacing-md 50% @spacing-md 0px;
+    padding-top: @spacing-md;
     border-right: 1px solid @primary-color;
 
     img {
