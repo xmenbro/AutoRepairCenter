@@ -189,13 +189,13 @@
 
 // Mixins для responsive design
 .breakpoint(@maxWidth; @rules) {
-    @media only screen and (max-width: @maxWidth) {
+    @media (max-width: @maxWidth) {
         @rules();
     }
 }
 
 .mobile-first(@minWidth; @rules) {
-    @media only screen and (min-width: @minWidth) {
+    @media (min-width: @minWidth) {
         @rules();
     }
 }

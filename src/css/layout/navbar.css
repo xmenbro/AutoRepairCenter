@@ -70,7 +70,7 @@
   background-color: #ffffff;
   display: block;
 }
-@media only screen and (max-width: 1200px) {
+@media (max-width: 1200px) {
   .nav-container {
     max-width: 100%;
   }
@@ -78,7 +78,7 @@
     grid-template-columns: 50px repeat(4, 1fr) 1fr 50px 50px;
   }
 }
-@media only screen and (max-width: 992px) {
+@media (max-width: 992px) {
   .nav-menu {
     grid-template-columns: 50px repeat(3, 1fr) 1fr 50px;
   }
@@ -87,7 +87,7 @@
     padding: 0 8px;
   }
 }
-@media only screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .navbar {
     height: auto;
   }

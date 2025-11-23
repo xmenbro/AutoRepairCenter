@@ -152,7 +152,7 @@
 .carousel-btn.next {
   right: 15px;
 }
-@media only screen and (max-width: 1200px) {
+@media (max-width: 1200px) {
   .main-container {
     max-width: 100%;
     padding: 0 12px;
@@ -162,7 +162,7 @@
     gap: 20px;
   }
 }
-@media only screen and (max-width: 992px) {
+@media (max-width: 992px) {
   .main {
     padding: 30px 0;
   }
@@ -178,7 +178,7 @@
     padding: 15px;
   }
 }
-@media only screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .main {
     padding: 25px 0;
   }
@@ -211,7 +211,7 @@
     height: 35px;
   }
 }
-@media only screen and (max-width: 480px) {
+@media (max-width: 480px) {
   .main {
     padding: 20px 0;
   }

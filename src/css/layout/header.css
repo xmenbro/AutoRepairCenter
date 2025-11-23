@@ -49,7 +49,7 @@
 .icons a:hover {
   transform: scale(1.1);
 }
-@media only screen and (max-width: 1200px) {
+@media (max-width: 1200px) {
   .header-container {
     margin-left: 100px;
     max-width: 100%;
@@ -61,33 +61,14 @@
     width: 180px;
   }
 }
-@media only screen and (max-width: 992px) {
+@media (max-width: 992px) {
   .header-container {
     margin-left: 50px;
     grid-template-columns: repeat(3, 1fr);
   }
 }
-@media only screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .header-container {
-    margin-left: 20px;
-    grid-template-columns: 1fr;
-    height: auto;
-    padding: 10px 0;
-  }
-  .header-elements {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    height: auto;
-  }
-  .header-element {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #0f57c9;
-    padding: 8px 0;
-  }
-  .icons {
-    justify-content: center;
-    margin-left: 0;
-    width: 100%;
+    display: none;
   }
 }
