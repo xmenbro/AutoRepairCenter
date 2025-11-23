@@ -3,7 +3,7 @@
 
 // Скрытое меню
 .mobile-menu {
-    display: none;
+    display: flex;
     position: fixed;
     left: 0;
     top: 0;
@@ -106,6 +106,7 @@
 }
 
 .search-tool-btn, .close-btn {
+    padding: 0;
     border: none;
     background: transparent;
 }
@@ -119,7 +120,7 @@
 }
 
 .crossed:hover, .search-tool-btn:hover {
-    background: @gray-bg;
+    background-color: @gray-bg;
 }
 
 // Контент
@@ -138,8 +139,7 @@
 
 .grid-container {
     margin-top: 35px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    .grid-template-columns(repeat(3, 1fr));
 }
 
 .coll-list {
@@ -190,7 +190,7 @@
     }
 
     .grid-container {
-        grid-template-columns: repeat(2, 1fr);
+        .grid-template-columns(repeat(2, 1fr));
         gap: @spacing-xxl;
     }
 });
@@ -206,7 +206,7 @@
     }
 
     .grid-container {
-        grid-template-columns: 1fr;
+        .grid-template-columns(1fr);
         gap: @spacing-xl;
     }
 

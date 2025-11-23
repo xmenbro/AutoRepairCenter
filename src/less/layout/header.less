@@ -7,15 +7,14 @@
     max-width: @header-max-width;
     width: 100%;
     height: @header-height;
-    grid-template-columns: repeat(5, 1fr);
+    .grid-template-columns(repeat(5, 1fr));
     .grid-center();
 }
 
 .header-elements {
     padding-bottom: @spacing-md;
     height: @header-elements-height;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    .grid-template-columns(repeat(3, 1fr));
     gap: @spacing-gap;
 }
 
@@ -42,7 +41,7 @@
 
 .icons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    .grid-template-columns(repeat(3, 1fr));
     gap: @spacing-xxl;
     margin-left: @spacing-xxl;
     width: @icons-width;
@@ -75,7 +74,7 @@
 .breakpoint(992px; {
     .header-container {
         margin-left: 50px;
-        grid-template-columns: repeat(4, 1fr);
+        .grid-template-columns(repeat(4, 1fr));
     }
 });
 

@@ -1,5 +1,5 @@
 .mobile-menu {
-  display: none;
+  display: flex;
   position: fixed;
   left: 0;
   top: 0;
@@ -90,6 +90,7 @@
 }
 .search-tool-btn,
 .close-btn {
+  padding: 0;
   border: none;
   background: transparent;
 }
@@ -104,7 +105,7 @@
 }
 .crossed:hover,
 .search-tool-btn:hover {
-  background: #e2e2e2 3d;
+  background-color: #e2e2e2 3d;
 }
 .content {
   padding: 5px 50px 0 50px;
@@ -161,6 +162,7 @@
     padding: 5px 15px 0 15px;
   }
   .grid-container {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
@@ -174,6 +176,7 @@
     padding: 5px 12px 0 12px;
   }
   .grid-container {
+    display: grid;
     grid-template-columns: 1fr;
     gap: 15px;
   }
