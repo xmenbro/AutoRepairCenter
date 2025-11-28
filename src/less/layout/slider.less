@@ -27,27 +27,15 @@
 }
 
 .slide:nth-child(1) {
-    background: 
-        linear-gradient(rgba(0, 0, 0, @opacity-dark), rgba(0, 0, 0, @opacity-dark)),
-        url("../images/slides/1.png");
-    background-size: cover;
-    background-position: center;
+    .slide-background("../images/slides/1.png");
 }
 
 .slide:nth-child(2) {
-    background: 
-        linear-gradient(rgba(0, 0, 0, @opacity-dark), rgba(0, 0, 0, @opacity-dark)),
-        url("../images/slides/aura_large.JPG");
-    background-size: cover;
-    background-position: center;
+    .slide-background("../images/slides/aura_large.JPG");
 }
 
 .slide:nth-child(3) {
-    background: 
-        linear-gradient(rgba(0, 0, 0, @opacity-medium), rgba(0, 0, 0, @opacity-medium)),
-        url("../images/slides/kopeyka.jpg");
-    background-size: cover;
-    background-position: center;
+    .slide-background("../images/slides/kopeyka.jpg");
 }
 
 // Анимация слайдов

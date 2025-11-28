@@ -102,24 +102,6 @@
     border-radius: @border-radius;
 }
 
-// Mixins для доступности
-.sr-only() {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
-
-.focus-outline() {
-    outline: 2px solid @primary-color;
-    outline-offset: 2px;
-}
-
 // Mixins для анимаций
 .transition-all(@time: @transition-time) {
     transition: all @time ease;
@@ -190,12 +172,6 @@
 // Mixins для responsive design
 .breakpoint(@maxWidth; @rules) {
     @media (max-width: @maxWidth) {
-        @rules();
-    }
-}
-
-.mobile-first(@minWidth; @rules) {
-    @media (min-width: @minWidth) {
         @rules();
     }
 }
