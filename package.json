@@ -1,0 +1,29 @@
+{
+  "name": "autorepaircenter",
+  "version": "1.0.0",
+  "description": "There is a web site of auto repair center",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xmenbro/AutoRepairCenter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/xmenbro/AutoRepairCenter/issues"
+  },
+  "homepage": "https://github.com/xmenbro/AutoRepairCenter#readme",
+  "devDependencies": {
+    "grunt": "^1.6.1",
+    "grunt-contrib-clean": "^2.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^5.0.0",
+    "grunt-contrib-htmlmin": "^3.1.0",
+    "grunt-contrib-imagemin": "^4.0.0"
+  }
+}
