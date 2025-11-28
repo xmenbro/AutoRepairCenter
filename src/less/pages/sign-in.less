@@ -1,0 +1,159 @@
+@import url("../base/variables.less");
+@import url("../base/mixins.less");
+
+body {
+    .flex-center();
+    .flex-column();
+    min-height: 100vh;
+    margin: 0;
+    padding: @spacing-xxxxl;
+    background: @gray-bg;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: @sign-in-container-width;
+    height: auto;
+    .flex-column();
+    margin: 0 auto;
+    padding: @spacing-xxxxl;
+    background: @white;
+    border-radius: @border-radius;
+    box-shadow: @box-shadow;
+    position: relative;
+}
+
+.auth-form {
+    width: 100%;
+    .flex-column();
+    gap: @spacing-xl;
+}
+
+// Кнопка назад
+.back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    .hover-scale();
+    align-self: flex-start;
+    margin-bottom: @spacing-lg;
+}
+
+// Логотип
+.logo {
+    .flex-center();
+    margin-bottom: @spacing-xl;
+}
+
+// Группы формы
+.form-group {
+    .flex-column();
+    gap: @spacing-sm;
+    width: 100%;
+}
+
+label {
+    font-size: @font-size-md;
+    color: @gray-dark;
+    font-weight: 500;
+    text-align: left;
+    width: 40%;
+}
+
+// Поля ввода
+#login,
+#passwd {
+    width: 90%;
+    padding: @spacing-lg @spacing-md;
+    .input-border-bottom();
+    font-size: @font-size-lg;
+    background: transparent;
+    .transition-all();
+    text-align: left;
+    
+    &:focus {
+        border-bottom-color: @primary-color;
+    }
+    
+    &::placeholder {
+        color: @gray-light;
+        font-size: @font-size-md;
+    }
+}
+
+// Чекбокс группа
+.checkbox-group {
+    .flex-center();
+    justify-content: flex-start;
+    gap: @spacing-md;
+    width: 100%;
+    margin: @spacing-lg 0;
+}
+
+#remember {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: @primary-color;
+    .hover-scale(1.1);
+    margin: 0;
+}
+
+label[for="remember"] {
+    font-size: @font-size-md;
+    color: @gray-medium;
+    cursor: pointer;
+    .transition-all();
+    margin: 0;
+    font-weight: normal;
+    
+    &:hover {
+        color: @gray-dark;
+    }
+}
+
+// Кнопка входа
+.submit-btn {
+    width: 100%;
+    padding: @spacing-lg;
+    .button-style();
+    font-size: @font-size-lg;
+    font-weight: 600;
+    margin-top: @spacing-md;
+}
+
+// Блок дополнительных опций
+.options {
+    .flex-column();
+    .flex-center();
+    gap: @spacing-md;
+    margin-top: @spacing-xxl;
+    width: 100%;
+    max-width: @sign-in-container-width;
+    margin: @spacing-xxl auto 0;
+    text-align: center;
+}
+
+.forget,
+.register {
+    .text-center();
+    
+    a {
+        color: @primary-color;
+        text-decoration: none;
+        font-size: @font-size-md;
+        .transition-all();
+        
+        &:hover {
+            color: @primary-dark;
+            text-decoration: underline;
+        }
+    }
+}
+
+.breakpoint(390px, {
+    .container {
+        width: @sign-in-container-width - 100px;
+    }
+});
