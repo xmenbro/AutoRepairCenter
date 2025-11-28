@@ -4,12 +4,18 @@ module.exports = function(grunt) {
         // Обработка HTML перед минификацией
         processhtml: {
             dist: {
-                files: {
-                    'dist/html/index.html': ['src/html/index.html']
-                }
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'src/html/',
+                        src: ['index.html', 'pages/sign-in.html'],
+                        dest: 'dist/html/',
+                        ext: '.html'
+                    }
+                ]
             }
         },
-        
+
         // Минификация HTML
         htmlmin: {
             dist: {
@@ -19,28 +25,45 @@ module.exports = function(grunt) {
                     minifyJS: true,
                     minifyCSS: true
                 },
-                files: {
-                    'dist/html/index.html': 'dist/html/index.html'
-                }
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'src/html/',
+                        src: ['index.html', 'pages/sign-in.html'],
+                        dest: 'dist/html/',
+                        ext: '.html'
+                    }
+                ]
             }
         },
         
-        // Минификация CSS
+        // Минификация CSS - ИСПРАВЛЕНО
         cssmin: {
             target: {
-                files: {
-                    'dist/css/style.min.css': ['src/css/style.css']
-                }
+                files: [
+                    {
+                        // Главный CSS файл
+                        'dist/css/style.min.css': ['src/css/style.css']
+                    },
+                    {
+                        // CSS файлы из папки pages
+                        expand: true,
+                        cwd: 'src/css/',
+                        src: ['pages/*.css'],
+                        dest: 'dist/css/',
+                        ext: '.min.css'
+                    }
+                ]
             }
         },
         
-        // Копирование CSS файлов
+        // Копирование CSS файлов - ИСПРАВЛЕНО
         copy: {
             css: {
                 files: [{
                     expand: true,
                     cwd: 'src/css/',
-                    src: ['*.css'],
+                    src: ['*.css', 'pages/*.css'], // включаем файлы из папки pages
                     dest: 'dist/css/'
                 }]
             }
