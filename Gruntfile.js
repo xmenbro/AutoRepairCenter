@@ -1,22 +1,23 @@
 module.exports = function(grunt) {
     
     grunt.initConfig({
-        // Обработка HTML перед минификацией
-        processhtml: {
+        // Замена путей в CSS ссылках
+        'string-replace': {
             dist: {
-                files: [
-                    {
-                        // Главный html файл
-                        'dist/html/index.html': ['src/html/index.html']
-                    },
-                    {
-                        expand: true,
-                        cwd: 'src/html/',
-                        src: ['pages/*.html'],
-                        dest: 'dist/html/',
-                        ext: '.html'
-                    }
-                ]
+                files: [{
+                    expand: true,
+                    cwd: 'src/html/',
+                    src: '**/*.html',
+                    dest: 'dist/html/'
+                }],
+                options: {
+                    replacements: [
+                        {
+                            pattern: /<link rel="stylesheet" href="(.+?)\.css">/g,
+                            replacement: '<link rel="stylesheet" href="$1.min.css">'
+                        }
+                    ]
+                }
             }
         },
 
@@ -29,50 +30,24 @@ module.exports = function(grunt) {
                     minifyJS: true,
                     minifyCSS: true
                 },
-                files: [
-                    {
-                        // Главный html файл
-                        'dist/html/index.html': ['src/html/index.html']
-                    },
-                    {
-                        expand: true,
-                        cwd: 'src/html/',
-                        src: ['pages/*.html'],
-                        dest: 'dist/html/',
-                        ext: '.html'
-                    }
-                ]
+                files: [{
+                    expand: true,
+                    cwd: 'dist/html/',
+                    src: ['**/*.html'],
+                    dest: 'dist/html/'
+                }]
             }
         },
         
-        // Минификация CSS - ИСПРАВЛЕНО
+        // Минификация CSS
         cssmin: {
             target: {
-                files: [
-                    {
-                        // Главный CSS файл
-                        'dist/css/style.min.css': ['src/css/style.css']
-                    },
-                    {
-                        // CSS файлы из папки pages
-                        expand: true,
-                        cwd: 'src/css/',
-                        src: ['pages/*.css'],
-                        dest: 'dist/css/',
-                        ext: '.min.css'
-                    }
-                ]
-            }
-        },
-        
-        // Копирование CSS файлов - ИСПРАВЛЕНО
-        copy: {
-            css: {
                 files: [{
                     expand: true,
                     cwd: 'src/css/',
-                    src: ['*.css', 'pages/*.css'], // включаем файлы из папки pages
-                    dest: 'dist/css/'
+                    src: ['**/*.css'],
+                    dest: 'dist/css/',
+                    ext: '.min.css'
                 }]
             }
         },
@@ -96,18 +71,19 @@ module.exports = function(grunt) {
     });
     
     // Загрузка плагинов
-    grunt.loadNpmTasks('grunt-processhtml');
+    grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-imagemin');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-copy');
     
     // Регистрация задач
     grunt.registerTask('default', ['build']);
-    grunt.registerTask('minify-html', ['htmlmin']);
-    grunt.registerTask('minify-css', ['cssmin']);
-    grunt.registerTask('optimize-images', ['imagemin']);
-    grunt.registerTask('build', ['clean:dist', 'cssmin', 'copy:css', 'imagemin', 'processhtml', 'htmlmin']);
-    grunt.registerTask('production', ['build']);
+    grunt.registerTask('build', [
+        'clean:dist',
+        'cssmin',
+        'imagemin',
+        'string-replace',
+        'htmlmin'
+    ]);
 };
