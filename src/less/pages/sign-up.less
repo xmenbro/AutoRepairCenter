@@ -1,0 +1,22 @@
+@import url("../base/variables.less");
+@import url("../base/mixins.less");
+@import url("sign-in.less");
+
+#mail {
+    width: 90%;
+    padding: @spacing-lg @spacing-md;
+    .input-border-bottom();
+    font-size: @font-size-lg;
+    background: transparent;
+    .transition-all();
+    text-align: left;
+    
+    &:focus {
+        border-bottom-color: @primary-color;
+    }
+    
+    &::placeholder {
+        color: @gray-light;
+        font-size: @font-size-md;
+    }
+}

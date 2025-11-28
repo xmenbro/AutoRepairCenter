@@ -6,9 +6,13 @@ module.exports = function(grunt) {
             dist: {
                 files: [
                     {
+                        // Главный html файл
+                        'dist/html/index.html': ['src/html/index.html']
+                    },
+                    {
                         expand: true,
                         cwd: 'src/html/',
-                        src: ['index.html', 'pages/sign-in.html'],
+                        src: ['pages/*.html'],
                         dest: 'dist/html/',
                         ext: '.html'
                     }
@@ -27,9 +31,13 @@ module.exports = function(grunt) {
                 },
                 files: [
                     {
+                        // Главный html файл
+                        'dist/html/index.html': ['src/html/index.html']
+                    },
+                    {
                         expand: true,
                         cwd: 'src/html/',
-                        src: ['index.html', 'pages/sign-in.html'],
+                        src: ['pages/*.html'],
                         dest: 'dist/html/',
                         ext: '.html'
                     }
