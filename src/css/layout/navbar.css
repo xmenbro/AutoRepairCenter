@@ -6,9 +6,10 @@
   height: 60px;
 }
 .nav-container {
-  max-width: 1400px;
+  max-width: 1450px;
 }
 .nav-menu {
+  padding: 0;
   grid-template-columns: 50px repeat(5, 1fr) 2fr 50px 50px 100px;
   list-style: none;
   height: 60px;
