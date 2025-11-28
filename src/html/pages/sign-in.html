@@ -4,32 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign in</title>
+    <link rel="stylesheet" href="../../css/pages/sign-in.css">
 </head>
 <body>
     <!-- Форма авторизации -->
     <div class="container">
-        <form action="#" method="post">
-            <table>
-                <tr><td><img src="" alt="back"></td></tr>
-                <tr><td><img src="" alt="icon"></td></tr>
-                <tr><td>Логин</td></tr>
-                <tr><td><input type="text" name="login" id="login"></td></tr>
-                <tr><td>Пароль</td></tr>
-                <tr><td><input type="password" name="passwd" id="passwd"></td></tr>
-                <tr>
-                    <td><input type="checkbox" name="remember" id="remember"></td>
-                    <td>Запомнить меня</td>
-                </tr>
-                <tr><td><input type="submit" value="Вход"></td></tr>
-            </table>
+        <form action="#" method="post" class="auth-form">
+            <button type="button" class="back-btn">
+                <img src="../../images/icons/arrow-back.png" alt="arrow-back">
+            </button>
+            
+            <div class="logo">
+                <img src="../../images/icons/car.png" alt="Логотип">
+            </div>
+            
+            <div class="form-group">
+                <label for="login">Логин</label>
+                <input type="text" name="login" id="login" placeholder="Введите логин">
+            </div>
+            
+            <div class="form-group">
+                <label for="passwd">Пароль</label>
+                <input type="password" name="passwd" id="passwd" placeholder="Введите пароль">
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" name="remember" id="remember">
+                <label for="remember">Запомнить меня</label>
+            </div>
+            
+            <input type="submit" value="Вход" class="submit-btn">
         </form>
-        <div class="options">
-            <div class="forget">
-                <a href="#">Забыли пароль?</a>
-            </div>
-            <div class="register">
-                <a href="#">У вас нет аккаунта?</a>
-            </div>
+    </div>
+    
+    <div class="options">
+        <div class="forget">
+            <a href="#">Забыли пароль?</a>
+        </div>
+        <div class="register">
+            <a href="#">У вас нет аккаунта?</a>
         </div>
     </div>
 </body>
