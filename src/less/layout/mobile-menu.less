@@ -1,0 +1,216 @@
+@import (reference) '../base/variables.less';
+@import (reference) '../base/mixins.less';
+
+// Скрытое меню
+.mobile-menu {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: @mobile-menu-width;
+    height: 100vh;
+    z-index: @z-index-mobile-menu;
+    background-color: @white;
+    overflow-y: auto;
+}
+
+// Левая часть
+.left-part {
+    width: @left-part-width;
+    height: 100%;
+    border-right: 3px solid @gray-light;
+    .text-uppercase();
+}
+
+.menu-list {
+    padding-left: 5%;
+    list-style-position: inside;
+    .list-reset();
+}
+
+.menu-title {
+    .text-center();
+}
+
+.icon {
+    padding-left: 25%;
+}
+
+.arrow {
+    padding-left: 65%;
+}
+
+.list-item {
+    align-items: center;
+    height: @list-item-height;
+    padding-left: 60px;
+    position: relative;
+
+    &:nth-child(1)::before {
+        content: url("../images/icons/car-parts.png");
+    }
+
+    &:nth-child(2)::before {
+        content: url("../images/icons/repair-tools.png");
+    }
+
+    &:nth-child(3)::before {
+        content: url("../images/icons/fender.png");
+    }
+
+    &:nth-child(4)::before {
+        content: url("../images/icons/motor.png");
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+.list-btn {
+    line-height: @list-item-height;
+    height: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    .text-center();
+    .text-uppercase();
+
+    &:hover {
+        font-weight: bold;
+    }
+}
+
+// Правая часть
+.right-part {
+    width: 100%;
+    height: 100%;
+}
+
+// Управление
+.guidance {
+    padding: 0 @spacing-gap;
+    height: 100px;
+    .flex-between();
+    align-items: center;
+}
+
+.search-input {
+    .input-border-bottom();
+    width: @search-input-width;
+    height: 30px;
+}
+
+.search-tool-btn, .close-btn {
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.search-tool-btn, .crossed {
+    .icon-size(@carousel-btn-size);
+}
+
+.search-tool-img {
+    .icon-size(@icon-size);
+}
+
+.crossed:hover, .search-tool-btn:hover {
+    background-color: @gray-bg;
+}
+
+// Контент
+.content {
+    padding: 5px @spacing-gap 0 @spacing-gap;
+}
+
+.content-element {
+    .text-uppercase();
+    display: none;
+
+    &:nth-child(1) {
+        display: inherit;
+    }
+}
+
+.grid-container {
+    margin-top: 35px;
+    .grid-template-columns(repeat(3, 1fr));
+}
+
+.coll-list {
+    .list-reset();
+    font-size: @font-size-md;
+
+    &-element {
+        width: fit-content;
+        padding: 2px 0;
+
+        &:first-child {
+            font-weight: bold;
+            padding-bottom: 5px;
+            width: fit-content;
+        }
+
+        &:hover:not(&:first-child) {
+            color: @primary-color;
+            cursor: pointer;
+        }
+    }
+}
+
+// Responsive стили для мобильного меню
+.breakpoint(768px; {
+    .mobile-menu {
+        width: 100%;
+    }
+
+    .left-part {
+        width: 100%;
+        border-right: none;
+        border-bottom: 3px solid @gray-light;
+    }
+
+    .guidance {
+        padding: 0 @spacing-xl;
+        height: 80px;
+    }
+
+    .search-input {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .content {
+        padding: 5px @spacing-xl 0 @spacing-xl;
+    }
+
+    .grid-container {
+        .grid-template-columns(repeat(2, 1fr));
+        gap: @spacing-xxl;
+    }
+});
+
+.breakpoint(480px; {
+    .guidance {
+        height: 60px;
+        padding: 0 @spacing-lg;
+    }
+
+    .content {
+        padding: 5px @spacing-lg 0 @spacing-lg;
+    }
+
+    .grid-container {
+        .grid-template-columns(1fr);
+        gap: @spacing-xl;
+    }
+
+    .coll-list {
+        font-size: @font-size-sm;
+    }
+});

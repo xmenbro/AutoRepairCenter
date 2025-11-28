@@ -1,0 +1,243 @@
+// Mixins для flexbox
+.flex-center() {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between() {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-column() {
+    display: flex;
+    flex-direction: column;
+}
+
+// Mixins для grid
+.grid-center() {
+    display: grid;
+    align-items: center;
+}
+
+.grid-template-columns(@columns) {
+    display: grid;
+    grid-template-columns: @columns;
+}
+
+// Mixins для позиционирования
+.absolute-center() {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.position-sticky(@z-index: 1000) {
+    position: sticky;
+    top: 0;
+    z-index: @z-index;
+}
+
+// Mixins для текста
+.text-uppercase() {
+    text-transform: uppercase;
+}
+
+.text-center() {
+    text-align: center;
+}
+
+// Mixins для кнопок и интерактивных элементов
+.button-style(@bg-color: @primary-color, @text-color: @white) {
+    background-color: @bg-color;
+    color: @text-color;
+    border: none;
+    border-radius: @border-radius;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all @transition-time ease;
+    
+    &:hover {
+        background-color: darken(@bg-color, 10%);
+        transform: translateY(-2px);
+        box-shadow: @button-shadow;
+    }
+}
+
+.button-disabled() {
+    background-color: @disabled-color;
+    cursor: not-allowed;
+    
+    &:hover {
+        background-color: @disabled-dark;
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+// Mixins для карточек продуктов
+.product-card() {
+    background: @white;
+    border-radius: @border-radius;
+    padding: @spacing-xxxl;
+    text-align: center;
+    box-shadow: @box-shadow;
+    transition: transform @transition-time;
+    cursor: pointer;
+    
+    &:hover {
+        transform: translateY(-5px);
+    }
+}
+
+.product-image() {
+    height: @product-image-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: @spacing-md;
+    border-radius: @border-radius;
+}
+
+// Mixins для анимаций
+.transition-all(@time: @transition-time) {
+    transition: all @time ease;
+}
+
+.hover-scale(@scale: 1.1) {
+    transition: transform @transition-time;
+    
+    &:hover {
+        transform: scale(@scale);
+    }
+}
+
+// Mixins для навигационного меню
+.menu-item() {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.menu-link() {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    color: @white;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: @font-size-md;
+    transition: background-color @transition-time;
+    text-align: center;
+    padding: 0 @spacing-md;
+    
+    &:hover {
+        background-color: @primary-dark;
+    }
+}
+
+// Mixins для слайдера
+.slide-background(@image-url) {
+    background: 
+        linear-gradient(rgba(0, 0, 0, @opacity-dark), rgba(0, 0, 0, @opacity-dark)),
+        url(@image-url);
+    background-size: cover;
+    background-position: center;
+}
+
+// Mixins для состояний доступности
+.availability-status(@color) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: @font-size-sm;
+    margin-bottom: @spacing-lg;
+    
+    .availability-dot {
+        width: @availability-dot-size;
+        height: @availability-dot-size;
+        border-radius: @border-radius-round;
+        margin-right: @spacing-xs;
+        background: @color;
+    }
+}
+
+// Mixins для responsive design
+.breakpoint(@maxWidth; @rules) {
+    @media (max-width: @maxWidth) {
+        @rules();
+    }
+}
+
+// Mixins для иконок
+.icon-size(@size: @icon-size) {
+    width: @size;
+    height: @size;
+}
+
+.filter-white() {
+    filter: brightness(0) invert(1);
+}
+
+// Mixins для списков
+.list-reset() {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-item-icon(@icon-url) {
+    position: relative;
+    padding-left: 60px;
+    
+    &::before {
+        content: url(@icon-url);
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+// Mixins для форм
+.input-border-bottom() {
+    border: none;
+    border-bottom: 1px solid @gray-light;
+    
+    &:focus {
+        outline: none;
+    }
+}
+
+// Mixins для карусели/слайдера
+.carousel-button() {
+    background: @primary-color;
+    color: @white;
+    border: none;
+    width: @carousel-btn-size;
+    height: @carousel-btn-size;
+    border-radius: @border-radius-round;
+    font-size: @font-size-xl;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background @transition-time;
+    z-index: @z-index-dots;
+    
+    &:hover {
+        background: @primary-dark;
+    }
+    
+    &:disabled {
+        background: fade(@disabled-color, 50%);
+        cursor: not-allowed;
+    }
+}

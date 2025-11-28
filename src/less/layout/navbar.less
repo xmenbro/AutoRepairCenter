@@ -1,0 +1,134 @@
+@import (reference) '../base/variables.less';
+@import (reference) '../base/mixins.less';
+
+// Навигационное меню
+.navbar {
+    background-color: @primary-color;
+    .position-sticky();
+    height: @navbar-height;
+}
+
+.nav-container {
+    max-width: @max-width-container;
+}
+
+.nav-menu {
+    .grid-template-columns(50px repeat(5, 1fr) 2fr 50px 50px 100px);
+    list-style: none;
+    height: @navbar-height;
+    .grid-center();
+}
+
+.menu-item {
+    .menu-item();
+
+    a {
+        .menu-link();
+    }
+
+    img {
+        .icon-size(@icon-size-sm);
+        .filter-white();
+    }
+
+    &:last-child a:hover {
+        background-color: @primary-dark;
+    }
+}
+
+.spacer {
+    height: 100%;
+}
+
+.hover-container {
+    width: 100%;
+    height: 100%;
+
+    &:hover {
+        background-color: @primary-dark;
+    }
+}
+
+.menu-icon {
+    .flex-column();
+    gap: @spacing-xs;
+    cursor: pointer;
+    padding: @spacing-xxl @spacing-xl;
+
+    span {
+        width: @icon-size;
+        height: 3px;
+        background-color: @white;
+        display: block;
+    }
+}
+
+// Responsive стили для навигации
+.breakpoint(1024px; {
+    .nav-container {
+        max-width: 100%;
+    }
+
+    .menu-item:first-child {
+        display: none;
+    }
+
+    .menu-item a {
+        font-size: @font-size-sm;
+    }
+
+    .nav-menu {
+        .grid-template-columns(repeat(9, 1fr));
+    }
+});
+
+.breakpoint(992px; {
+    .nav-menu {
+        .grid-template-columns(repeat(9, 1fr));
+    }
+
+    .menu-item a {
+        font-size: @font-size-sm;
+        padding: 0 @spacing-sm;
+    }
+});
+
+.breakpoint(768px; {
+    .navbar, .nav-menu{
+        height: @navbar-height / 2 + 10px;
+    }
+
+    .menu-item a {
+        font-size: @font-size-xs;
+        padding: 0 @spacing-xs;
+    }
+});
+
+.breakpoint(575px; {
+    .nav-menu {
+        .grid-template-columns(1fr);
+        height: auto;
+        padding: @spacing-sm 0;
+    }
+
+    .navbar {
+        height: auto;
+        position: relative;
+    }
+
+    .menu-item {
+        height: 50px;
+        border-bottom: 1px solid lighten(@primary-color, 10%);
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    .menu-icon {
+        padding: @spacing-md @spacing-xl;
+        flex-direction: row;
+        justify-content: center;
+        gap: @spacing-md;
+    }
+});
