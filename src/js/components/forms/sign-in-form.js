@@ -71,6 +71,46 @@ class SignInForm {
         
         return isLoginValid && isPasswordValid;
     }
+    
+    // Обработка отправки формы
+    handleSubmit(e) {
+        e.preventDefault();
+        
+        if (!this.validateAll()) {
+            return false;
+        }
+        
+        this.submitForm();
+    }
+    
+    // Отправка формы
+    submitForm() {
+        const formData = {
+            login: this.$loginInput.val(),
+            password: this.$passwordInput.val(),
+            remember: $('#remember').is(':checked')
+        };
+        
+        // Показываем индикатор загрузки
+        this.setLoadingState(true);
+        
+        $.ajax({
+            url: '',
+            method: 'POST',
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+            dataType: 'json'
+        })
+        .done((response) => {
+            this.handleSuccess(response);
+        })
+        .fail((xhr) => {
+            this.handleError(xhr);
+        })
+        .always(() => {
+            this.setLoadingState(false);
+        });
+    }
 }
 
 // Инициализация при загрузке документа
