@@ -44,6 +44,33 @@ class SignInForm {
             return false;
         }
     }
+
+    validateLogin() {
+        const value = this.$loginInput.val();
+        const result = this.validator.validateLogin(value);
+        
+        if (result.isValid) {
+            this.clearError(this.$loginInput);
+            return true;
+        } else {
+            this.validator.showFieldErrors(this.$loginInput.parent(), result.errors);
+            return false;
+        }
+    }
+    
+    // Валидация пароля
+    validatePassword() {
+        const value = this.$passwordInput.val();
+        const result = this.validator.validatePassword(value);
+        
+        if (result.isValid) {
+            this.clearError(this.$passwordInput);
+            return true;
+        } else {
+            this.validator.showFieldErrors(this.$passwordInput.parent(), result.errors);
+            return false;
+        }
+    }
 }
 
 // Инициализация при загрузке документа
