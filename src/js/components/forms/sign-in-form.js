@@ -111,6 +111,37 @@ class SignInForm {
             this.setLoadingState(false);
         });
     }
+    
+    // Обработка входа
+    handleSuccess(response) {
+        if (response.success) {
+            // Успешный вход
+            this.showSuccessMessage('Вход выполнен успешно!');
+            
+            // Редирект или обновление страницы
+            setTimeout(() => {
+                window.location.href = '/dashboard.html'; // Замените на ваш URL
+            }, 1000);
+        } else {
+            // Сервер вернул ошибку
+            this.showFormError(response.message || 'Ошибка при входе');
+        }
+    }
+    
+    // Обработка ошибок
+    handleError(xhr) {
+        let errorMessage = 'Произошла ошибка при отправке данных';
+        
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+            errorMessage = xhr.responseJSON.message;
+        } else if (xhr.status === 401) {
+            errorMessage = 'Неверный логин или пароль';
+        } else if (xhr.status === 0) {
+            errorMessage = 'Проверьте подключение к интернету';
+        }
+        
+        this.showFormError(errorMessage);
+    }
 }
 
 // Инициализация при загрузке документа
