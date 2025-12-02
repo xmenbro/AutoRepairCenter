@@ -30,6 +30,20 @@ class SignInForm {
         this.$loginInput.on('focus', () => this.clearError(this.$loginInput));
         this.$passwordInput.on('focus', () => this.clearError(this.$passwordInput));
     }
+
+    // Валидация логина
+    validateLogin() {
+        const value = this.$loginInput.val();
+        const result = this.validator.validateLogin(value);
+        
+        if (result.isValid) {
+            this.clearError(this.$loginInput);
+            return true;
+        } else {
+            this.validator.showFieldErrors(this.$loginInput.parent(), result.errors);
+            return false;
+        }
+    }
 }
 
 // Инициализация при загрузке документа
