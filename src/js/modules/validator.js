@@ -12,6 +12,22 @@ class Validator {
             password: (value) => value && value.length >= 6
         };
     }
+
+    // Валидация логина
+    validateLogin(value) {
+        const errors = [];
+        
+        if (!this.validationRules.required(value)) {
+            errors.push('Логин обязателен для заполнения');
+        } else if (!this.validationRules.minLength(value, 3)) {
+            errors.push('Логин должен содержать минимум 3 символа');
+        }
+        
+        return {
+            isValid: errors.length === 0,
+            errors: errors
+        };
+    }
 }
 
 // Создаем и экспортируем экземпляр
