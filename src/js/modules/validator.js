@@ -44,6 +44,28 @@ class Validator {
             errors: errors
         };
     }
+
+    // Показать поле с ошибками
+    showFieldErrors($field, errors) {
+        this.removeFieldErrors($field);
+        
+        if (errors && errors.length > 0) {
+            $field.addClass('error');
+            const $errorContainer = $('<div class="error-messages"></div>');
+            
+            errors.forEach(error => {
+                $errorContainer.append(`<span class="error-message">${error}</span>`);
+            });
+            
+            $field.after($errorContainer);
+        }
+    }
+
+    // Удалить поле с ошибками
+    removeFieldErrors($field) {
+        $field.removeClass('error');
+        $field.siblings('.error-messages').remove();
+    }
 }
 
 // Создаем и экспортируем экземпляр
