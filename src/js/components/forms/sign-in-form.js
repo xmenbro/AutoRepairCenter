@@ -142,6 +142,34 @@ class SignInForm {
         
         this.showFormError(errorMessage);
     }
+    
+    // Показать ошибки
+    showFormError(message) {
+        // Удаляем предыдущие ошибки формы
+        this.$form.find('.form-error').remove();
+        
+        const $errorDiv = $(`
+            <div class="form-error">
+                <span class="error-message">${message}</span>
+            </div>
+        `);
+        
+        this.$form.prepend($errorDiv);
+    }
+    
+    // Показать сообщения
+    showSuccessMessage(message) {
+        // Удаляем предыдущие сообщения
+        this.$form.find('.form-success').remove();
+        
+        const $successDiv = $(`
+            <div class="form-success">
+                <span class="success-message">${message}</span>
+            </div>
+        `);
+        
+        this.$form.prepend($successDiv);
+    }
 }
 
 // Инициализация при загрузке документа
