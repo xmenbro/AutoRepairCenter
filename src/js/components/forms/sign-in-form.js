@@ -44,19 +44,6 @@ class SignInForm {
             return false;
         }
     }
-
-    validateLogin() {
-        const value = this.$loginInput.val();
-        const result = this.validator.validateLogin(value);
-        
-        if (result.isValid) {
-            this.clearError(this.$loginInput);
-            return true;
-        } else {
-            this.validator.showFieldErrors(this.$loginInput.parent(), result.errors);
-            return false;
-        }
-    }
     
     // Валидация пароля
     validatePassword() {
@@ -70,6 +57,19 @@ class SignInForm {
             this.validator.showFieldErrors(this.$passwordInput.parent(), result.errors);
             return false;
         }
+    }
+    
+    // Очистить ошибки
+    clearError($input) {
+        this.validator.removeFieldErrors($input.parent());
+    }
+    
+    // Общая валидация
+    validateAll() {
+        const isLoginValid = this.validateLogin();
+        const isPasswordValid = this.validatePassword();
+        
+        return isLoginValid && isPasswordValid;
     }
 }
 
