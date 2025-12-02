@@ -28,6 +28,22 @@ class Validator {
             errors: errors
         };
     }
+
+    // Валидация пароля
+    validatePassword(value) {
+        const errors = [];
+        
+        if (!this.validationRules.required(value)) {
+            errors.push('Пароль обязателен для заполнения');
+        } else if (!this.validationRules.password(value)) {
+            errors.push('Пароль должен содержать минимум 6 символов');
+        }
+        
+        return {
+            isValid: errors.length === 0,
+            errors: errors
+        };
+    }
 }
 
 // Создаем и экспортируем экземпляр
