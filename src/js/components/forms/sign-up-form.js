@@ -5,6 +5,7 @@
 class SignUpForm {
     constructor(formSelector) {
         this.$form = $(formSelector);
+        this.$mailInput = $('#mail');
         this.$loginInput = $('#login');
         this.$passwordInput = $('#passwd');
         this.validator = window.Validator;
@@ -20,6 +21,7 @@ class SignUpForm {
     // Создание ивентов
     bindEvents() {
         // Валидация при вводе
+        this.$mailInput.on('input', () => this.validateMail());
         this.$loginInput.on('input', () => this.validateLogin());
         this.$passwordInput.on('input', () => this.validatePassword());
         
@@ -27,8 +29,23 @@ class SignUpForm {
         this.$form.on('submit', (e) => this.handleSubmit(e));
         
         // Очистка ошибок при фокусе
+        this.$loginInput.on('focus', () => this.clearError(this.$mailInput));
         this.$loginInput.on('focus', () => this.clearError(this.$loginInput));
         this.$passwordInput.on('focus', () => this.clearError(this.$passwordInput));
+    }
+
+    // Валидация почты
+    validateMail() {
+        const value = this.$mailInput.val();
+        const result = this.validator.validateMail(value);
+        
+        if (result.isValid) {
+            this.clearError(this.$mailInput);
+            return true;
+        } else {
+            this.validator.showFieldErrors(this.$mailInput.parent(), result.errors);
+            return false;
+        }
     }
 
     // Валидация логина
@@ -66,10 +83,11 @@ class SignUpForm {
     
     // Общая валидация
     validateAll() {
+        const isMailValid = this.validateMail();
         const isLoginValid = this.validateLogin();
         const isPasswordValid = this.validatePassword();
         
-        return isLoginValid && isPasswordValid;
+        return isMailValid && isLoginValid && isPasswordValid;
     }
     
     // Обработка отправки формы
@@ -86,9 +104,9 @@ class SignUpForm {
     // Отправка формы
     submitForm() {
         const formData = {
+            mail: this.$mailInput.val(),
             login: this.$loginInput.val(),
             password: this.$passwordInput.val(),
-            remember: $('#remember').is(':checked')
         };
         
         // Показываем индикатор загрузки
@@ -120,7 +138,7 @@ class SignUpForm {
             
             // Редирект или обновление страницы
             setTimeout(() => {
-                window.location.href = '/dashboard.html'; // Замените на ваш URL
+                window.location.href = '../../../html/index.html';
             }, 1000);
         } else {
             // Сервер вернул ошибку
