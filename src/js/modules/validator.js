@@ -8,8 +8,25 @@ class Validator {
             required: (value) => value && value.trim().length > 0,
             minLength: (value, length) => value && value.length >= length,
             maxLength: (value, length) => value && value.length <= length,
+            mail: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
             username: (value) => /^[a-zA-Z0-9_-]{3,20}$/.test(value),
             password: (value) => value && value.length >= 6
+        };
+    }
+
+    // Валидация почты
+    validateMail(value) {
+        const errors = [];
+
+        if (!this.validationRules.required(value)) {
+            errors.push('E-mail обязателен для заполнения');
+        } else if (!this.validationRules.mail(value)) {
+            errors.push('Введен неверный E-mail');
+        }
+
+        return {
+            isValid: errors.length === 0,
+            errors: errors
         };
     }
 
@@ -21,6 +38,8 @@ class Validator {
             errors.push('Логин обязателен для заполнения');
         } else if (!this.validationRules.minLength(value, 3)) {
             errors.push('Логин должен содержать минимум 3 символа');
+        } else if (!this.validationRules.username(value)) {
+            errors.push('Введено неверное имя пользователя');
         }
         
         return {
