@@ -120,7 +120,7 @@ class SignInForm {
             
             // Редирект или обновление страницы
             setTimeout(() => {
-                window.location.href = '/dashboard.html'; // Замените на ваш URL
+                window.location.href = '../../../html/index.html';
             }, 1000);
         } else {
             // Сервер вернул ошибку
