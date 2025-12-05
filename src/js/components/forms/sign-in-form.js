@@ -95,7 +95,7 @@ class SignInForm {
         this.setLoadingState(true);
         
         $.ajax({
-            url: '',
+            url: 'http://localhost:3000/auth',
             method: 'POST',
             data: JSON.stringify(formData),
             contentType: 'application/json',
@@ -120,7 +120,7 @@ class SignInForm {
             
             // Редирект или обновление страницы
             setTimeout(() => {
-                window.location.href = '../../../html/index.html';
+                window.location.href = '../../../src/html/index.html';
             }, 1000);
         } else {
             // Сервер вернул ошибку

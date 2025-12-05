@@ -113,7 +113,7 @@ class SignUpForm {
         this.setLoadingState(true);
         
         $.ajax({
-            url: '',
+            url: 'http://localhost:3000/register',
             method: 'POST',
             data: JSON.stringify(formData),
             contentType: 'application/json',
@@ -134,15 +134,15 @@ class SignUpForm {
     handleSuccess(response) {
         if (response.success) {
             // Успешный вход
-            this.showSuccessMessage('Вход выполнен успешно!');
+            this.showSuccessMessage('Регистрация выполнена успешно!');
             
             // Редирект или обновление страницы
             setTimeout(() => {
-                window.location.href = '../../../html/index.html';
+                window.location.href = '../../../src/html/index.html';
             }, 1000);
         } else {
             // Сервер вернул ошибку
-            this.showFormError(response.message || 'Ошибка при входе');
+            this.showFormError(response.message || 'Ошибка при регистрации');
         }
     }
     
