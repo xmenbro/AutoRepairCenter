@@ -209,5 +209,5 @@ class SignUpForm {
 
 // Инициализация при загрузке документа
 $(document).ready(function() {
-    window.signInForm = new SignInForm('.auth-form');
+    window.signUpForm = new SignUpForm('.auth-form');
 });
