@@ -6,6 +6,7 @@
 // Подключаем jQuery и наши модули
 import './modules/validator.js';
 import './components/forms/sign-in-form.js';
+import './components/forms/sign-up-form.js';
 
 // Общая инициализация приложения
 class App {
