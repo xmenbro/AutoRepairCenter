@@ -1,0 +1,54 @@
+{
+    "status": "success",
+    "count": 6,
+    "products": [
+        {
+            "id": 1,
+            "image": "../images/cards/brakes.webp",
+            "title": "Тормозные колодки BOSCH",
+            "brand": "BOSCH",
+            "price": 1890,
+            "availability": "В наличии"
+        },
+        {
+            "id": 2,
+            "image": "../images/cards/filter.webp",
+            "title": "Масляный фильтр MANN",
+            "brand": "MANN",
+            "price": 1250,
+            "availability": "В наличии"
+        },
+        {
+            "id": 3,
+            "image": "../images/cards/candle.webp",
+            "title": "Свечи зажигания NGK",
+            "brand": "NGK",
+            "price": 2800,
+            "availability": "В наличии"
+        },
+        {
+            "id": 4,
+            "image": "../images/cards/air-filter.webp",
+            "title": "Воздушный фильтр MAHLE",
+            "brand": "MAHLE",
+            "price": 680,
+            "availability": "Ожидается"
+        },
+        {
+            "id": 5,
+            "image": "../images/cards/battery.webp",
+            "title": "Аккумулятор VARTA",
+            "brand": "VARTA",
+            "price": 10990,
+            "availability": "В наличии"
+        },
+        {
+            "id": 6,
+            "image": "../images/cards/damper.webp",
+            "title": "Амортизаторы KAYABA",
+            "brand": "KAYABA",
+            "price": 6500,
+            "availability": "В наличии"
+        }
+    ]
+}
