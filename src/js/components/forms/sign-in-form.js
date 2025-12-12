@@ -86,10 +86,16 @@ class SignInForm {
     // Отправка формы
     submitForm() {
         const formData = {
-            login: this.$loginInput.val(),
-            password: this.$passwordInput.val(),
+            login: this.$loginInput.val().trim(),
+            password: this.$passwordInput.val().trim(),
             remember: $('#remember').is(':checked')
         };
+
+        // Дополнительная проверка на пустые поля
+        if (!formData.login || !formData.password) {
+            this.showFormError('Пожалуйста, заполните все поля');
+            return;
+        }
         
         // Показываем индикатор загрузки
         this.setLoadingState(true);
@@ -99,13 +105,14 @@ class SignInForm {
             method: 'POST',
             data: JSON.stringify(formData),
             contentType: 'application/json',
-            dataType: 'json'
+            dataType: 'json',
+            timeout: 10000
         })
         .done((response) => {
             this.handleSuccess(response);
         })
-        .fail((xhr) => {
-            this.handleError(xhr);
+        .fail((xhr, status, error) => {
+            this.handleError(xhr, status, error);
         })
         .always(() => {
             this.setLoadingState(false);
