@@ -230,13 +230,15 @@ class SignInForm {
         if (isLoading) {
             $submitBtn.prop('disabled', true);
             $submitBtn.data('original-text', $submitBtn.val());
-            $submitBtn.val('Загрузка...');
+            $submitBtn.val('Вход...');
+            $submitBtn.css('opacity', '0.7');
         } else {
             $submitBtn.prop('disabled', false);
             const originalText = $submitBtn.data('original-text');
             if (originalText) {
                 $submitBtn.val(originalText);
             }
+            $submitBtn.css('opacity', '1');
         }
     }
 }
