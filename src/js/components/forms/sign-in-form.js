@@ -241,9 +241,20 @@ class SignInForm {
             $submitBtn.css('opacity', '1');
         }
     }
+
+    // Восстановить сохраненный логин
+    restoreSavedLogin() {
+        const savedLogin = localStorage.getItem('rememberedLogin');
+        if (savedLogin) {
+            this.$loginInput.val(savedLogin);
+            $('#remember').prop('checked', true);
+        }
+    }
 }
 
 // Инициализация при загрузке документа
 $(document).ready(function() {
     window.signInForm = new SignInForm('.auth-form');
+    // Восстанавливаем сохраненный логин если есть
+    window.signInForm.restoreSavedLogin();
 });
