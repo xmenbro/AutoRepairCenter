@@ -29,7 +29,7 @@ class SignUpForm {
         this.$form.on('submit', (e) => this.handleSubmit(e));
         
         // Очистка ошибок при фокусе
-        this.$loginInput.on('focus', () => this.clearError(this.$mailInput));
+        this.$mailInput.on('focus', () => this.clearError(this.$mailInput));
         this.$loginInput.on('focus', () => this.clearError(this.$loginInput));
         this.$passwordInput.on('focus', () => this.clearError(this.$passwordInput));
     }
