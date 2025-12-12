@@ -162,18 +162,29 @@ class SignInForm {
     }
     
     // Обработка ошибок
-    handleError(xhr) {
+    handleError(xhr, status, error) {
         let errorMessage = 'Произошла ошибка при отправке данных';
         
         if (xhr.responseJSON && xhr.responseJSON.message) {
             errorMessage = xhr.responseJSON.message;
+        } else if (xhr.status === 0) {
+            errorMessage = 'Ошибка подключения к серверу. Проверьте:\n1. Запущен ли сервер (localhost:3000)\n2. Разрешает ли браузер CORS запросы';
         } else if (xhr.status === 401) {
             errorMessage = 'Неверный логин или пароль';
-        } else if (xhr.status === 0) {
-            errorMessage = 'Проверьте подключение к интернету';
+        } else if (xhr.status === 404) {
+            errorMessage = 'Сервер авторизации не найден. Проверьте URL эндпоинта';
+        } else if (xhr.status === 500) {
+            errorMessage = 'Ошибка на сервере. Попробуйте позже';
+        } else if (status === 'timeout') {
+            errorMessage = 'Превышено время ожидания ответа от сервера';
+        } else if (status === 'parsererror') {
+            errorMessage = 'Ошибка обработки ответа сервера';
         }
         
         this.showFormError(errorMessage);
+        
+        // Сбрасываем пароль для безопасности
+        this.$passwordInput.val('');
     }
     
     // Показать ошибки
