@@ -121,17 +121,43 @@ class SignInForm {
     
     // Обработка входа
     handleSuccess(response) {
+        // Очищаем предыдущие сообщения
+        this.$form.find('.form-error').remove();
+        this.$form.find('.form-success').remove();
+        
         if (response.success) {
             // Успешный вход
-            this.showSuccessMessage('Вход выполнен успешно!');
+            this.showSuccessMessage(response.message || 'Вход выполнен успешно!');
             
-            // Редирект или обновление страницы
+            // Сохраняем данные пользователя
+            if (response.user) {
+                localStorage.setItem('user', JSON.stringify(response.user));
+                
+                // Сохраняем remember me
+                if ($('#remember').is(':checked')) {
+                    localStorage.setItem('rememberedLogin', response.user.login);
+                } else {
+                    localStorage.removeItem('rememberedLogin');
+                }
+            }
+            
+            // Редирект через 1 секунду
             setTimeout(() => {
-                window.location.href = '../../../src/html/index.html';
+                // Проверяем, есть ли указанный URL для редиректа
+                if (response.redirectUrl) {
+                    window.location.href = response.redirectUrl;
+                } else {
+                    // Или используем путь по умолчанию
+                    window.location.href = '../../../src/html/index.html';
+                }
             }, 1000);
         } else {
             // Сервер вернул ошибку
-            this.showFormError(response.message || 'Ошибка при входе');
+            this.showFormError(response.message || 'Ошибка при входе. Проверьте логин и пароль.');
+            
+            // Сбрасываем пароль для безопасности
+            this.$passwordInput.val('');
+            this.$passwordInput.focus();
         }
     }
     
