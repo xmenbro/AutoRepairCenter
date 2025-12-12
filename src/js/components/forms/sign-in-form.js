@@ -198,7 +198,15 @@ class SignInForm {
             </div>
         `);
         
-        this.$form.prepend($errorDiv);
+        // Вставляем после контейнера формы или перед кнопкой отправки
+        this.$form.find('.submit-btn').before($errorDiv);
+        
+        // Автоматически скрываем через 5 секунд
+        setTimeout(() => {
+            $errorDiv.fadeOut(300, function() {
+                $(this).remove();
+            });
+        }, 5000);
     }
     
     // Показать сообщения
