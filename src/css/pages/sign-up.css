@@ -298,7 +298,8 @@ label[for="remember"]:hover {
 .visible-error {
   display: block !important;
 }
-#mail {
+#mail,
+#confirm-password {
   width: 90%;
   padding: 12px 10px;
   border: none;
@@ -308,13 +309,16 @@ label[for="remember"]:hover {
   transition: all 0.3s ease;
   text-align: left;
 }
-#mail:focus {
+#mail:focus,
+#confirm-password:focus {
   outline: none;
 }
-#mail:focus {
+#mail:focus,
+#confirm-password:focus {
   border-bottom-color: #0f57c9;
 }
-#mail::placeholder {
+#mail::placeholder,
+#confirm-password::placeholder {
   color: #b8b8b8;
   font-size: 14px;
 }
