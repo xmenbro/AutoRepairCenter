@@ -30,7 +30,6 @@ class ProductsFetcher {
             // Обновляем количество видимых карточек при изменении размера окна
             let resizeTimeout;
             $(window).on('resize', () => {
-                // Debounce для оптимизации производительности
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(() => {
                     this.updateCardsPerView();
@@ -100,7 +99,6 @@ class ProductsFetcher {
         if (data.status === 'success' && data.products) {
             this.products = data.products;
             this.renderProducts();
-            this.addEventHandlers();
         } else {
             this.showErrorMessage(data.message || 'Неверный формат данных');
         }
@@ -309,40 +307,6 @@ class ProductsFetcher {
                 </button>
             </div>
         `;
-    }
-
-    // Добавление обработчиков событий
-    addEventHandlers() {
-        this.$container.off('click', '.product-btn').on('click', '.product-btn', (e) => {
-            const $button = $(e.currentTarget);
-            this.handleProductButtonClick($button);
-        });
-    }
-
-    // Обработка клика по кнопке товара
-    handleProductButtonClick($button) {
-        const productId = $button.data('id');
-        const productTitle = $button.data('title');
-        const buttonText = $button.text();
-        
-        if (buttonText === "В корзину") {
-            this.addToCart(productId, productTitle, $button);
-        } else if (buttonText === "Уведомить") {
-            this.notifyWhenAvailable(productId, productTitle, $button);
-        }
-    }
-
-    // Добавление в корзину
-    addToCart(productId, productTitle, $button) {
-        console.log(`Товар добавлен в корзину: ID=${productId}, Название=${productTitle}`);
-        
-        // Временное состояние кнопки
-        $button.text('Добавлено').prop('disabled', true);
-        
-        // Возвращаем исходное состояние через 2 секунды
-        setTimeout(() => {
-            $button.text('В корзину').prop('disabled', false);
-        }, 2000);
     }
 
     // Уведомление о поступлении
