@@ -20,13 +20,47 @@
 }
 
 .products-grid {
-    .grid-template-columns(repeat(auto-fit, minmax(280px, 1fr)));
-    gap: @spacing-xxxl;
     flex: 1;
+    min-width: 0; // Позволяет сжиматься в flex контейнере
+    overflow: hidden;
+    max-width: 100%; // Предотвращаем переполнение
+    position: relative;
+    z-index: 1; // Ниже кнопок
+}
+
+// Обертка карусели
+.carousel-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: block;
+    padding: 0; // Убеждаемся, что нет padding, который может влиять на расчеты
+    box-sizing: border-box;
+    // Убеждаемся, что wrapper не выходит за границы
+    max-width: 100%;
+    // Предотвращаем переполнение карточек за границы
+    clip-path: inset(0);
+}
+
+// Контейнер карточек в карусели
+.carousel-cards {
+    display: flex;
+    will-change: transform;
+    gap: @spacing-xxxl;
+    flex-wrap: nowrap;
+    padding: 0;
+    margin: 0;
+    // Контейнер автоматически расширяется для размещения всех карточек
+    // Ширина определяется количеством карточек
 }
 
 .product-card {
     .product-card();
+    // Ширина устанавливается через JavaScript для точного расчета
+    // CSS используется как fallback
+    min-width: 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .product-card:hover {
@@ -99,14 +133,20 @@
     display: flex;
     align-items: center;
     width: 100%;
+    overflow: visible; // Разрешаем видимость для кнопок
 }
 
 .carousel-btn {
-    position: static;
-    transform: none; 
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     flex-shrink: 0; 
-    margin: 0 @spacing-gap;
+    z-index: @z-index-dots + 1;
     .carousel-button();
+    // Убеждаемся, что кнопки не сжимаются
+    min-width: @carousel-btn-size;
+    width: @carousel-btn-size;
+    height: @carousel-btn-size;
     
     &.prev {
         left: @spacing-xl;
@@ -114,6 +154,17 @@
     
     &.next {
         right: @spacing-xl;
+    }
+    
+    &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        
+        &:hover {
+            background: fade(@disabled-color, 50%);
+            transform: translateY(-50%);
+            box-shadow: none;
+        }
     }
 }
 
@@ -124,10 +175,7 @@
         padding: 0 @spacing-lg;
     }
     
-    .products-grid {
-        .grid-template-columns(repeat(auto-fit, minmax(250px, 1fr)));
-        gap: @spacing-xxl;
-    }
+    // Ширина карточек устанавливается через JavaScript
 });
 
 .breakpoint(992px; {
@@ -140,13 +188,13 @@
         margin-bottom: @spacing-xxxxl;
     }
     
-    .products-grid {
-        .grid-template-columns(repeat(auto-fit, minmax(220px, 1fr)));
-        gap: @spacing-xl;
+    .product-card {
+        // Ширина устанавливается через JavaScript
+        padding: @spacing-xl;
     }
     
-    .product-card {
-        padding: @spacing-xl;
+    .carousel-cards {
+        gap: @spacing-xl;
     }
 });
 
@@ -164,13 +212,13 @@
         margin-bottom: @spacing-xxxl;
     }
     
-    .products-grid {
-        .grid-template-columns(repeat(auto-fit, minmax(200px, 1fr)));
-        gap: @spacing-lg;
+    .product-card {
+        // Ширина устанавливается через JavaScript
+        padding: @spacing-lg;
     }
     
-    .product-card {
-        padding: @spacing-lg;
+    .carousel-cards {
+        gap: @spacing-lg;
     }
     
     .product-title {
@@ -186,7 +234,14 @@
     }
     
     .carousel-btn {
-        margin: 0 @spacing-md;
+        &.prev {
+            left: @spacing-md;
+        }
+        
+        &.next {
+            right: @spacing-md;
+        }
+        
         .icon-size(35px);
     }
 });
@@ -201,13 +256,13 @@
         margin-bottom: @spacing-xxl;
     }
     
-    .products-grid {
-        .grid-template-columns(1fr);
-        gap: @spacing-md;
+    .product-card {
+        // Ширина устанавливается через JavaScript
+        padding: @spacing-md;
     }
     
-    .product-card {
-        padding: @spacing-md;
+    .carousel-cards {
+        gap: @spacing-md;
     }
     
     .product-image {
@@ -219,7 +274,14 @@
     }
     
     .carousel-btn {
-        margin: 0 @spacing-sm;
+        &.prev {
+            left: @spacing-sm;
+        }
+        
+        &.next {
+            right: @spacing-sm;
+        }
+        
         .icon-size(30px);
     }
 });
