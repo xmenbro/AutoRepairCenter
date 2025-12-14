@@ -7,11 +7,15 @@ class ProductsFetcher {
         this.options = {
             containerSelector: '.products-grid',
             apiUrl: '../api/products.json',
+            cardsPerView: 4, // Количество видимых карточек
             ...options
         };
         
         this.$container = $(this.options.containerSelector);
+        this.$carouselWrapper = null;
         this.products = [];
+        this.currentIndex = 0;
+        this.cardsPerView = this.options.cardsPerView;
         
         this.init();
     }
@@ -19,10 +23,60 @@ class ProductsFetcher {
     // Инициализация
     init() {
         if (this.$container.length) {
+            this.setupCarouselButtons();
+            this.updateCardsPerView();
             this.loadProducts();
+            
+            // Обновляем количество видимых карточек при изменении размера окна
+            let resizeTimeout;
+            $(window).on('resize', () => {
+                // Debounce для оптимизации производительности
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    this.updateCardsPerView();
+                }, 150);
+            });
         } else {
             console.warn(`Контейнер ${this.options.containerSelector} не найден`);
         }
+    }
+    
+    // Определение количества видимых карточек в зависимости от размера экрана
+    updateCardsPerView() {
+        const width = $(window).width();
+        if (width <= 480) {
+            this.cardsPerView = 1;
+        } else if (width <= 768) {
+            this.cardsPerView = 2;
+        } else if (width <= 992) {
+            this.cardsPerView = 3;
+        } else {
+            this.cardsPerView = 4;
+        }
+        
+        // Обновляем ширину карточек при изменении размера экрана
+        if (this.$carouselWrapper && this.$carouselWrapper.length) {
+            // Используем requestAnimationFrame для правильного расчета после изменения размера
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    // Сбрасываем сохраненные значения для пересчета
+                    this.cardWidth = null;
+                    this.cardGap = null;
+                    this.wrapperWidth = null;
+                    this.setCardWidths();
+                    // Убеждаемся, что currentIndex не выходит за границы
+                    const maxIndex = Math.max(0, this.products.length - this.cardsPerView);
+                    this.currentIndex = Math.min(this.currentIndex, maxIndex);
+                    this.updateCarousel();
+                });
+            });
+        }
+    }
+    
+    // Настройка кнопок карусели
+    setupCarouselButtons() {
+        $('.carousel-btn.prev').on('click', () => this.prevSlide());
+        $('.carousel-btn.next').on('click', () => this.nextSlide());
     }
 
     // Загрузка товаров
@@ -73,10 +127,161 @@ class ProductsFetcher {
     renderProducts() {
         this.$container.empty();
         
+        // Создаем обертку для карусели
+        this.$carouselWrapper = $('<div class="carousel-wrapper"></div>');
+        this.$container.append(this.$carouselWrapper);
+        
+        // Создаем контейнер для карточек
+        const $cardsContainer = $('<div class="carousel-cards"></div>');
+        this.$carouselWrapper.append($cardsContainer);
+        
+        // Добавляем все карточки
         this.products.forEach(product => {
             const productCard = this.createProductCard(product);
-            this.$container.append(productCard);
+            $cardsContainer.append(productCard);
         });
+        
+        // Устанавливаем ширину карточек после добавления в DOM
+        // Используем requestAnimationFrame для обеспечения правильного расчета размеров после рендеринга
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                this.setCardWidths();
+                this.currentIndex = 0;
+                this.updateCarousel();
+            });
+        });
+    }
+    
+    // Переход к предыдущему слайду (на страницу назад)
+    prevSlide() {
+        if (this.currentIndex > 0) {
+            // Переходим на предыдущую страницу (cardsPerView карточек)
+            this.currentIndex = Math.max(0, this.currentIndex - this.cardsPerView);
+            this.updateCarousel();
+        }
+    }
+    
+    // Переход к следующему слайду (на страницу вперед)
+    nextSlide() {
+        const maxIndex = Math.max(0, this.products.length - this.cardsPerView);
+        if (this.currentIndex < maxIndex) {
+            // Переходим на следующую страницу (cardsPerView карточек)
+            this.currentIndex = Math.min(maxIndex, this.currentIndex + this.cardsPerView);
+            this.updateCarousel();
+        }
+    }
+    
+    // Установка ширины карточек на основе ширины wrapper
+    setCardWidths() {
+        if (!this.$carouselWrapper || this.products.length === 0) return;
+        
+        const $cardsContainer = this.$carouselWrapper.find('.carousel-cards');
+        const $cards = $cardsContainer.find('.product-card');
+        
+        if ($cards.length === 0) return;
+        
+        // Получаем реальную ширину wrapper (внутренняя ширина без padding)
+        const wrapperRect = this.$carouselWrapper[0].getBoundingClientRect();
+        const wrapperComputedStyle = window.getComputedStyle(this.$carouselWrapper[0]);
+        const wrapperPaddingLeft = parseFloat(wrapperComputedStyle.paddingLeft) || 0;
+        const wrapperPaddingRight = parseFloat(wrapperComputedStyle.paddingRight) || 0;
+        const wrapperWidth = wrapperRect.width - wrapperPaddingLeft - wrapperPaddingRight;
+        
+        // Получаем gap из вычисленных стилей (более надежный способ)
+        const cardsComputedStyle = window.getComputedStyle($cardsContainer[0]);
+        let gap = parseFloat(cardsComputedStyle.gap);
+        
+        // Если gap не поддерживается, используем column-gap
+        if (isNaN(gap) || gap === 0) {
+            gap = parseFloat(cardsComputedStyle.columnGap) || 25;
+        }
+        
+        // Вычисляем общую ширину всех gaps между карточками
+        const totalGaps = (this.cardsPerView - 1) * gap;
+        
+        // Вычисляем ширину одной карточки с точностью до 2 знаков после запятой
+        const cardWidth = (wrapperWidth - totalGaps) / this.cardsPerView;
+        
+        // Округляем до 2 знаков для точности, но используем полное значение
+        const cardWidthRounded = Math.floor(cardWidth * 100) / 100;
+        
+        // Устанавливаем ширину для всех карточек
+        $cards.css({
+            'width': `${cardWidthRounded}px`,
+            'flex': `0 0 ${cardWidthRounded}px`,
+            'min-width': `${cardWidthRounded}px`,
+            'max-width': `${cardWidthRounded}px`
+        });
+        
+        // Сохраняем ширину карточки и gap для использования в updateCarousel
+        this.cardWidth = cardWidthRounded;
+        this.cardGap = gap;
+        this.wrapperWidth = wrapperWidth;
+        
+        // Убеждаемся, что контейнер не переполняется и правильно отображается
+        $cardsContainer.css({
+            'width': 'auto',
+            'min-width': '100%'
+        });
+    }
+    
+    // Обновление состояния карусели
+    updateCarousel() {
+        if (!this.$carouselWrapper || this.products.length === 0) return;
+        
+        const $cardsContainer = this.$carouselWrapper.find('.carousel-cards');
+        
+        // Если карточки еще не были рассчитаны, пересчитываем
+        if (!this.cardWidth || !this.wrapperWidth || !this.cardGap) {
+            this.setCardWidths();
+        }
+        
+        // Убеждаемся, что currentIndex не выходит за границы
+        const maxIndex = Math.max(0, this.products.length - this.cardsPerView);
+        if (this.currentIndex > maxIndex) {
+            this.currentIndex = maxIndex;
+        }
+        if (this.currentIndex < 0) {
+            this.currentIndex = 0;
+        }
+        
+        // Вычисляем смещение на основе индекса текущей карточки
+        // Каждая карточка имеет ширину cardWidth + gap (кроме последней на странице)
+        // Смещаем на количество карточек от начала
+        const translateX = -(this.currentIndex * (this.cardWidth + this.cardGap));
+        
+        $cardsContainer.css({
+            'transform': `translateX(${translateX}px)`,
+            'transition': 'transform 0.5s ease-in-out'
+        });
+        
+        // Обновляем состояние кнопок
+        this.updateButtons();
+    }
+    
+    // Обновление состояния кнопок навигации
+    updateButtons() {
+        const $prevBtn = $('.carousel-btn.prev');
+        const $nextBtn = $('.carousel-btn.next');
+        
+        // Вычисляем максимальный индекс для последней полной страницы
+        const totalPages = Math.ceil(this.products.length / this.cardsPerView);
+        const lastPageStartIndex = (totalPages - 1) * this.cardsPerView;
+        const maxIndex = Math.max(0, lastPageStartIndex);
+        
+        // Предыдущая кнопка - отключаем если на первой странице
+        if (this.currentIndex === 0) {
+            $prevBtn.prop('disabled', true).addClass('disabled');
+        } else {
+            $prevBtn.prop('disabled', false).removeClass('disabled');
+        }
+        
+        // Следующая кнопка - отключаем если на последней странице
+        if (this.currentIndex >= maxIndex) {
+            $nextBtn.prop('disabled', true).addClass('disabled');
+        } else {
+            $nextBtn.prop('disabled', false).removeClass('disabled');
+        }
     }
 
     // Создание карточки товара
@@ -134,9 +339,6 @@ class ProductsFetcher {
         // Временное состояние кнопки
         $button.text('Добавлено').prop('disabled', true);
         
-        // Здесь можно добавить реальный AJAX запрос:
-        // $.post('/api/cart/add', { productId: productId })
-        
         // Возвращаем исходное состояние через 2 секунды
         setTimeout(() => {
             $button.text('В корзину').prop('disabled', false);
@@ -149,9 +351,6 @@ class ProductsFetcher {
         
         // Временное состояние кнопки
         $button.text('Запрос отправлен').prop('disabled', true);
-        
-        // Здесь можно добавить реальный AJAX запрос:
-        // $.post('/api/notify', { productId: productId })
     }
 
     // Получение данных о доступности
