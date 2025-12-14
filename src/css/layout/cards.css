@@ -19,6 +19,8 @@
   max-width: 100%;
   position: relative;
   z-index: 1;
+  padding: 0 50px;
+  box-sizing: border-box;
 }
 .carousel-wrapper {
   width: 100%;
@@ -173,10 +175,10 @@
   cursor: not-allowed;
 }
 .carousel-btn.prev {
-  left: 15px;
+  left: 12px;
 }
 .carousel-btn.next {
-  right: 15px;
+  right: 12px;
 }
 .carousel-btn.disabled {
   opacity: 0.5;
@@ -234,15 +236,18 @@
   .product-price {
     font-size: 16px;
   }
+  .products-grid {
+    padding: 0 20px;
+  }
   .carousel-btn {
     width: 35px;
     height: 35px;
   }
   .carousel-btn.prev {
-    left: 10px;
+    left: 8px;
   }
   .carousel-btn.next {
-    right: 10px;
+    right: 8px;
   }
 }
 @media (max-width: 480px) {
@@ -265,14 +270,17 @@
   .product-image img {
     max-height: 80px;
   }
+  .products-grid {
+    padding: 0 15px;
+  }
   .carousel-btn {
     width: 30px;
     height: 30px;
   }
   .carousel-btn.prev {
-    left: 8px;
+    left: 4px;
   }
   .carousel-btn.next {
-    right: 8px;
+    right: 4px;
   }
 }

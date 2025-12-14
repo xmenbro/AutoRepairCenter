@@ -26,6 +26,9 @@
     max-width: 100%; // Предотвращаем переполнение
     position: relative;
     z-index: 1; // Ниже кнопок
+    // Добавляем отступы для создания пространства между кнопками и карточками
+    padding: 0 @spacing-gap;
+    box-sizing: border-box;
 }
 
 // Обертка карусели
@@ -133,7 +136,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    overflow: visible; // Разрешаем видимость для кнопок
+    overflow: visible;
 }
 
 .carousel-btn {
@@ -149,11 +152,11 @@
     height: @carousel-btn-size;
     
     &.prev {
-        left: @spacing-xl;
+        left: @spacing-lg;
     }
     
     &.next {
-        right: @spacing-xl;
+        right: @spacing-lg;
     }
     
     &.disabled {
@@ -233,13 +236,17 @@
         font-size: @font-size-lg;
     }
     
+    .products-grid {
+        padding: 0 @spacing-xxl;
+    }
+    
     .carousel-btn {
         &.prev {
-            left: @spacing-md;
+            left: @spacing-sm;
         }
         
         &.next {
-            right: @spacing-md;
+            right: @spacing-sm;
         }
         
         .icon-size(35px);
@@ -273,13 +280,17 @@
         max-height: 80px;
     }
     
+    .products-grid {
+        padding: 0 @spacing-xl;
+    }
+    
     .carousel-btn {
         &.prev {
-            left: @spacing-sm;
+            left: @spacing-xs;
         }
         
         &.next {
-            right: @spacing-sm;
+            right: @spacing-xs;
         }
         
         .icon-size(30px);
