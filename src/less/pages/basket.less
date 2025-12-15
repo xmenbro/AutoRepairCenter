@@ -1,0 +1,823 @@
+//base
+@import "../base/mixins.less";
+@import "../base/variables.less";
+
+//layout
+@import "../layout/header.less";
+@import "../layout/navbar.less";
+@import "../layout/mobile-menu.less";
+@import "../layout/footer.less";
+
+//Основная секция
+.main {
+    padding: @spacing-xxxxl 100px;
+    min-height: @slider-height;
+}
+
+.main-container {
+    display: flex;
+    gap: @spacing-xxxxl;
+    max-width: @max-width-container;
+    margin: 0 auto;
+}
+
+// Левая часть с товарами
+.cart-left {
+    flex: 1;
+    max-width: 70%;
+}
+
+.section-title {
+    margin-bottom: @spacing-xxl;
+    font-size: @font-size-xxxl;
+    font-weight: bold;
+    .text-uppercase();
+    color: @black;
+}
+
+.select-all-wrapper {
+    display: flex;
+    align-items: center;
+    gap: @spacing-md;
+    margin-bottom: @spacing-xxl;
+
+    label {
+        font-size: @font-size-md;
+        cursor: pointer;
+    }
+}
+
+// Чекбоксы
+#choose-all,
+.card-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    appearance: none;
+    border: 2px solid @gray-light;
+    border-radius: 0;
+    position: relative;
+    flex-shrink: 0;
+    .transition-all();
+
+    &:checked {
+        background-color: @primary-color;
+        border-color: @primary-color;
+
+        &::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: @white;
+            font-size: @font-size-sm;
+            font-weight: bold;
+        }
+    }
+
+    &:hover {
+        border-color: @primary-color;
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+// Контейнер карточек
+.card-container {
+    display: flex;
+    .flex-column();
+    gap: 0;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    gap: @spacing-lg;
+    padding: @spacing-xxl 0;
+    border-bottom: 1px solid @gray-light;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.card-checkbox {
+    margin-right: @spacing-md;
+}
+
+.card-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.card-name {
+    font-size: @font-size-lg;
+    font-weight: normal;
+    flex: 1;
+    min-width: 200px;
+}
+
+// Контрол количества
+.control {
+    display: flex;
+    align-items: center;
+    background-color: @gray-light;
+    border-radius: @border-radius;
+    padding: @spacing-xs;
+    gap: @spacing-xs;
+    height: 40px;
+    min-width: 120px;
+
+    .delete-btn {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        padding: @spacing-md;
+        .flex-center();
+        .transition-all();
+        
+        .delete-icon {
+            width: 16px;
+            height: 16px;
+            filter: brightness(0);
+        }
+
+        &:hover {
+            opacity: @opacity-medium;
+        }
+
+        &:active {
+            transform: scale(0.9);
+        }
+    }
+
+    .count {
+        border: none;
+        background: transparent;
+        width: 40px;
+        text-align: center;
+        font-size: @font-size-md;
+        padding: 0;
+        
+        &:focus {
+            outline: none;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: @border-radius;
+        }
+
+        // Убираем стрелки у input type="number"
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        &[type=number] {
+            -moz-appearance: textfield;
+        }
+    }
+
+    .add-btn {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: @font-size-xl;
+        font-weight: bold;
+        padding: @spacing-xs;
+        width: 24px;
+        height: 24px;
+        .flex-center();
+        .transition-all();
+
+        &:hover {
+            opacity: @opacity-medium;
+        }
+
+        &:active {
+            transform: scale(0.9);
+        }
+    }
+}
+
+.delivery {
+    color: @gray-medium;
+    font-size: @font-size-md;
+    min-width: 100px;
+    text-align: left;
+}
+
+.price {
+    font-weight: bold;
+    font-size: @font-size-lg;
+    color: @black;
+    min-width: 130px;
+    text-align: right;
+}
+
+// Правая часть - заказ
+.order-container {
+    background-color: @gray-bg;
+    border-radius: @border-radius;
+    padding: @spacing-xxxl;
+    width: 400px;
+    flex-shrink: 0;
+    .flex-column();
+    gap: @spacing-xxl;
+    box-shadow: @box-shadow;
+}
+
+.order-title {
+    font-size: @font-size-xl;
+    font-weight: bold;
+    margin: 0;
+    color: @black;
+}
+
+.order-info {
+    .flex-column();
+    gap: @spacing-lg;
+}
+
+.order-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: @spacing-md;
+}
+
+.left-info-part {
+    font-size: @font-size-md;
+    color: @black;
+}
+
+.dotted-line {
+    flex: 1;
+    border-bottom: 1px dotted @gray-medium;
+    height: 1px;
+    min-width: 20px;
+}
+
+.right-info-part {
+    font-size: @font-size-md;
+    color: @black;
+    text-align: right;
+}
+
+// Промокод
+.promo-code-wrapper {
+    display: flex;
+    gap: @spacing-md;
+}
+
+.promo-code-input {
+    flex: 1;
+    padding: @spacing-lg;
+    border: 1px solid @gray-light;
+    border-radius: @border-radius;
+    font-size: @font-size-md;
+    
+    &:focus {
+        outline: none;
+        border-color: @primary-color;
+    }
+
+    &::placeholder {
+        color: @gray-medium;
+    }
+}
+
+.promo-code-btn {
+    padding: @spacing-lg @spacing-xxl;
+    .button-style(@primary-color, @white);
+    font-size: @font-size-md;
+    font-weight: bold;
+    .text-uppercase();
+    white-space: nowrap;
+}
+
+// Итого к оплате
+.cost-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: @spacing-xxl;
+    border-top: 1px solid @gray-light;
+}
+
+.left-cost-info-part {
+    font-size: @font-size-lg;
+    font-weight: bold;
+    color: @black;
+}
+
+.right-cost-info-part {
+    font-size: @font-size-lg;
+    font-weight: bold;
+    color: @black;
+}
+
+// Кнопка оформления
+.order-btn {
+    width: 100%;
+    padding: @spacing-xl;
+    .button-style(@primary-color, @white);
+    font-size: @font-size-lg;
+    font-weight: bold;
+    .text-uppercase();
+    border-radius: @border-radius;
+    
+    &:active {
+        transform: translateY(0);
+        box-shadow: none;
+    }
+}
+
+// Пустая корзина
+.empty-container {
+    .text-center();
+    max-width: @content-max-width;
+    margin: 0 auto;
+    padding: @spacing-xxxxl @spacing-xl;
+}
+
+.return-btn {
+    width: 15%;
+    padding: @spacing-lg;
+    .button-style();
+    font-size: @font-size-lg;
+    font-weight: 600;
+    margin-top: @spacing-md;
+    
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+}
+
+// Responsive
+// Планшеты и маленькие десктопы
+.breakpoint(1200px; {
+    .main {
+        padding: @spacing-xxxxl 50px;
+    }
+
+    .main-container {
+        gap: @spacing-xxl;
+    }
+
+    .order-container {
+        width: 350px;
+    }
+});
+
+// Планшеты (ландшафт)
+.breakpoint(1024px; {
+    .main {
+        padding: @spacing-xxxxl @spacing-xxxl;
+    }
+
+    .main-container {
+        flex-direction: column;
+        gap: @spacing-xxxl;
+    }
+
+    .cart-left {
+        max-width: 100%;
+    }
+
+    .order-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .card {
+        gap: @spacing-md;
+    }
+
+    .card-image {
+        width: 90px;
+        height: 90px;
+    }
+});
+
+// Планшеты (портрет) и большие мобильные
+.breakpoint(768px; {
+    .main {
+        padding: @spacing-xxl @spacing-xl;
+    }
+
+    .section-title {
+        font-size: @font-size-xxl;
+        margin-bottom: @spacing-lg;
+    }
+
+    .select-all-wrapper {
+        margin-bottom: @spacing-lg;
+    }
+
+    .order-container {
+        padding: @spacing-xxl;
+    }
+
+    .card {
+        flex-wrap: wrap;
+        padding: @spacing-lg 0;
+        gap: @spacing-md;
+        
+        .card-checkbox {
+            order: 1;
+            margin-right: @spacing-sm;
+        }
+
+        .card-image {
+            order: 2;
+            width: 80px;
+            height: 80px;
+        }
+
+        .card-name {
+            order: 3;
+            flex: 1 1 calc(100% - 120px);
+            min-width: auto;
+            margin-right: @spacing-md;
+        }
+
+        .control {
+            order: 4;
+            margin: @spacing-sm 0;
+        }
+
+        .delivery {
+            order: 5;
+            flex: 1;
+            min-width: auto;
+            text-align: left;
+            margin-left: @spacing-xl;
+        }
+
+        .price {
+            order: 6;
+            flex: 1;
+            min-width: auto;
+            text-align: right;
+        }
+    }
+
+    .promo-code-wrapper {
+        flex-direction: column;
+        
+        .promo-code-btn {
+            width: 100%;
+        }
+    }
+
+    .return-btn {
+        width: 30%;
+        font-size: @font-size-md;
+    }
+});
+
+// Средние мобильные устройства
+.breakpoint(575px; {
+    .main {
+        padding: @spacing-lg @spacing-md;
+    }
+
+    .section-title {
+        font-size: @font-size-xl;
+        margin-bottom: @spacing-md;
+    }
+
+    .main-container {
+        gap: @spacing-xxl;
+    }
+
+    .card {
+        padding: @spacing-md 0;
+        border-bottom: 1px solid @gray-light;
+        
+        .card-image {
+            width: 70px;
+            height: 70px;
+        }
+
+        .card-name {
+            font-size: @font-size-md;
+            line-height: 1.4;
+            flex: 1 1 calc(100% - 100px);
+        }
+
+        .control {
+            min-width: 100px;
+            height: 36px;
+            
+            .delete-icon {
+                width: 14px;
+                height: 14px;
+            }
+            
+            .count {
+                width: 35px;
+                font-size: @font-size-sm;
+            }
+            
+            .add-btn {
+                font-size: @font-size-lg;
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        .delivery {
+            font-size: @font-size-sm;
+            margin-left: 0;
+            flex: 1 1 50%;
+        }
+
+        .price {
+            font-size: @font-size-md;
+            flex: 1 1 50%;
+        }
+    }
+
+    .order-container {
+        padding: @spacing-lg;
+        gap: @spacing-lg;
+    }
+
+    .order-title {
+        font-size: @font-size-lg;
+    }
+
+    .order-row {
+        grid-template-columns: auto 1fr auto;
+        gap: @spacing-sm;
+    }
+
+    .left-info-part,
+    .right-info-part {
+        font-size: @font-size-sm;
+    }
+
+    .dotted-line {
+        min-width: 10px;
+    }
+
+    .promo-code-input {
+        padding: @spacing-md;
+        font-size: @font-size-sm;
+    }
+
+    .promo-code-btn {
+        padding: @spacing-md @spacing-lg;
+        font-size: @font-size-sm;
+    }
+
+    .cost-info {
+        padding-top: @spacing-lg;
+    }
+
+    .left-cost-info-part,
+    .right-cost-info-part {
+        font-size: @font-size-md;
+    }
+
+    .order-btn {
+        padding: @spacing-lg;
+        font-size: @font-size-md;
+    }
+
+    .return-btn {
+        width: 40%;
+        font-size: @font-size-md;
+        padding: @spacing-md;
+    }
+});
+
+// Маленькие мобильные устройства
+.breakpoint(480px; {
+    .main {
+        padding: @spacing-md @spacing-sm;
+    }
+
+    .section-title {
+        font-size: @font-size-lg;
+    }
+
+    .select-all-wrapper {
+        gap: @spacing-sm;
+        
+        label {
+            font-size: @font-size-sm;
+        }
+    }
+
+    #choose-all,
+    .card-checkbox {
+        width: 16px;
+        height: 16px;
+    }
+
+    .card {
+        position: relative;
+        padding-left: @spacing-md;
+        
+        .card-checkbox {
+            position: absolute;
+            left: 0;
+            top: @spacing-md;
+        }
+
+        .card-image {
+            width: 60px;
+            height: 60px;
+            margin-left: @spacing-lg;
+        }
+
+        .card-name {
+            font-size: @font-size-sm;
+            flex: 1 1 100%;
+            margin-left: 0;
+            padding-right: @spacing-sm;
+        }
+
+        .control {
+            order: 4;
+            width: 100%;
+            justify-content: center;
+            margin: @spacing-sm 0;
+        }
+
+        .delivery {
+            order: 5;
+            flex: 1 1 100%;
+            margin-left: @spacing-lg;
+            font-size: @font-size-xs;
+            padding-top: @spacing-xs;
+        }
+
+        .price {
+            order: 6;
+            flex: 1 1 100%;
+            margin-left: @spacing-lg;
+            text-align: left;
+            font-size: @font-size-md;
+            padding-top: @spacing-xs;
+            font-weight: bold;
+        }
+    }
+
+    .order-container {
+        padding: @spacing-md;
+        gap: @spacing-md;
+    }
+
+    .order-title {
+        font-size: @font-size-md;
+    }
+
+    .order-info {
+        gap: @spacing-md;
+    }
+
+    .order-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: @spacing-xs;
+    }
+
+    .dotted-line {
+        display: none;
+    }
+
+    .left-info-part,
+    .right-info-part {
+        font-size: @font-size-xs;
+    }
+
+    .promo-code-wrapper {
+        .promo-code-input {
+            font-size: @font-size-xs;
+            padding: @spacing-sm;
+        }
+
+        .promo-code-btn {
+            font-size: @font-size-xs;
+            padding: @spacing-sm @spacing-md;
+            white-space: normal;
+        }
+    }
+
+    .left-cost-info-part,
+    .right-cost-info-part {
+        font-size: @font-size-sm;
+    }
+
+    .order-btn {
+        padding: @spacing-md;
+        font-size: @font-size-sm;
+    }
+});
+
+// Очень маленькие мобильные устройства
+.breakpoint(375px; {
+    .section-title {
+        font-size: @font-size-md;
+    }
+
+    .card {
+        .card-image {
+            width: 50px;
+            height: 50px;
+        }
+
+        .card-name {
+            font-size: @font-size-xs;
+            line-height: 1.3;
+        }
+
+        .control {
+            min-width: 90px;
+            height: 32px;
+            
+            .delete-icon {
+                width: 12px;
+                height: 12px;
+            }
+            
+            .count {
+                width: 30px;
+                font-size: @font-size-xs;
+            }
+            
+            .add-btn {
+                font-size: @font-size-md;
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        .delivery,
+        .price {
+            font-size: @font-size-xs;
+        }
+    }
+
+    .return-btn {
+        width: 60%;
+        font-size: @font-size-sm;
+    }
+
+    // Увеличиваем область нажатия для кнопок на маленьких экранах
+    .control .delete-btn,
+    .control .add-btn {
+        min-width: 44px;
+        min-height: 44px;
+        padding: @spacing-sm;
+    }
+
+    .order-btn,
+    .promo-code-btn {
+        min-height: 44px;
+    }
+});
+
+// Ландшафтная ориентация мобильных устройств
+@media (max-width: 768px) and (orientation: landscape) {
+    .main {
+        padding: @spacing-lg @spacing-md;
+    }
+
+    .main-container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .cart-left {
+        max-width: 60%;
+        flex: 1;
+    }
+
+    .order-container {
+        width: 35%;
+        max-width: 400px;
+        position: sticky;
+        top: @spacing-xxl;
+        align-self: flex-start;
+    }
+
+    .card {
+        .card-image {
+            width: 60px;
+            height: 60px;
+        }
+    }
+}
