@@ -50,7 +50,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="menu-item"><a href="#">Главная</a></li>
+                <li class="menu-item"><a href="../index.html">Главная</a></li>
                 <li class="menu-item"><a href="#">Запчасти</a></li>
                 <li class="menu-item"><a href="#">Автотехцентр</a></li>
                 <li class="menu-item"><a href="#">Детейлинг</a></li>
@@ -246,9 +246,77 @@
 
     <!-- Основной раздел с корзиной -->
     <main class="main">
-        <div class="main-container">
+        <!-- <div class="empty-container">
             <h2 class="section-title">В корзине нет товаров</h2>
             <button class="return-btn"><a href="../index.html">К покупкам</a></button>
+        </div> -->
+        <div class="main-container">
+            <div class="cart-left">
+                <h2 class="section-title">КОРЗИНА</h2>
+                <div class="select-all-wrapper">
+                    <input type="checkbox" name="choose-all" id="choose-all">
+                    <label for="choose-all">Выбрать всё</label>
+                </div>
+                <div class="card-container">
+                    <div class="card">
+                        <input type="checkbox" name="choose" id="choose-1" class="card-checkbox" checked>
+                        <img src="../../images/cards/battery.webp" alt="Аккумулятор VARTA" class="card-image">
+                        <span class="card-name">Аккумулятор VARTA</span>
+                        <div class="control">
+                            <button class="delete-btn" type="button">
+                                <img src="../../images/icons/trash.png" alt="Удалить" class="delete-icon">
+                            </button>
+                            <input type="number" class="count" value="1" min="1">
+                            <button class="add-btn" type="button">+</button>
+                        </div>
+                        <span class="delivery">1-3 декабря</span>
+                        <span class="price">10 990 руб.</span>
+                    </div>
+                    <div class="card">
+                        <input type="checkbox" name="choose" id="choose-2" class="card-checkbox">
+                        <img src="../../images/cards/damper.webp" alt="Амортизатор KAYABA" class="card-image">
+                        <span class="card-name">Амортизатор KAYABA</span>
+                        <div class="control">
+                            <button class="delete-btn" type="button">
+                                <img src="../../images/icons/trash.png" alt="Удалить" class="delete-icon">
+                            </button>
+                            <input type="number" class="count" value="1" min="1">
+                            <button class="add-btn" type="button">+</button>
+                        </div>
+                        <span class="delivery">4 декабря</span>
+                        <span class="price">6 500 руб.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="order-container">
+                <h5 class="order-title">Ваш заказ</h5>
+                <div class="order-info">
+                    <div class="order-row">
+                        <span class="left-info-part">Всего</span>
+                        <span class="dotted-line"></span>
+                        <span class="right-info-part">1 шт.</span>
+                    </div>
+                    <div class="order-row">
+                        <span class="left-info-part">Стоимость товаров в заказе</span>
+                        <span class="dotted-line"></span>
+                        <span class="right-info-part">10 990 руб.</span>
+                    </div>
+                    <div class="order-row">
+                        <span class="left-info-part">Дата доставки</span>
+                        <span class="dotted-line"></span>
+                        <span class="right-info-part">1-3 декабря</span>
+                    </div>
+                </div>
+                <div class="promo-code-wrapper">
+                    <input type="text" class="promo-code-input" placeholder="Промокод или купон">
+                    <button class="promo-code-btn" type="button">ПРИМЕНИТЬ</button>
+                </div>
+                <div class="cost-info">
+                    <span class="left-cost-info-part">Итого к оплате</span>
+                    <span class="right-cost-info-part">10 990 руб.</span>
+                </div>
+                <button class="order-btn">ПЕРЕЙТИ К ОФОРМЛЕНИЮ</button>
+            </div>
         </div>
     </main>
     
