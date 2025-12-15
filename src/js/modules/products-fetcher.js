@@ -139,6 +139,9 @@ class ProductsFetcher {
             $cardsContainer.append(productCard);
         });
         
+        // Добавляем обработчики событий для кнопок добавления в корзину
+        this.setupCartButtons();
+        
         // Устанавливаем ширину карточек после добавления в DOM
         // Используем requestAnimationFrame для обеспечения правильного расчета размеров после рендеринга
         requestAnimationFrame(() => {
@@ -148,6 +151,122 @@ class ProductsFetcher {
                 this.updateCarousel();
             });
         });
+    }
+    
+    // Настройка обработчиков кнопок корзины
+    setupCartButtons() {
+        const self = this;
+        
+        // Обработчик для кнопки "В корзину"
+        $(document).off('click', '.product-btn:not(.btn-out-of-stock)').on('click', '.product-btn:not(.btn-out-of-stock)', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const $button = $(this);
+            const productId = parseInt($button.data('id'));
+            const product = self.getProductById(productId);
+            
+            if (!product) {
+                console.error('Товар не найден');
+                return;
+            }
+            
+            // Проверяем, что корзина доступна
+            if (typeof window.cart === 'undefined') {
+                console.error('Модуль корзины не загружен');
+                return;
+            }
+            
+            // Блокируем кнопку во время выполнения запроса
+            const originalText = $button.text();
+            $button.prop('disabled', true).text('Добавление...');
+            
+            // Добавляем товар в корзину через AJAX
+            window.cart.addItem(product, 1)
+                .done(function(response) {
+                    if (response.status === 'success') {
+                        // Показываем сообщение об успехе
+                        $button.text('Добавлено!');
+                        setTimeout(() => {
+                            $button.text(originalText).prop('disabled', false);
+                        }, 1500);
+                        
+                        // Можно добавить уведомление или обновление счетчика корзины
+                        self.showCartNotification('Товар добавлен в корзину');
+                    }
+                })
+                .fail(function(error) {
+                    console.error('Ошибка при добавлении в корзину:', error);
+                    $button.text('Ошибка').prop('disabled', false);
+                    setTimeout(() => {
+                        $button.text(originalText);
+                    }, 2000);
+                    self.showCartNotification('Ошибка при добавлении товара', 'error');
+                });
+        });
+        
+        // Обработчик для кнопки "Уведомить" (товар не в наличии)
+        $(document).off('click', '.product-btn.btn-out-of-stock').on('click', '.product-btn.btn-out-of-stock', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const $button = $(this);
+            const productId = parseInt($button.data('id'));
+            const productTitle = $button.data('title');
+            
+            self.notifyWhenAvailable(productId, productTitle, $button);
+        });
+    }
+    
+    // Показать уведомление о действии с корзиной
+    showCartNotification(message, type = 'success') {
+        // Удаляем предыдущее уведомление если есть
+        $('.cart-notification').remove();
+        
+        const bgColor = type === 'success' ? '#27ae60' : '#e74c3c';
+        const $notification = $(`
+            <div class="cart-notification" style="
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background-color: ${bgColor};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 4px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+            ">
+                ${message}
+            </div>
+        `);
+        
+        // Добавляем стили для анимации если их еще нет
+        if (!$('#cart-notification-styles').length) {
+            $('head').append(`
+                <style id="cart-notification-styles">
+                    @keyframes slideIn {
+                        from {
+                            transform: translateX(400px);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
+                    }
+                </style>
+            `);
+        }
+        
+        $('body').append($notification);
+        
+        // Удаляем уведомление через 3 секунды
+        setTimeout(() => {
+            $notification.fadeOut(300, function() {
+                $(this).remove();
+            });
+        }, 3000);
     }
     
     // Переход к предыдущему слайду (на страницу назад)
@@ -314,7 +433,12 @@ class ProductsFetcher {
         console.log(`Запрос на уведомление: ID=${productId}, Название=${productTitle}`);
         
         // Временное состояние кнопки
+        const originalText = $button.text();
         $button.text('Запрос отправлен').prop('disabled', true);
+        
+        // Можно добавить AJAX запрос для отправки уведомления
+        // Здесь просто показываем сообщение
+        this.showCartNotification('Вы будете уведомлены о поступлении товара');
     }
 
     // Получение данных о доступности
