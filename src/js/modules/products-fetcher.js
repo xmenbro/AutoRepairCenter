@@ -8,6 +8,7 @@ class ProductsFetcher {
             containerSelector: '.products-grid',
             apiUrl: '../api/products.json',
             cardsPerView: 4, // Количество видимых карточек
+            imageBasePath: '../', // Базовый путь к изображениям
             ...options
         };
         
@@ -401,15 +402,36 @@ class ProductsFetcher {
         }
     }
 
+    // Построение корректного пути к изображению
+    resolveImageUrl(imagePath) {
+        if (!imagePath) return '';
+        // Абсолютные и внешние ссылки не трогаем
+        if (imagePath.startsWith('http') || imagePath.startsWith('/')) {
+            return imagePath;
+        }
+
+        let normalizedPath = imagePath;
+
+        // Убираем ведущие ../ или ./ чтобы можно было добавить базовый путь
+        if (normalizedPath.startsWith('../')) {
+            normalizedPath = normalizedPath.substring(3);
+        } else if (normalizedPath.startsWith('./')) {
+            normalizedPath = normalizedPath.substring(2);
+        }
+
+        return `${this.options.imageBasePath}${normalizedPath}`;
+    }
+
     // Создание карточки товара
     createProductCard(product) {
         const availabilityData = this.getAvailabilityData(product.availability);
         const formattedPrice = this.formatPrice(product.price);
+        const imageUrl = this.resolveImageUrl(product.image);
         
         return `
             <div class="product-card" data-id="${product.id}">
                 <div class="product-image">
-                    <img src="${product.image}" alt="${product.title}" loading="lazy">
+                    <img src="${imageUrl}" alt="${product.title}" loading="lazy">
                 </div>
                 <h3 class="product-title">${product.title}</h3>
                 <div class="product-brand">${product.brand}</div>
