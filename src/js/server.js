@@ -70,6 +70,26 @@ http.createServer(function(request, response) {
                         message = "Заполните все обязательные поля: логин, пароль и email";
                     }
                     
+                } else if (pathname === '/order') {
+                    // Валидация для оформления заказа
+                    isValid = data.customerName && data.phone && data.email && 
+                              data.address && data.deliveryMethod && data.paymentMethod;
+                    
+                    if (isValid) {
+                        message = "Заказ успешно оформлен";
+                        user = {
+                            customerName: data.customerName,
+                            phone: data.phone,
+                            email: data.email,
+                            address: data.address,
+                            deliveryMethod: data.deliveryMethod,
+                            paymentMethod: data.paymentMethod,
+                            comments: data.comments || ''
+                        };
+                    } else {
+                        message = "Заполните все обязательные поля: ФИО, телефон, email, адрес, способ доставки и оплаты";
+                    }
+                    
                 } else {
                     // Неизвестный эндпоинт
                     response.writeHead(404, { 'Content-Type': 'application/json' });
@@ -85,12 +105,20 @@ http.createServer(function(request, response) {
                     'Access-Control-Allow-Origin': '*'
                 });
                 
-                response.end(JSON.stringify({
+                const responseData = {
                     success: isValid,
                     message: message,
-                    user: user,
                     timestamp: new Date().toISOString()
-                }));
+                };
+                
+                // Добавляем user или order в зависимости от эндпоинта
+                if (pathname === '/order') {
+                    responseData.order = user;
+                } else {
+                    responseData.user = user;
+                }
+                
+                response.end(JSON.stringify(responseData));
                 
             } catch (error) {
                 console.error("Ошибка парсинга JSON:", error);
@@ -113,10 +141,11 @@ http.createServer(function(request, response) {
             'Access-Control-Allow-Origin': '*'
         });
         response.end(JSON.stringify({
-            message: "Сервер аутентификации работает",
+            message: "Сервер работает",
             endpoints: {
                 login: "POST /auth или POST /sign-in",
-                register: "POST /register или POST /sign-up"
+                register: "POST /register или POST /sign-up",
+                order: "POST /order"
             },
             status: "online"
         }));
@@ -140,9 +169,12 @@ http.createServer(function(request, response) {
     console.log("   или POST http://localhost:3000/sign-in");
     console.log("2. Для регистрации: POST http://localhost:3000/register");
     console.log("   или POST http://localhost:3000/sign-up");
-    console.log("3. Для проверки работы: GET http://localhost:3000");
+    console.log("3. Для оформления заказа: POST http://localhost:3000/order");
+    console.log("4. Для проверки работы: GET http://localhost:3000");
     console.log("\nПример данных для регистрации:");
     console.log('{ "login": "user123", "password": "pass123", "email": "user@example.com" }');
     console.log("\nПример данных для входа:");
     console.log('{ "login": "user123", "password": "pass123" }');
+    console.log("\nПример данных для заказа:");
+    console.log('{ "customerName": "Иванов Иван Иванович", "phone": "+79991234567", "email": "user@example.com", "address": "г. Рязань, ул. Примерная, д. 1", "deliveryMethod": "courier", "paymentMethod": "cash", "comments": "Комментарий" }');
 });
