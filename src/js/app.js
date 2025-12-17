@@ -3,12 +3,6 @@
  * @class App
  */
 
-// Подключаем jQuery и наши модули
-import './modules/validator.js';
-import './components/forms/sign-in-form.js';
-import './components/forms/sign-up-form.js';
-import './modules/fetch-products.js';
-
 // Общая инициализация приложения
 class App {
     constructor() {
