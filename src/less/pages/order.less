@@ -1,0 +1,134 @@
+@import url("../base/variables.less");
+@import url("../base/mixins.less");
+@import url("sign-in.less");
+
+// Заголовок формы
+.form-title {
+    .text-center();
+    font-size: @font-size-xxl;
+    color: @gray-dark;
+    margin-bottom: @spacing-xxl;
+    font-weight: 600;
+}
+
+// Стили для полей формы заказа
+#customer-name,
+#phone,
+#email,
+#address {
+    width: 90%;
+    padding: @spacing-lg @spacing-md;
+    .input-border-bottom();
+    font-size: @font-size-lg;
+    background: transparent;
+    .transition-all();
+    text-align: left;
+    
+    &:focus {
+        border-bottom-color: @primary-color;
+    }
+    
+    &::placeholder {
+        color: @gray-light;
+        font-size: @font-size-md;
+    }
+}
+
+// Стили для select элементов
+#delivery-method,
+#payment-method {
+    width: 90%;
+    padding: @spacing-lg @spacing-md;
+    .input-border-bottom();
+    font-size: @font-size-lg;
+    background: transparent;
+    .transition-all();
+    text-align: left;
+    border: none;
+    border-bottom: 2px solid @gray-light;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right @spacing-md center;
+    padding-right: @spacing-xxxxl;
+    
+    &:focus {
+        outline: none;
+        border-bottom-color: @primary-color;
+    }
+    
+    option {
+        background: @white;
+        color: @gray-dark;
+        padding: @spacing-md;
+    }
+}
+
+// Стили для textarea
+#comments {
+    width: 90%;
+    padding: @spacing-lg @spacing-md;
+    border: 2px solid @gray-light;
+    border-radius: @border-radius;
+    font-size: @font-size-lg;
+    background: transparent;
+    .transition-all();
+    text-align: left;
+    font-family: Arial, sans-serif;
+    resize: vertical;
+    min-height: 80px;
+    
+    &:focus {
+        outline: none;
+        border-color: @primary-color;
+    }
+    
+    &::placeholder {
+        color: @gray-light;
+        font-size: @font-size-md;
+    }
+}
+
+// Адаптивные стили для формы заказа
+.breakpoint(768px, {
+    .form-title {
+        font-size: @font-size-xl;
+    }
+    
+    #customer-name,
+    #phone,
+    #email,
+    #address,
+    #delivery-method,
+    #payment-method,
+    #comments {
+        width: 95%;
+        font-size: @font-size-md;
+    }
+});
+
+.breakpoint(390px, {
+    .container {
+        width: @sign-in-container-width - 50px;
+        padding: @spacing-xxl;
+    }
+    
+    .form-title {
+        font-size: @font-size-lg;
+        margin-bottom: @spacing-lg;
+    }
+    
+    #customer-name,
+    #phone,
+    #email,
+    #address,
+    #delivery-method,
+    #payment-method,
+    #comments {
+        width: 100%;
+        font-size: @font-size-sm;
+        padding: @spacing-md;
+    }
+});
+

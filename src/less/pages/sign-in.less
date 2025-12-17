@@ -157,3 +157,177 @@ label[for="remember"] {
         width: @sign-in-container-width - 100px;
     }
 });
+
+/* Стили для ошибок валидации */
+.form-group {
+    position: relative;
+    margin-bottom: @spacing-xxxxl;
+    
+    &.error {
+        input {
+            border-color: @error-color;
+            border-width: 2px;
+        }
+
+        label {
+            color: @error-color;
+        }
+    }
+    
+    &.success {
+        input {
+            border-color: @success-color;
+            border-width: 2px;
+        }
+
+        label {
+            color: @success-color;
+        }
+    }
+    
+    &.warning {
+        input {
+            border-color: @warning-color;
+            border-width: 2px;
+        }
+
+        label {
+            color: @warning-color;
+        }
+    }
+}
+
+.error-messages {
+    margin-top: @spacing-sm;
+    .flex-column();
+}
+
+.error-message {
+    display: block;
+    color: @error-color;
+    font-size: @font-size-sm;
+    margin-top: @spacing-xs;
+    .transition-all();
+}
+
+// Сообщения формы
+.form-error {
+    background-color: @error-bg;
+    border: 1px solid @error-border;
+    border-radius: @border-radius;
+    color: @error-text;
+    padding: @spacing-xl @spacing-xxxl;
+    margin-bottom: @spacing-xxl;
+    .text-center();
+    .transition-all();
+}
+
+.form-success {
+    background-color: @success-bg;
+    border: 1px solid @success-border;
+    border-radius: @border-radius;
+    color: @success-text;
+    padding: @spacing-xl @spacing-xxxl;
+    margin-bottom: @spacing-xxl;
+    .text-center();
+    .transition-all();
+}
+
+// Стили для кнопки отправки
+.submit-btn {
+    &:disabled {
+        opacity: @opacity-medium;
+        cursor: not-allowed;
+        .button-disabled();
+    }
+    
+    // Добавляем индикатор загрузки
+    &.loading {
+        position: relative;
+        color: transparent;
+        
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid @white;
+            border-top-color: transparent;
+            border-radius: @border-radius-round;
+            animation: spin 1s linear infinite;
+        }
+    }
+}
+
+// Анимации
+@keyframes spin {
+    0% { 
+        transform: translate(-50%, -50%) rotate(0deg); 
+    }
+    100% { 
+        transform: translate(-50%, -50%) rotate(360deg); 
+    }
+}
+
+// Дополнительные классы для состояний
+.field-required {
+    label {
+        &::after {
+            content: '*';
+            color: @error-color;
+            margin-left: @spacing-xs;
+        }
+    }
+}
+
+// Стили для индикатора валидации в реальном времени
+.validation-indicator {
+    position: absolute;
+    right: @spacing-md;
+    top: 50%;
+    transform: translateY(-50%);
+    .icon-size();
+    
+    &.valid {
+        &::after {
+            content: '✓';
+            color: @success-color;
+        }
+    }
+    
+    &.invalid {
+        &::after {
+            content: '✗';
+            color: @error-color;
+        }
+    }
+}
+
+// Адаптивные стили
+.breakpoint(768px; {
+    .form-group {
+        margin-bottom: @spacing-xxxl;
+    }
+    
+    .error-message {
+        font-size: @font-size-xs;
+    }
+    
+    .form-error,
+    .form-success {
+        padding: @spacing-lg @spacing-xxl;
+        margin-bottom: @spacing-xxl;
+    }
+});
+
+// Утилитарные классы для быстрого использования
+.hidden-error {
+    display: none !important;
+}
+
+.visible-error {
+    display: block !important;
+}

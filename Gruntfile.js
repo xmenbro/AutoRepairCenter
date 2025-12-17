@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
     
     grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
         // Замена путей в CSS ссылках
         'string-replace': {
             dist: {
