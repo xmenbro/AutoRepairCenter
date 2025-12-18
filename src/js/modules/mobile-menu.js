@@ -110,11 +110,14 @@ class MobileMenu {
             }
             
             if (query.length > 0) {
+                // Подсвечиваем совпадения в меню
+                this.highlightMenuItems(query);
                 // Debounce: выполняем поиск через 300ms после последнего ввода
                 this.searchTimeout = setTimeout(() => {
                     this.performSearch(query);
                 }, 300);
             } else {
+                this.removeHighlights();
                 this.hideSearchResults();
             }
         });
@@ -145,6 +148,14 @@ class MobileMenu {
                 this.closeMenu();
             }
         });
+        
+        // Обработка кликов на элементы списка для навигации
+        $(document).on('click', '.coll-list-element:not(:first-child)', (e) => {
+            e.preventDefault();
+            const $element = $(e.currentTarget);
+            const text = $element.text().trim();
+            this.navigateToPage(text);
+        });
     }
     
     /**
@@ -162,6 +173,7 @@ class MobileMenu {
         this.menu.removeClass('open').fadeOut(300);
         $('body').css('overflow', '');
         this.searchInput.val('');
+        this.removeHighlights();
         this.hideSearchResults();
     }
     
@@ -324,6 +336,162 @@ class MobileMenu {
     hideSearchResults() {
         this.searchResults.fadeOut(200);
         this.showContentElements();
+    }
+    
+    /**
+     * Подсветка элементов меню при поиске
+     * @param {string} query - Поисковый запрос
+     */
+    highlightMenuItems(query) {
+        const lowerQuery = query.toLowerCase();
+        
+        // Подсвечиваем кнопки в левом меню
+        this.listButtons.each((index, button) => {
+            const $button = $(button);
+            const text = $button.text().toLowerCase();
+            if (text.includes(lowerQuery)) {
+                $button.addClass('search-highlight');
+            } else {
+                $button.removeClass('search-highlight');
+            }
+        });
+        
+        // Подсвечиваем элементы в контенте
+        this.contentElements.find('.coll-list-element').each((index, element) => {
+            const $element = $(element);
+            const text = $element.text().toLowerCase();
+            if (text.includes(lowerQuery)) {
+                $element.addClass('search-highlight');
+            } else {
+                $element.removeClass('search-highlight');
+            }
+        });
+    }
+    
+    /**
+     * Удаление подсветки
+     */
+    removeHighlights() {
+        this.listButtons.removeClass('search-highlight');
+        this.contentElements.find('.coll-list-element').removeClass('search-highlight');
+    }
+    
+    /**
+     * Навигация на страницу по тексту элемента
+     * @param {string} text - Текст элемента
+     */
+    navigateToPage(text) {
+        // Определяем базовый путь в зависимости от текущей страницы
+        const isInPages = window.location.pathname.includes('/pages/');
+        const basePath = isInPages ? '' : 'pages/';
+        
+        // Маппинг текста на страницы
+        const pageMapping = {
+            // Запчасти
+            'двигатель': 'parts.html',
+            'поршни': 'parts.html',
+            'клапаны': 'parts.html',
+            'ремни': 'parts.html',
+            'генераторы': 'parts.html',
+            'стартеры': 'parts.html',
+            'трансмиссия': 'parts.html',
+            'коробка передач': 'parts.html',
+            'сцепление': 'parts.html',
+            'валы': 'parts.html',
+            'дифференциал': 'parts.html',
+            'подшипники': 'parts.html',
+            'тормозная система': 'parts.html',
+            'колодки': 'parts.html',
+            'диски': 'parts.html',
+            'шланги': 'parts.html',
+            'суппорта': 'parts.html',
+            'цилиндры': 'parts.html',
+            
+            // Плановое ТО и автотехцентр
+            'плановое то': 'auto-service.html',
+            'замена масла': 'auto-service.html',
+            'диагностика ходовой': 'auto-service.html',
+            'замена свечей': 'auto-service.html',
+            'сход-развал': 'auto-service.html',
+            'воздушный фильтр': 'auto-service.html',
+            'чип-тюнинг': 'auto-service.html',
+            'масло в кпп': 'auto-service.html',
+            'проверка жидкостей': 'auto-service.html',
+            'диагностика тормозов': 'auto-service.html',
+            'тормозная жидкость': 'auto-service.html',
+            'ремень грм': 'auto-service.html',
+            'кондиционер': 'auto-service.html',
+            'электроника': 'auto-service.html',
+            'аккумулятор': 'auto-service.html',
+            'топливный фильтр': 'auto-service.html',
+            'чистка инжектора': 'auto-service.html',
+            'система охлаждения': 'auto-service.html',
+            'диагностика': 'auto-service.html',
+            
+            // Кузовной ремонт
+            'кузовной ремонт': 'auto-service.html',
+            'выравнивание вмятин': 'auto-service.html',
+            'ремонт бамперов': 'auto-service.html',
+            'геометрия кузова': 'auto-service.html',
+            'рихтовка': 'auto-service.html',
+            'замена порогов': 'auto-service.html',
+            'ремонт арок': 'auto-service.html',
+            'локальная покраска': 'detailing.html',
+            'полная покраска': 'detailing.html',
+            'полировка': 'detailing.html',
+            'антикор': 'auto-service.html',
+            'устранение царапин': 'detailing.html',
+            'бронирование пленкой': 'detailing.html',
+            'замена стекол': 'auto-service.html',
+            'ремонт дверей': 'auto-service.html',
+            'ремонт после дтп': 'auto-service.html',
+            'ремонт крыши': 'auto-service.html',
+            'замена капота': 'auto-service.html',
+            'арматурные работы': 'auto-service.html',
+            
+            // Замена масла
+            'синтетическое масло': 'auto-service.html',
+            'полусинтетическое': 'auto-service.html',
+            'минеральное': 'auto-service.html',
+            'масло для дизеля': 'auto-service.html',
+            'масло для турбо': 'auto-service.html',
+            'сезонная замена': 'auto-service.html',
+            'масло в акпп': 'auto-service.html',
+            'масло в мкпп': 'auto-service.html',
+            'масло в редукторе': 'auto-service.html',
+            'раздаточная коробка': 'auto-service.html',
+            'промывка системы': 'auto-service.html',
+            'масляный радиатор': 'auto-service.html',
+            'масляный фильтр': 'auto-service.html',
+            'салонный фильтр': 'auto-service.html',
+            'утилизация масла': 'auto-service.html',
+            'подбор масла': 'auto-service.html'
+        };
+        
+        // Ищем соответствие (без учета регистра)
+        const lowerText = text.toLowerCase();
+        let targetPage = null;
+        
+        // Проверяем точное совпадение
+        if (pageMapping[lowerText]) {
+            targetPage = pageMapping[lowerText];
+        } else {
+            // Проверяем частичное совпадение
+            for (const key in pageMapping) {
+                if (lowerText.includes(key) || key.includes(lowerText)) {
+                    targetPage = pageMapping[key];
+                    break;
+                }
+            }
+        }
+        
+        // Если найдена страница, переходим на неё
+        if (targetPage) {
+            window.location.href = basePath + targetPage;
+        } else {
+            // По умолчанию переходим на страницу запчастей
+            window.location.href = basePath + 'parts.html';
+        }
     }
 }
 
