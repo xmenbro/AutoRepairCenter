@@ -20,7 +20,6 @@ class MobileMenu {
         this.contentElements = $('.content-element');
         this.searchInput = $('.search-input');
         this.searchToolBtn = $('.search-tool-btn');
-        this.searchResults = null;
         this.currentActiveIndex = 0;
         this.searchTimeout = null;
         
@@ -32,7 +31,6 @@ class MobileMenu {
      */
     init() {
         this.bindEvents();
-        this.createSearchResultsContainer();
         // Устанавливаем первую кнопку как активную
         if (this.listButtons.length > 0) {
             this.listButtons.eq(0).addClass('active');
@@ -110,15 +108,12 @@ class MobileMenu {
             }
             
             if (query.length > 0) {
-                // Подсвечиваем совпадения в меню
-                this.highlightMenuItems(query);
-                // Debounce: выполняем поиск через 300ms после последнего ввода
+                // Debounce: подсвечиваем совпадения через 300ms после последнего ввода
                 this.searchTimeout = setTimeout(() => {
-                    this.performSearch(query);
+                    this.highlightMenuItems(query);
                 }, 300);
             } else {
                 this.removeHighlights();
-                this.hideSearchResults();
             }
         });
         
@@ -128,7 +123,7 @@ class MobileMenu {
                 e.preventDefault();
                 const query = $(e.target).val().trim();
                 if (query.length > 0) {
-                    this.performSearch(query);
+                    this.highlightMenuItems(query);
                 }
             }
         });
@@ -138,7 +133,7 @@ class MobileMenu {
             e.preventDefault();
             const query = this.searchInput.val().trim();
             if (query.length > 0) {
-                this.performSearch(query);
+                this.highlightMenuItems(query);
             }
         });
         
@@ -174,7 +169,6 @@ class MobileMenu {
         $('body').css('overflow', '');
         this.searchInput.val('');
         this.removeHighlights();
-        this.hideSearchResults();
     }
     
     /**
@@ -182,9 +176,6 @@ class MobileMenu {
      * @param {number} index - Индекс элемента контента
      */
     switchContent(index) {
-        // Скрываем результаты поиска если они отображаются
-        this.hideSearchResults();
-        
         // Скрываем все элементы контента
         this.contentElements.fadeOut(200);
         
@@ -199,144 +190,6 @@ class MobileMenu {
         }, 200);
     }
     
-    /**
-     * Создание контейнера для результатов поиска
-     */
-    createSearchResultsContainer() {
-        if (!$('.search-results-container').length) {
-            const resultsContainer = $('<div class="search-results-container"></div>');
-            this.menu.find('.right-part').append(resultsContainer);
-            this.searchResults = resultsContainer;
-        } else {
-            this.searchResults = $('.search-results-container');
-        }
-    }
-    
-    /**
-     * Выполнение поиска
-     * @param {string} query - Поисковый запрос
-     */
-    performSearch(query) {
-        // Показываем индикатор загрузки
-        this.showSearchLoading();
-        
-        // AJAX запрос для получения товаров
-        // Определяем правильный путь к API в зависимости от текущей страницы
-        const apiPath = window.location.pathname.includes('/pages/') 
-            ? '../../api/products.json' 
-            : '../api/products.json';
-        
-        $.ajax({
-            url: apiPath,
-            method: 'GET',
-            dataType: 'json',
-            success: (data) => {
-                if (data.status === 'success' && data.products) {
-                    const results = this.filterProducts(data.products, query);
-                    this.displaySearchResults(results, query);
-                } else {
-                    this.showSearchError('Ошибка загрузки данных');
-                }
-            },
-            error: (xhr, status, error) => {
-                console.error('Ошибка поиска:', error);
-                this.showSearchError('Ошибка при выполнении поиска');
-            }
-        });
-    }
-    
-    /**
-     * Фильтрация товаров по запросу
-     * @param {Array} products - Массив товаров
-     * @param {string} query - Поисковый запрос
-     * @returns {Array} Отфильтрованные товары
-     */
-    filterProducts(products, query) {
-        const lowerQuery = query.toLowerCase();
-        return products.filter(product => {
-            const title = product.title ? product.title.toLowerCase() : '';
-            const brand = product.brand ? product.brand.toLowerCase() : '';
-            return title.includes(lowerQuery) || brand.includes(lowerQuery);
-        });
-    }
-    
-    /**
-     * Отображение результатов поиска
-     * @param {Array} results - Результаты поиска
-     * @param {string} query - Поисковый запрос
-     */
-    displaySearchResults(results, query) {
-        this.hideContentElements();
-        
-        let html = '<div class="search-results">';
-        html += `<h2 class="search-results-title">Результаты поиска: "${query}"</h2>`;
-        
-        if (results.length === 0) {
-            html += '<p class="search-no-results">Ничего не найдено</p>';
-        } else {
-            html += `<p class="search-results-count">Найдено: ${results.length}</p>`;
-            html += '<div class="search-results-grid">';
-            
-            results.forEach(product => {
-                html += `
-                    <div class="search-result-item">
-                        <div class="search-result-image">
-                            <img src="${product.image}" alt="${product.title}" onerror="this.src='../images/icons/car.png'">
-                        </div>
-                        <div class="search-result-info">
-                            <h3 class="search-result-title">${product.title}</h3>
-                            <p class="search-result-brand">Бренд: ${product.brand}</p>
-                            <p class="search-result-price">${product.price.toLocaleString('ru-RU')} ₽</p>
-                            <p class="search-result-availability ${product.availability === 'В наличии' ? 'in-stock' : 'out-of-stock'}">${product.availability}</p>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += '</div>';
-        }
-        
-        html += '</div>';
-        
-        this.searchResults.html(html).fadeIn(300);
-    }
-    
-    /**
-     * Скрытие элементов контента
-     */
-    hideContentElements() {
-        this.contentElements.hide();
-    }
-    
-    /**
-     * Показ элементов контента (при очистке поиска)
-     */
-    showContentElements() {
-        this.contentElements.eq(this.currentActiveIndex).show();
-    }
-    
-    /**
-     * Показ индикатора загрузки
-     */
-    showSearchLoading() {
-        this.searchResults.html('<div class="search-loading"><p>Поиск...</p></div>').show();
-    }
-    
-    /**
-     * Показ ошибки поиска
-     * @param {string} message - Сообщение об ошибке
-     */
-    showSearchError(message) {
-        this.searchResults.html(`<div class="search-error"><p>${message}</p></div>`).show();
-    }
-    
-    /**
-     * Скрытие результатов поиска
-     */
-    hideSearchResults() {
-        this.searchResults.fadeOut(200);
-        this.showContentElements();
-    }
     
     /**
      * Подсветка элементов меню при поиске
