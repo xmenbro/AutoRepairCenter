@@ -1,0 +1,263 @@
+@import "../base/mixins.less";
+@import "../base/variables.less";
+
+// Информационные модальные окна
+.info-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10001;
+    
+    &.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.info-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+.info-modal-content {
+    position: relative;
+    background: @white;
+    border-radius: @border-radius;
+    padding: @spacing-xxxxl;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    z-index: 10002;
+    animation: modalFadeIn @transition-time ease;
+    
+    &.guarantee-modal-content {
+        max-width: 800px;
+    }
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.info-modal-close {
+    position: absolute;
+    top: @spacing-lg;
+    right: @spacing-lg;
+    background: none;
+    border: none;
+    font-size: @font-size-xxxl;
+    color: @gray-medium;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    .flex-center();
+    border-radius: @border-radius-round;
+    transition: all @transition-time;
+    
+    &:hover {
+        background-color: @gray-bg;
+        color: @black;
+    }
+    
+    span {
+        line-height: 1;
+    }
+}
+
+.info-modal-title {
+    font-size: @font-size-xxl;
+    font-weight: bold;
+    .text-uppercase();
+    color: @black;
+    margin-bottom: @spacing-xxxl;
+    .text-center();
+}
+
+.info-modal-body {
+    color: @gray-dark;
+}
+
+// Модальное окно консультации
+.consultation-text {
+    font-size: @font-size-lg;
+    text-align: center;
+    margin-bottom: @spacing-xxxl;
+    color: @gray-dark;
+}
+
+.phone-section {
+    text-align: center;
+    margin-bottom: @spacing-xxl;
+}
+
+.phone-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: @font-size-xxxl;
+    font-weight: bold;
+    color: @primary-color;
+    text-decoration: none;
+    padding: @spacing-xl @spacing-xxxxl;
+    border: 2px solid @primary-color;
+    border-radius: @border-radius;
+    transition: all @transition-time;
+    
+    &:hover {
+        background-color: @primary-color;
+        color: @white;
+        transform: scale(1.05);
+    }
+    
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+.consultation-hours {
+    text-align: center;
+    font-size: @font-size-md;
+    color: @gray-medium;
+    margin-top: @spacing-xxl;
+}
+
+// Модальное окно гарантий
+.guarantees-list {
+    display: flex;
+    flex-direction: column;
+    gap: @spacing-xl;
+}
+
+.guarantee-item {
+    padding: @spacing-xl;
+    border: 1px solid @gray-light;
+    border-radius: @border-radius;
+    background-color: @white;
+    transition: all @transition-time;
+    
+    &:hover {
+        border-color: @primary-color;
+        box-shadow: 0 4px 12px rgba(15, 87, 201, 0.1);
+        transform: translateY(-2px);
+    }
+}
+
+.guarantee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: @spacing-md;
+    flex-wrap: wrap;
+    gap: @spacing-md;
+}
+
+.guarantee-title {
+    font-size: @font-size-lg;
+    font-weight: bold;
+    color: @black;
+    margin: 0;
+    flex: 1;
+    min-width: 200px;
+}
+
+.guarantee-period {
+    display: inline-block;
+    padding: @spacing-xs @spacing-lg;
+    background-color: @primary-color;
+    color: @white;
+    border-radius: @border-radius;
+    font-size: @font-size-sm;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.guarantee-description {
+    font-size: @font-size-md;
+    color: @gray-medium;
+    margin: 0;
+    line-height: 1.6;
+}
+
+// Responsive стили
+.breakpoint(768px; {
+    .info-modal-content {
+        padding: @spacing-xxl;
+        max-width: 95%;
+        
+        &.guarantee-modal-content {
+            max-width: 95%;
+        }
+    }
+    
+    .info-modal-title {
+        font-size: @font-size-xl;
+        margin-bottom: @spacing-xxl;
+    }
+    
+    .phone-link {
+        font-size: @font-size-xxl;
+        padding: @spacing-lg @spacing-xxxl;
+    }
+    
+    .guarantee-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .guarantee-title {
+        min-width: auto;
+    }
+});
+
+.breakpoint(480px; {
+    .info-modal-content {
+        padding: @spacing-lg;
+    }
+    
+    .info-modal-title {
+        font-size: @font-size-lg;
+        margin-bottom: @spacing-xl;
+    }
+    
+    .phone-link {
+        font-size: @font-size-xl;
+        padding: @spacing-md @spacing-xxl;
+        flex-direction: column;
+        gap: @spacing-sm;
+        
+        svg {
+            margin-right: 0;
+        }
+    }
+    
+    .guarantee-item {
+        padding: @spacing-lg;
+    }
+    
+    .guarantee-title {
+        font-size: @font-size-md;
+    }
+    
+    .guarantee-description {
+        font-size: @font-size-sm;
+    }
+});
+
