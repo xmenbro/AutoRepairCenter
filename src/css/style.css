@@ -1645,6 +1645,247 @@
     opacity: 1;
   }
 }
+.appointment-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10001;
+}
+.appointment-modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.appointment-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+.appointment-modal-content {
+  position: relative;
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 30px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  z-index: 10002;
+  animation: modalFadeIn 0.3s ease;
+}
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.appointment-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 36px;
+  color: #666666;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+.appointment-modal-close:hover {
+  background-color: #e2e2e2 3d;
+  color: #000000;
+}
+.appointment-modal-close span {
+  line-height: 1;
+}
+.appointment-modal-title {
+  font-size: 32px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #000000;
+  margin-bottom: 25px;
+  text-align: center;
+}
+.appointment-form .form-group {
+  margin-bottom: 20px;
+}
+.appointment-form .form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 8px;
+}
+.appointment-form .form-group label .required {
+  color: #dc3545;
+}
+.appointment-form .form-group input[type="text"],
+.appointment-form .form-group input[type="tel"],
+.appointment-form .form-group input[type="email"],
+.appointment-form .form-group input[type="date"],
+.appointment-form .form-group input[type="time"],
+.appointment-form .form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #b8b8b8;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+.appointment-form .form-group input[type="text"]:focus,
+.appointment-form .form-group input[type="tel"]:focus,
+.appointment-form .form-group input[type="email"]:focus,
+.appointment-form .form-group input[type="date"]:focus,
+.appointment-form .form-group input[type="time"]:focus,
+.appointment-form .form-group textarea:focus {
+  outline: none;
+  border-color: #0f57c9;
+}
+.appointment-form .form-group input[type="text"]:disabled,
+.appointment-form .form-group input[type="tel"]:disabled,
+.appointment-form .form-group input[type="email"]:disabled,
+.appointment-form .form-group input[type="date"]:disabled,
+.appointment-form .form-group input[type="time"]:disabled,
+.appointment-form .form-group textarea:disabled {
+  background-color: #e2e2e2 3d;
+  cursor: not-allowed;
+}
+.appointment-form .form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.appointment-form .form-group.error input,
+.appointment-form .form-group.error textarea {
+  border-color: #dc3545;
+}
+.appointment-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.appointment-form .error-messages {
+  margin-top: 4px;
+}
+.appointment-form .error-messages .error-message {
+  display: block;
+  font-size: 12px;
+  color: #dc3545;
+  margin-top: 4px;
+}
+.appointment-form .form-error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.appointment-form .form-error .error-message {
+  font-size: 14px;
+}
+.appointment-form .form-success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.appointment-form .form-success .success-message {
+  font-size: 14px;
+}
+.appointment-form .form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+  justify-content: flex-end;
+}
+.appointment-form .form-actions .btn-cancel,
+.appointment-form .form-actions .btn-submit {
+  padding: 12px 25px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.appointment-form .form-actions .btn-cancel {
+  background-color: #b8b8b8;
+  color: #ffffff;
+}
+.appointment-form .form-actions .btn-cancel:hover {
+  background-color: #9f9f9f;
+}
+.appointment-form .form-actions .btn-submit {
+  background-color: #0f57c9;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.appointment-form .form-actions .btn-submit:hover {
+  background-color: #0b429a;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+@media (max-width: 768px) {
+  .appointment-modal-title {
+    font-size: 18px;
+  }
+  .appointment-form .form-row {
+    grid-template-columns: 1fr;
+  }
+  .appointment-form .form-actions {
+    flex-direction: column;
+  }
+  .appointment-form .form-actions .btn-cancel,
+  .appointment-form .form-actions .btn-submit {
+    width: 100%;
+  }
+}
+@media (max-width: 480px) {
+  .appointment-modal-content {
+    padding: 12px;
+  }
+  .appointment-modal-title {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  .appointment-form .form-group {
+    margin-bottom: 12px;
+  }
+  .appointment-form .form-group label {
+    font-size: 12px;
+  }
+  .appointment-form .form-group input,
+  .appointment-form .form-group textarea {
+    padding: 10px;
+    font-size: 12px;
+  }
+}
 body {
   margin: 0;
   padding: 0;
