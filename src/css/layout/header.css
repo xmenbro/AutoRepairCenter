@@ -17,20 +17,37 @@
 .header-element {
   width: 210px;
   padding-top: 10px;
-  border-right: 1px solid #0f57c9;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+}
+.header-element:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 40px;
+  background-color: #0f57c9;
 }
 .header-element img {
   width: 20px;
   height: 20px;
+  margin-bottom: 4px;
 }
 .header-element p {
   text-transform: uppercase;
   font-size: 12px;
+  margin: 0 0 4px 0;
 }
 .header-element a {
   text-decoration: none;
   color: #0f57c9;
   font-size: 10px;
+  margin: 0;
 }
 .icons {
   display: grid;

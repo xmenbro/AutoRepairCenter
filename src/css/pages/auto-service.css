@@ -17,20 +17,37 @@
 .header-element {
   width: 210px;
   padding-top: 10px;
-  border-right: 1px solid #0f57c9;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+}
+.header-element:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 40px;
+  background-color: #0f57c9;
 }
 .header-element img {
   width: 20px;
   height: 20px;
+  margin-bottom: 4px;
 }
 .header-element p {
   text-transform: uppercase;
   font-size: 12px;
+  margin: 0 0 4px 0;
 }
 .header-element a {
   text-decoration: none;
   color: #0f57c9;
   font-size: 10px;
+  margin: 0;
 }
 .icons {
   display: grid;
@@ -85,11 +102,13 @@
 }
 .nav-menu {
   padding: 0;
-  grid-template-columns: 50px repeat(5, 1fr) 2fr 50px 50px 100px;
+  grid-template-columns: 50px repeat(5, 1fr) 2fr 50px 50px 160px 50px;
   list-style: none;
   height: 60px;
   display: grid;
   align-items: center;
+  gap: 0;
+  align-items: stretch;
 }
 .menu-item {
   height: 100%;
@@ -97,6 +116,8 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  position: relative;
+  overflow: visible;
 }
 .menu-item a {
   display: flex;
@@ -115,13 +136,54 @@
 .menu-item a:hover {
   background-color: #0c4094;
 }
+.menu-item a img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+}
 .menu-item img {
   width: 20px;
   height: 20px;
   filter: brightness(0) invert(1);
+  display: block;
+  object-fit: contain;
 }
 .menu-item:last-child a:hover {
   background-color: #0c4094;
+}
+.menu-item > a,
+.menu-item > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+.menu-item a[href*="basket"],
+.menu-item a[href*="search"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 0 8px;
+  flex-shrink: 0;
+}
+.menu-item a[href*="basket"] img,
+.menu-item a[href*="search"] img {
+  max-width: 24px;
+  max-height: 24px;
+}
+.menu-item .menu-item:has(a[href*="basket"]) {
+  margin-left: 8px;
+  flex-shrink: 0;
+  z-index: 5;
+}
+.menu-item .menu-item.user-profile-dropdown {
+  z-index: 10;
 }
 .spacer {
   height: 100%;
