@@ -14,26 +14,79 @@
 
 .nav-menu {
     padding: 0;
-    .grid-template-columns(50px repeat(5, 1fr) 2fr 50px 50px 100px);
+    .grid-template-columns(50px repeat(5, 1fr) 2fr 50px 50px 160px 50px);
     list-style: none;
     height: @navbar-height;
     .grid-center();
+    gap: 0;
+    align-items: stretch;
 }
 
 .menu-item {
     .menu-item();
+    position: relative;
+    overflow: visible; // Чтобы элементы не обрезались
 
     a {
         .menu-link();
+        
+        img {
+            .icon-size(@icon-size-sm);
+            .filter-white();
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
+        }
     }
 
     img {
         .icon-size(@icon-size-sm);
         .filter-white();
+        display: block;
+        object-fit: contain;
     }
 
     &:last-child a:hover {
         background-color: @primary-dark;
+    }
+    
+    // Убеждаемся, что все элементы выровнены по центру
+    > a,
+    > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+    }
+    
+    // Иконки должны быть внутри навигации
+    a[href*="basket"],
+    a[href*="search"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        padding: 0 @spacing-sm;
+        flex-shrink: 0;
+        
+        img {
+            max-width: 24px;
+            max-height: 24px;
+        }
+    }
+    
+    // Убеждаемся, что элементы не перекрывают друг друга
+    .menu-item:has(a[href*="basket"]) {
+        margin-left: @spacing-sm;
+        flex-shrink: 0;
+        z-index: 5;
+    }
+    
+    // Профиль должен быть выше корзины
+    .menu-item.user-profile-dropdown {
+        z-index: 10;
     }
 }
 
