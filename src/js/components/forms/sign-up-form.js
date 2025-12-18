@@ -159,9 +159,14 @@ class SignUpForm {
             // Успешная регистрация
             this.showSuccessMessage(response.message || 'Регистрация выполнена успешно!');
             
-            // Сохраняем данные пользователя
+            // Сохраняем данные пользователя (включая ID и роль)
             if (response.user) {
-                localStorage.setItem('newUser', JSON.stringify(response.user));
+                localStorage.setItem('user', JSON.stringify(response.user));
+                
+                // Обновляем корзину в модуле cart
+                if (window.cart) {
+                    window.cart.userId = response.user.id;
+                }
             }
             
             // Редирект на страницу входа через 1.5 секунды

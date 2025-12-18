@@ -1,102 +1,102 @@
 {
-    "status": "success",
-    "count": 12,
-    "products": [
-        {
-            "id": 1,
-            "image": "../images/cards/brakes.webp",
-            "title": "Тормозные колодки BOSCH",
-            "brand": "BOSCH",
-            "price": 1890,
-            "availability": "В наличии"
-        },
-        {
-            "id": 2,
-            "image": "../images/cards/filter.webp",
-            "title": "Масляный фильтр MANN",
-            "brand": "MANN",
-            "price": 1250,
-            "availability": "В наличии"
-        },
-        {
-            "id": 3,
-            "image": "../images/cards/candle.webp",
-            "title": "Свечи зажигания NGK",
-            "brand": "NGK",
-            "price": 2800,
-            "availability": "В наличии"
-        },
-        {
-            "id": 4,
-            "image": "../images/cards/air-filter.webp",
-            "title": "Воздушный фильтр MAHLE",
-            "brand": "MAHLE",
-            "price": 680,
-            "availability": "Ожидается"
-        },
-        {
-            "id": 5,
-            "image": "../images/cards/battery.webp",
-            "title": "Аккумулятор VARTA",
-            "brand": "VARTA",
-            "price": 10990,
-            "availability": "В наличии"
-        },
-        {
-            "id": 6,
-            "image": "../images/cards/damper.webp",
-            "title": "Амортизаторы KAYABA",
-            "brand": "KAYABA",
-            "price": 6500,
-            "availability": "В наличии"
-        },
-        {
-            "id": 7,
-            "image": "../images/cards/brake-disk.webp",
-            "title": "Тормозные диски BREMBO",
-            "brand": "BREMBO",
-            "price": 12500,
-            "availability": "В наличии"
-        },
-        {
-            "id": 8,
-            "image": "../images/cards/fuel-filter.webp",
-            "title": "Топливный фильтр BOSCH",
-            "brand": "BOSCH",
-            "price": 890,
-            "availability": "В наличии"
-        },
-        {
-            "id": 9,
-            "image": "../images/cards/candle-glow.webp",
-            "title": "Свечи накаливания DENSO",
-            "brand": "DENSO",
-            "price": 3200,
-            "availability": "Ожидается"
-        },
-        {
-            "id": 10,
-            "image": "../images/cards/salon-filter.webp",
-            "title": "Салонный фильтр MANN",
-            "brand": "MANN",
-            "price": 750,
-            "availability": "В наличии"
-        },
-        {
-            "id": 11,
-            "image": "../images/cards/battery-exide.webp",
-            "title": "Аккумулятор EXIDE",
-            "brand": "EXIDE",
-            "price": 8990,
-            "availability": "В наличии"
-        },
-        {
-            "id": 12,
-            "image": "../images/cards/racks.webp",
-            "title": "Стойки стабилизатора MONROE",
-            "brand": "MONROE",
-            "price": 4200,
-            "availability": "В наличии"
-        }
-    ]
+  "status": "success",
+  "count": 12,
+  "products": [
+    {
+      "id": 1,
+      "image": "../images/cards/brakes.webp",
+      "title": "Тормозные колодки BOSCH",
+      "brand": "BOSCH",
+      "price": 1890,
+      "availability": "В наличии"
+    },
+    {
+      "id": 2,
+      "image": "../images/cards/filter.webp",
+      "title": "Масляный фильтр MANN",
+      "brand": "MANN",
+      "price": 1250,
+      "availability": "В наличии"
+    },
+    {
+      "id": 3,
+      "image": "../images/cards/candle.webp",
+      "title": "Свечи зажигания NGK",
+      "brand": "NGK",
+      "price": 2800,
+      "availability": "В наличии"
+    },
+    {
+      "id": 4,
+      "image": "../images/cards/air-filter.webp",
+      "title": "Воздушный фильтр MAHLE",
+      "brand": "MAHLE",
+      "price": 680,
+      "availability": "Ожидается"
+    },
+    {
+      "id": 5,
+      "image": "../images/cards/battery.webp",
+      "title": "Аккумулятор VARTA",
+      "brand": "VARTA",
+      "price": 10990,
+      "availability": "В наличии"
+    },
+    {
+      "id": 6,
+      "image": "../images/cards/damper.webp",
+      "title": "Амортизаторы KAYABA",
+      "brand": "KAYABA",
+      "price": 6500,
+      "availability": "В наличии"
+    },
+    {
+      "id": 7,
+      "image": "../images/cards/brake-disk.webp",
+      "title": "Тормозные диски BREMBO",
+      "brand": "BREMBO",
+      "price": 12500,
+      "availability": "В наличии"
+    },
+    {
+      "id": 8,
+      "image": "../images/cards/fuel-filter.webp",
+      "title": "Топливный фильтр BOSCH",
+      "brand": "BOSCH",
+      "price": 890,
+      "availability": "В наличии"
+    },
+    {
+      "id": 9,
+      "image": "../images/cards/candle-glow.webp",
+      "title": "Свечи накаливания DENSO",
+      "brand": "DENSO",
+      "price": 3200,
+      "availability": "Ожидается"
+    },
+    {
+      "id": 10,
+      "image": "../images/cards/salon-filter.webp",
+      "title": "Салонный фильтр MANN",
+      "brand": "MANN",
+      "price": 750,
+      "availability": "В наличии"
+    },
+    {
+      "id": 11,
+      "image": "../images/cards/battery-exide.webp",
+      "title": "Аккумулятор EXIDE",
+      "brand": "EXIDE",
+      "price": 8990,
+      "availability": "В наличии"
+    },
+    {
+      "id": 12,
+      "image": "../images/cards/racks.webp",
+      "title": "Стойки стабилизатора MONROE",
+      "brand": "MONROE",
+      "price": 4200,
+      "availability": "В наличии"
+    }
+  ]
 }

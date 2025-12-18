@@ -21,21 +21,40 @@
 .header-element {
     width: @element-width;
     padding-top: @spacing-md;
-    border-right: 1px solid @primary-color;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    
+    // Разделитель только между элементами, не на последнем
+    &:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: -@spacing-gap / 2;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 40px; // Ограничиваем высоту разделителя
+        background-color: @primary-color;
+    }
 
     img {
         .icon-size(@icon-size-sm);
+        margin-bottom: @spacing-xs;
     }
 
     p {
         .text-uppercase();
         font-size: @font-size-sm;
+        margin: 0 0 @spacing-xs 0;
     }
 
     a {
         text-decoration: none;
         color: @primary-color;
         font-size: @font-size-xs;
+        margin: 0;
     }
 }
 

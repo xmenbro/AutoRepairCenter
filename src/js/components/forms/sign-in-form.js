@@ -129,9 +129,14 @@ class SignInForm {
             // Успешный вход
             this.showSuccessMessage(response.message || 'Вход выполнен успешно!');
             
-            // Сохраняем данные пользователя
+            // Сохраняем данные пользователя (включая ID и роль)
             if (response.user) {
                 localStorage.setItem('user', JSON.stringify(response.user));
+                
+                // Обновляем корзину в модуле cart
+                if (window.cart) {
+                    window.cart.userId = response.user.id;
+                }
                 
                 // Сохраняем remember me
                 if ($('#remember').is(':checked')) {
