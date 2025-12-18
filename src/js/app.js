@@ -8,6 +8,8 @@ import './modules/validator.js';
 import './components/forms/sign-in-form.js';
 import './components/forms/sign-up-form.js';
 import './modules/fetch-products.js';
+import './modules/navigation.js';
+import './modules/products-manager.js';
 
 // Общая инициализация приложения
 class App {

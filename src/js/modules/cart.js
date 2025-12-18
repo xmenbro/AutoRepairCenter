@@ -1,23 +1,51 @@
 /**
  * Модуль для управления корзиной товаров
- * Использует localStorage для хранения данных и jQuery Ajax для операций
+ * Использует сервер для хранения корзины пользователя
  * @class Cart
  */
 class Cart {
     constructor() {
         this.storageKey = 'autoRepairCart';
+        this.userId = null;
         this.init();
     }
 
     // Инициализация
     init() {
-        // Инициализация корзины в localStorage если её нет
-        if (!this.getCartFromStorage()) {
+        // Получаем информацию о текущем пользователе
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                this.userId = user.id;
+            } catch (error) {
+                console.error('Ошибка при чтении данных пользователя:', error);
+            }
+        }
+        
+        // Инициализация корзины в localStorage если пользователь не авторизован
+        if (!this.userId && !this.getCartFromStorage()) {
             this.saveCartToStorage([]);
         }
     }
 
-    // Получить корзину из localStorage
+    // Получить ID пользователя
+    getUserId() {
+        if (!this.userId) {
+            const userData = localStorage.getItem('user');
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    this.userId = user.id;
+                } catch (error) {
+                    console.error('Ошибка при чтении данных пользователя:', error);
+                }
+            }
+        }
+        return this.userId;
+    }
+
+    // Получить корзину из localStorage (для неавторизованных пользователей)
     getCartFromStorage() {
         try {
             const cartData = localStorage.getItem(this.storageKey);
@@ -28,7 +56,7 @@ class Cart {
         }
     }
 
-    // Сохранить корзину в localStorage
+    // Сохранить корзину в localStorage (для неавторизованных пользователей)
     saveCartToStorage(cart) {
         try {
             localStorage.setItem(this.storageKey, JSON.stringify(cart));
@@ -37,8 +65,51 @@ class Cart {
         }
     }
 
+    // Сохранить корзину на сервере
+    saveCartToServer(cart) {
+        const userId = this.getUserId();
+        if (!userId) {
+            return $.Deferred().reject({ message: 'Пользователь не авторизован' }).promise();
+        }
+
+        return $.ajax({
+            url: 'http://localhost:3000/cart/save',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                userId: userId,
+                cart: cart
+            }),
+            dataType: 'json'
+        });
+    }
+
     // Получить корзину
     getCart() {
+        const userId = this.getUserId();
+        
+        // Если пользователь авторизован, загружаем корзину с сервера
+        if (userId) {
+            return $.ajax({
+                url: 'http://localhost:3000/cart',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ userId: userId }),
+                dataType: 'json'
+            }).fail((error) => {
+                console.error('Ошибка при загрузке корзины с сервера:', error);
+                // В случае ошибки возвращаем локальную корзину
+                const cart = this.getCartFromStorage() || [];
+                return $.Deferred().resolve({
+                    status: 'success',
+                    cart: cart,
+                    count: cart.reduce((sum, item) => sum + item.quantity, 0),
+                    total: this.calculateTotal(cart)
+                }).promise();
+            });
+        }
+        
+        // Для неавторизованных пользователей используем localStorage
         return $.Deferred((deferred) => {
             setTimeout(() => {
                 try {
@@ -61,10 +132,29 @@ class Cart {
 
     // Добавить товар в корзину
     addItem(product, quantity = 1) {
+        const userId = this.getUserId();
+        
         return $.Deferred((deferred) => {
             setTimeout(() => {
                 try {
-                    let cart = this.getCartFromStorage() || [];
+                    let cart = userId ? [] : (this.getCartFromStorage() || []);
+                    
+                    // Если пользователь авторизован, загружаем корзину с сервера
+                    if (userId) {
+                        $.ajax({
+                            url: 'http://localhost:3000/cart',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ userId: userId }),
+                            dataType: 'json',
+                            async: false
+                        }).done((response) => {
+                            if (response.status === 'success') {
+                                cart = response.cart || [];
+                            }
+                        });
+                    }
+                    
                     const existingItemIndex = cart.findIndex(item => item.id === product.id);
 
                     if (existingItemIndex !== -1) {
@@ -84,15 +174,39 @@ class Cart {
                         cart.push(cartItem);
                     }
 
-                    this.saveCartToStorage(cart);
-                    
-                    deferred.resolve({
-                        status: 'success',
-                        cart: cart,
-                        count: cart.reduce((sum, item) => sum + item.quantity, 0),
-                        total: this.calculateTotal(cart),
-                        message: 'Товар добавлен в корзину'
-                    });
+                    // Сохраняем корзину
+                    if (userId) {
+                        // Сохраняем на сервере
+                        this.saveCartToServer(cart).done(() => {
+                            deferred.resolve({
+                                status: 'success',
+                                cart: cart,
+                                count: cart.reduce((sum, item) => sum + item.quantity, 0),
+                                total: this.calculateTotal(cart),
+                                message: 'Товар добавлен в корзину'
+                            });
+                        }).fail(() => {
+                            // В случае ошибки сохраняем локально
+                            this.saveCartToStorage(cart);
+                            deferred.resolve({
+                                status: 'success',
+                                cart: cart,
+                                count: cart.reduce((sum, item) => sum + item.quantity, 0),
+                                total: this.calculateTotal(cart),
+                                message: 'Товар добавлен в корзину'
+                            });
+                        });
+                    } else {
+                        // Сохраняем локально
+                        this.saveCartToStorage(cart);
+                        deferred.resolve({
+                            status: 'success',
+                            cart: cart,
+                            count: cart.reduce((sum, item) => sum + item.quantity, 0),
+                            total: this.calculateTotal(cart),
+                            message: 'Товар добавлен в корзину'
+                        });
+                    }
                 } catch (error) {
                     deferred.reject({
                         status: 'error',
@@ -105,20 +219,64 @@ class Cart {
 
     // Удалить товар из корзины
     removeItem(productId) {
+        const userId = this.getUserId();
+        
         return $.Deferred((deferred) => {
             setTimeout(() => {
                 try {
-                    let cart = this.getCartFromStorage() || [];
-                    cart = cart.filter(item => item.id !== productId);
-                    this.saveCartToStorage(cart);
+                    let cart = userId ? [] : (this.getCartFromStorage() || []);
                     
-                    deferred.resolve({
-                        status: 'success',
-                        cart: cart,
-                        count: cart.reduce((sum, item) => sum + item.quantity, 0),
-                        total: this.calculateTotal(cart),
-                        message: 'Товар удален из корзины'
-                    });
+                    // Если пользователь авторизован, загружаем корзину с сервера
+                    if (userId) {
+                        $.ajax({
+                            url: 'http://localhost:3000/cart',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ userId: userId }),
+                            dataType: 'json',
+                            async: false
+                        }).done((response) => {
+                            if (response.status === 'success') {
+                                cart = response.cart || [];
+                            }
+                        });
+                    }
+                    
+                    cart = cart.filter(item => item.id !== productId);
+                    
+                    // Сохраняем корзину
+                    if (userId) {
+                        // Сохраняем на сервере
+                        this.saveCartToServer(cart).done(() => {
+                            deferred.resolve({
+                                status: 'success',
+                                cart: cart,
+                                count: cart.reduce((sum, item) => sum + item.quantity, 0),
+                                total: this.calculateTotal(cart),
+                                message: 'Товар удален из корзины'
+                            });
+                        }).fail(() => {
+                            // В случае ошибки сохраняем локально
+                            this.saveCartToStorage(cart);
+                            deferred.resolve({
+                                status: 'success',
+                                cart: cart,
+                                count: cart.reduce((sum, item) => sum + item.quantity, 0),
+                                total: this.calculateTotal(cart),
+                                message: 'Товар удален из корзины'
+                            });
+                        });
+                    } else {
+                        // Сохраняем локально
+                        this.saveCartToStorage(cart);
+                        deferred.resolve({
+                            status: 'success',
+                            cart: cart,
+                            count: cart.reduce((sum, item) => sum + item.quantity, 0),
+                            total: this.calculateTotal(cart),
+                            message: 'Товар удален из корзины'
+                        });
+                    }
                 } catch (error) {
                     deferred.reject({
                         status: 'error',
@@ -131,10 +289,29 @@ class Cart {
 
     // Обновить количество товара
     updateQuantity(productId, quantity) {
+        const userId = this.getUserId();
+        
         return $.Deferred((deferred) => {
             setTimeout(() => {
                 try {
-                    let cart = this.getCartFromStorage() || [];
+                    let cart = userId ? [] : (this.getCartFromStorage() || []);
+                    
+                    // Если пользователь авторизован, загружаем корзину с сервера
+                    if (userId) {
+                        $.ajax({
+                            url: 'http://localhost:3000/cart',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ userId: userId }),
+                            dataType: 'json',
+                            async: false
+                        }).done((response) => {
+                            if (response.status === 'success') {
+                                cart = response.cart || [];
+                            }
+                        });
+                    }
+                    
                     const itemIndex = cart.findIndex(item => item.id === productId);
 
                     if (itemIndex === -1) {
@@ -152,15 +329,39 @@ class Cart {
                         cart[itemIndex].quantity = quantity;
                     }
 
-                    this.saveCartToStorage(cart);
-                    
-                    deferred.resolve({
-                        status: 'success',
-                        cart: cart,
-                        count: cart.reduce((sum, item) => sum + item.quantity, 0),
-                        total: this.calculateTotal(cart),
-                        message: 'Количество обновлено'
-                    });
+                    // Сохраняем корзину
+                    if (userId) {
+                        // Сохраняем на сервере
+                        this.saveCartToServer(cart).done(() => {
+                            deferred.resolve({
+                                status: 'success',
+                                cart: cart,
+                                count: cart.reduce((sum, item) => sum + item.quantity, 0),
+                                total: this.calculateTotal(cart),
+                                message: 'Количество обновлено'
+                            });
+                        }).fail(() => {
+                            // В случае ошибки сохраняем локально
+                            this.saveCartToStorage(cart);
+                            deferred.resolve({
+                                status: 'success',
+                                cart: cart,
+                                count: cart.reduce((sum, item) => sum + item.quantity, 0),
+                                total: this.calculateTotal(cart),
+                                message: 'Количество обновлено'
+                            });
+                        });
+                    } else {
+                        // Сохраняем локально
+                        this.saveCartToStorage(cart);
+                        deferred.resolve({
+                            status: 'success',
+                            cart: cart,
+                            count: cart.reduce((sum, item) => sum + item.quantity, 0),
+                            total: this.calculateTotal(cart),
+                            message: 'Количество обновлено'
+                        });
+                    }
                 } catch (error) {
                     deferred.reject({
                         status: 'error',
@@ -173,17 +374,44 @@ class Cart {
 
     // Очистить корзину
     clearCart() {
+        const userId = this.getUserId();
+        const emptyCart = [];
+        
         return $.Deferred((deferred) => {
             setTimeout(() => {
                 try {
-                    this.saveCartToStorage([]);
-                    deferred.resolve({
-                        status: 'success',
-                        cart: [],
-                        count: 0,
-                        total: 0,
-                        message: 'Корзина очищена'
-                    });
+                    if (userId) {
+                        // Сохраняем на сервере
+                        this.saveCartToServer(emptyCart).done(() => {
+                            deferred.resolve({
+                                status: 'success',
+                                cart: [],
+                                count: 0,
+                                total: 0,
+                                message: 'Корзина очищена'
+                            });
+                        }).fail(() => {
+                            // В случае ошибки сохраняем локально
+                            this.saveCartToStorage(emptyCart);
+                            deferred.resolve({
+                                status: 'success',
+                                cart: [],
+                                count: 0,
+                                total: 0,
+                                message: 'Корзина очищена'
+                            });
+                        });
+                    } else {
+                        // Сохраняем локально
+                        this.saveCartToStorage(emptyCart);
+                        deferred.resolve({
+                            status: 'success',
+                            cart: [],
+                            count: 0,
+                            total: 0,
+                            message: 'Корзина очищена'
+                        });
+                    }
                 } catch (error) {
                     deferred.reject({
                         status: 'error',
@@ -206,6 +434,26 @@ class Cart {
 
     // Получить количество товаров в корзине
     getCartCount() {
+        const userId = this.getUserId();
+        
+        if (userId) {
+            // Для авторизованных пользователей используем синхронный запрос
+            let cart = [];
+            $.ajax({
+                url: 'http://localhost:3000/cart',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ userId: userId }),
+                dataType: 'json',
+                async: false
+            }).done((response) => {
+                if (response.status === 'success') {
+                    cart = response.cart || [];
+                }
+            });
+            return cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+        
         const cart = this.getCartFromStorage() || [];
         return cart.reduce((sum, item) => sum + item.quantity, 0);
     }
