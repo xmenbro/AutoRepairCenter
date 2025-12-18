@@ -2,7 +2,6 @@
  * Главный файл приложения
  * @class App
  */
-
 // Подключаем jQuery и наши модули
 import './modules/validator.js';
 import './components/forms/sign-in-form.js';
