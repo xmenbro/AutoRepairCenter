@@ -324,6 +324,13 @@
   color: #0f57c9;
   background-color: #e2e2e2 3d;
 }
+.list-btn.search-highlight {
+  background-color: #fff3cd;
+  color: #0f57c9;
+  font-weight: bold;
+  border-left: 3px solid #0f57c9;
+  padding-left: 5px;
+}
 .right-part {
   flex: 1;
   height: 100%;
@@ -392,6 +399,7 @@
 .coll-list-element {
   width: fit-content;
   padding: 2px 0;
+  transition: all 0.3s;
 }
 .coll-list-element:first-child {
   font-weight: bold;
@@ -401,6 +409,14 @@
 .coll-list-element:hover:not(&:first-child) {
   color: #0f57c9;
   cursor: pointer;
+}
+.coll-list-element.search-highlight {
+  background-color: #fff3cd;
+  color: #0f57c9;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border-left: 3px solid #0f57c9;
 }
 @media (max-width: 768px) {
   .mobile-menu {

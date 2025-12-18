@@ -20,7 +20,6 @@ class MobileMenu {
         this.contentElements = $('.content-element');
         this.searchInput = $('.search-input');
         this.searchToolBtn = $('.search-tool-btn');
-        this.searchResults = null;
         this.currentActiveIndex = 0;
         this.searchTimeout = null;
         
@@ -32,7 +31,6 @@ class MobileMenu {
      */
     init() {
         this.bindEvents();
-        this.createSearchResultsContainer();
         // Устанавливаем первую кнопку как активную
         if (this.listButtons.length > 0) {
             this.listButtons.eq(0).addClass('active');
@@ -110,12 +108,12 @@ class MobileMenu {
             }
             
             if (query.length > 0) {
-                // Debounce: выполняем поиск через 300ms после последнего ввода
+                // Debounce: подсвечиваем совпадения через 300ms после последнего ввода
                 this.searchTimeout = setTimeout(() => {
-                    this.performSearch(query);
+                    this.highlightMenuItems(query);
                 }, 300);
             } else {
-                this.hideSearchResults();
+                this.removeHighlights();
             }
         });
         
@@ -125,7 +123,7 @@ class MobileMenu {
                 e.preventDefault();
                 const query = $(e.target).val().trim();
                 if (query.length > 0) {
-                    this.performSearch(query);
+                    this.highlightMenuItems(query);
                 }
             }
         });
@@ -135,7 +133,7 @@ class MobileMenu {
             e.preventDefault();
             const query = this.searchInput.val().trim();
             if (query.length > 0) {
-                this.performSearch(query);
+                this.highlightMenuItems(query);
             }
         });
         
@@ -144,6 +142,14 @@ class MobileMenu {
             if (e.key === 'Escape' && this.menu.is(':visible')) {
                 this.closeMenu();
             }
+        });
+        
+        // Обработка кликов на элементы списка для навигации
+        $(document).on('click', '.coll-list-element:not(:first-child)', (e) => {
+            e.preventDefault();
+            const $element = $(e.currentTarget);
+            const text = $element.text().trim();
+            this.navigateToPage(text);
         });
     }
     
@@ -162,7 +168,7 @@ class MobileMenu {
         this.menu.removeClass('open').fadeOut(300);
         $('body').css('overflow', '');
         this.searchInput.val('');
-        this.hideSearchResults();
+        this.removeHighlights();
     }
     
     /**
@@ -170,9 +176,6 @@ class MobileMenu {
      * @param {number} index - Индекс элемента контента
      */
     switchContent(index) {
-        // Скрываем результаты поиска если они отображаются
-        this.hideSearchResults();
-        
         // Скрываем все элементы контента
         this.contentElements.fadeOut(200);
         
@@ -187,143 +190,161 @@ class MobileMenu {
         }, 200);
     }
     
-    /**
-     * Создание контейнера для результатов поиска
-     */
-    createSearchResultsContainer() {
-        if (!$('.search-results-container').length) {
-            const resultsContainer = $('<div class="search-results-container"></div>');
-            this.menu.find('.right-part').append(resultsContainer);
-            this.searchResults = resultsContainer;
-        } else {
-            this.searchResults = $('.search-results-container');
-        }
-    }
     
     /**
-     * Выполнение поиска
+     * Подсветка элементов меню при поиске
      * @param {string} query - Поисковый запрос
      */
-    performSearch(query) {
-        // Показываем индикатор загрузки
-        this.showSearchLoading();
+    highlightMenuItems(query) {
+        const lowerQuery = query.toLowerCase();
         
-        // AJAX запрос для получения товаров
-        // Определяем правильный путь к API в зависимости от текущей страницы
-        const apiPath = window.location.pathname.includes('/pages/') 
-            ? '../../api/products.json' 
-            : '../api/products.json';
+        // Подсвечиваем кнопки в левом меню
+        this.listButtons.each((index, button) => {
+            const $button = $(button);
+            const text = $button.text().toLowerCase();
+            if (text.includes(lowerQuery)) {
+                $button.addClass('search-highlight');
+            } else {
+                $button.removeClass('search-highlight');
+            }
+        });
         
-        $.ajax({
-            url: apiPath,
-            method: 'GET',
-            dataType: 'json',
-            success: (data) => {
-                if (data.status === 'success' && data.products) {
-                    const results = this.filterProducts(data.products, query);
-                    this.displaySearchResults(results, query);
-                } else {
-                    this.showSearchError('Ошибка загрузки данных');
-                }
-            },
-            error: (xhr, status, error) => {
-                console.error('Ошибка поиска:', error);
-                this.showSearchError('Ошибка при выполнении поиска');
+        // Подсвечиваем элементы в контенте
+        this.contentElements.find('.coll-list-element').each((index, element) => {
+            const $element = $(element);
+            const text = $element.text().toLowerCase();
+            if (text.includes(lowerQuery)) {
+                $element.addClass('search-highlight');
+            } else {
+                $element.removeClass('search-highlight');
             }
         });
     }
     
     /**
-     * Фильтрация товаров по запросу
-     * @param {Array} products - Массив товаров
-     * @param {string} query - Поисковый запрос
-     * @returns {Array} Отфильтрованные товары
+     * Удаление подсветки
      */
-    filterProducts(products, query) {
-        const lowerQuery = query.toLowerCase();
-        return products.filter(product => {
-            const title = product.title ? product.title.toLowerCase() : '';
-            const brand = product.brand ? product.brand.toLowerCase() : '';
-            return title.includes(lowerQuery) || brand.includes(lowerQuery);
-        });
+    removeHighlights() {
+        this.listButtons.removeClass('search-highlight');
+        this.contentElements.find('.coll-list-element').removeClass('search-highlight');
     }
     
     /**
-     * Отображение результатов поиска
-     * @param {Array} results - Результаты поиска
-     * @param {string} query - Поисковый запрос
+     * Навигация на страницу по тексту элемента
+     * @param {string} text - Текст элемента
      */
-    displaySearchResults(results, query) {
-        this.hideContentElements();
+    navigateToPage(text) {
+        // Определяем базовый путь в зависимости от текущей страницы
+        const isInPages = window.location.pathname.includes('/pages/');
+        const basePath = isInPages ? '' : 'pages/';
         
-        let html = '<div class="search-results">';
-        html += `<h2 class="search-results-title">Результаты поиска: "${query}"</h2>`;
+        // Маппинг текста на страницы
+        const pageMapping = {
+            // Запчасти
+            'двигатель': 'parts.html',
+            'поршни': 'parts.html',
+            'клапаны': 'parts.html',
+            'ремни': 'parts.html',
+            'генераторы': 'parts.html',
+            'стартеры': 'parts.html',
+            'трансмиссия': 'parts.html',
+            'коробка передач': 'parts.html',
+            'сцепление': 'parts.html',
+            'валы': 'parts.html',
+            'дифференциал': 'parts.html',
+            'подшипники': 'parts.html',
+            'тормозная система': 'parts.html',
+            'колодки': 'parts.html',
+            'диски': 'parts.html',
+            'шланги': 'parts.html',
+            'суппорта': 'parts.html',
+            'цилиндры': 'parts.html',
+            
+            // Плановое ТО и автотехцентр
+            'плановое то': 'auto-service.html',
+            'замена масла': 'auto-service.html',
+            'диагностика ходовой': 'auto-service.html',
+            'замена свечей': 'auto-service.html',
+            'сход-развал': 'auto-service.html',
+            'воздушный фильтр': 'auto-service.html',
+            'чип-тюнинг': 'auto-service.html',
+            'масло в кпп': 'auto-service.html',
+            'проверка жидкостей': 'auto-service.html',
+            'диагностика тормозов': 'auto-service.html',
+            'тормозная жидкость': 'auto-service.html',
+            'ремень грм': 'auto-service.html',
+            'кондиционер': 'auto-service.html',
+            'электроника': 'auto-service.html',
+            'аккумулятор': 'auto-service.html',
+            'топливный фильтр': 'auto-service.html',
+            'чистка инжектора': 'auto-service.html',
+            'система охлаждения': 'auto-service.html',
+            'диагностика': 'auto-service.html',
+            
+            // Кузовной ремонт
+            'кузовной ремонт': 'auto-service.html',
+            'выравнивание вмятин': 'auto-service.html',
+            'ремонт бамперов': 'auto-service.html',
+            'геометрия кузова': 'auto-service.html',
+            'рихтовка': 'auto-service.html',
+            'замена порогов': 'auto-service.html',
+            'ремонт арок': 'auto-service.html',
+            'локальная покраска': 'detailing.html',
+            'полная покраска': 'detailing.html',
+            'полировка': 'detailing.html',
+            'антикор': 'auto-service.html',
+            'устранение царапин': 'detailing.html',
+            'бронирование пленкой': 'detailing.html',
+            'замена стекол': 'auto-service.html',
+            'ремонт дверей': 'auto-service.html',
+            'ремонт после дтп': 'auto-service.html',
+            'ремонт крыши': 'auto-service.html',
+            'замена капота': 'auto-service.html',
+            'арматурные работы': 'auto-service.html',
+            
+            // Замена масла
+            'синтетическое масло': 'auto-service.html',
+            'полусинтетическое': 'auto-service.html',
+            'минеральное': 'auto-service.html',
+            'масло для дизеля': 'auto-service.html',
+            'масло для турбо': 'auto-service.html',
+            'сезонная замена': 'auto-service.html',
+            'масло в акпп': 'auto-service.html',
+            'масло в мкпп': 'auto-service.html',
+            'масло в редукторе': 'auto-service.html',
+            'раздаточная коробка': 'auto-service.html',
+            'промывка системы': 'auto-service.html',
+            'масляный радиатор': 'auto-service.html',
+            'масляный фильтр': 'auto-service.html',
+            'салонный фильтр': 'auto-service.html',
+            'утилизация масла': 'auto-service.html',
+            'подбор масла': 'auto-service.html'
+        };
         
-        if (results.length === 0) {
-            html += '<p class="search-no-results">Ничего не найдено</p>';
+        // Ищем соответствие (без учета регистра)
+        const lowerText = text.toLowerCase();
+        let targetPage = null;
+        
+        // Проверяем точное совпадение
+        if (pageMapping[lowerText]) {
+            targetPage = pageMapping[lowerText];
         } else {
-            html += `<p class="search-results-count">Найдено: ${results.length}</p>`;
-            html += '<div class="search-results-grid">';
-            
-            results.forEach(product => {
-                html += `
-                    <div class="search-result-item">
-                        <div class="search-result-image">
-                            <img src="${product.image}" alt="${product.title}" onerror="this.src='../images/icons/car.png'">
-                        </div>
-                        <div class="search-result-info">
-                            <h3 class="search-result-title">${product.title}</h3>
-                            <p class="search-result-brand">Бренд: ${product.brand}</p>
-                            <p class="search-result-price">${product.price.toLocaleString('ru-RU')} ₽</p>
-                            <p class="search-result-availability ${product.availability === 'В наличии' ? 'in-stock' : 'out-of-stock'}">${product.availability}</p>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += '</div>';
+            // Проверяем частичное совпадение
+            for (const key in pageMapping) {
+                if (lowerText.includes(key) || key.includes(lowerText)) {
+                    targetPage = pageMapping[key];
+                    break;
+                }
+            }
         }
         
-        html += '</div>';
-        
-        this.searchResults.html(html).fadeIn(300);
-    }
-    
-    /**
-     * Скрытие элементов контента
-     */
-    hideContentElements() {
-        this.contentElements.hide();
-    }
-    
-    /**
-     * Показ элементов контента (при очистке поиска)
-     */
-    showContentElements() {
-        this.contentElements.eq(this.currentActiveIndex).show();
-    }
-    
-    /**
-     * Показ индикатора загрузки
-     */
-    showSearchLoading() {
-        this.searchResults.html('<div class="search-loading"><p>Поиск...</p></div>').show();
-    }
-    
-    /**
-     * Показ ошибки поиска
-     * @param {string} message - Сообщение об ошибке
-     */
-    showSearchError(message) {
-        this.searchResults.html(`<div class="search-error"><p>${message}</p></div>`).show();
-    }
-    
-    /**
-     * Скрытие результатов поиска
-     */
-    hideSearchResults() {
-        this.searchResults.fadeOut(200);
-        this.showContentElements();
+        // Если найдена страница, переходим на неё
+        if (targetPage) {
+            window.location.href = basePath + targetPage;
+        } else {
+            // По умолчанию переходим на страницу запчастей
+            window.location.href = basePath + 'parts.html';
+        }
     }
 }
 
