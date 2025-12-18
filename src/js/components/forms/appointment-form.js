@@ -104,17 +104,24 @@ class AppointmentForm {
     // Привязка событий
     bindEvents() {
         // Открытие модального окна при клике на кнопки "Записаться"
+        // Кнопки "Узнать о гарантии" и "Получить консультацию" обрабатываются в info-modals.js
         $(document).on('click', '.btn, .service-btn', (e) => {
             const $button = $(e.currentTarget);
             const buttonText = $button.text().trim().toLowerCase();
             
             // Проверяем, что это кнопка "Записаться" (case-insensitive)
-            if (buttonText === 'записаться' || buttonText.includes('записаться')) {
+            // Исключаем кнопки "Узнать о гарантии" и "Получить консультацию"
+            const isAppointmentButton = buttonText === 'записаться' || buttonText.includes('записаться');
+            const isGuaranteeButton = buttonText.includes('гарантии') || buttonText.includes('гарантия');
+            const isConsultationButton = buttonText.includes('консультацию') || buttonText.includes('консультация');
+            
+            // Обрабатываем только кнопку "Записаться"
+            if (isAppointmentButton && !isGuaranteeButton && !isConsultationButton) {
                 e.preventDefault();
                 const $card = $button.closest('.service-card, .slide, .slide-content');
                 let serviceTitle = 'Услуга';
 
-                // Определяем название услуги
+                // Определяем название услуги для кнопки "Записаться"
                 if ($card.length) {
                     const $title = $card.find('.service-title, h2, h3');
                     if ($title.length) {
