@@ -61,6 +61,16 @@ function readPromos() {
 function writeProducts(productsData) {
     try {
         fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(productsData, null, 2), 'utf8');
+        // Also update docs/api/products.json if project uses `docs/` for GitHub Pages
+        try {
+            const docsApiDir = path.join(__dirname, '..', '..', 'docs', 'api');
+            const docsProductsFile = path.join(docsApiDir, 'products.json');
+            if (fs.existsSync(docsApiDir)) {
+                fs.writeFileSync(docsProductsFile, JSON.stringify(productsData, null, 2), 'utf8');
+            }
+        } catch (err) {
+            console.error('Не удалось обновить docs/api/products.json:', err);
+        }
         return true;
     } catch (error) {
         console.error('Ошибка записи products.json:', error);
