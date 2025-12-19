@@ -12,7 +12,11 @@
             return {
                 items: [],
                 selectAll: true,
-                loading: false
+                loading: false,
+                promoCode: '',
+                promoMessage: '',
+                appliedPromo: null,
+                discountValue: 0
             };
         },
         computed: {
@@ -21,6 +25,13 @@
             },
             totalPrice() {
                 return this.items.filter(i => i.selected).reduce((s, it) => s + ((it.price || 0) * (it.quantity || 0)), 0);
+            }
+            ,
+            finalPrice() {
+                const price = this.totalPrice;
+                const discount = this.discountValue || 0;
+                const result = price - discount;
+                return result > 0 ? result : 0;
             }
         },
         methods: {
@@ -156,6 +167,49 @@
                 if (lastDigit === 1) return 'шт.';
                 if (lastDigit >= 2 && lastDigit <= 4) return 'шт.';
                 return 'шт.';
+            },
+            applyPromo() {
+                const self = this;
+                const code = (this.promoCode || '').toString().trim();
+                if (!code) {
+                    this.promoMessage = 'Введите код промокода';
+                    return;
+                }
+
+                // reset previous
+                this.promoMessage = 'Проверка...';
+                this.appliedPromo = null;
+                this.discountValue = 0;
+
+                fetch('http://localhost:3000/promo/check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: code })
+                }).then(res => res.json().then(body => ({ status: res.status, body })))
+                  .then(result => {
+                      if (result.status === 200 && result.body && result.body.success) {
+                          const promo = result.body.promo;
+                          // calculate discount
+                          let discount = 0;
+                          if (promo.type === 'percent') {
+                              discount = Math.round(self.totalPrice * (promo.value / 100));
+                          } else if (promo.type === 'fixed') {
+                              discount = Number(promo.value) || 0;
+                          }
+                          self.appliedPromo = promo;
+                          self.discountValue = discount;
+                          self.promoMessage = `Промокод применён: ${promo.description || promo.code}`;
+                      } else {
+                          self.appliedPromo = null;
+                          self.discountValue = 0;
+                          self.promoMessage = result.body && result.body.message ? result.body.message : 'Промокод недействителен';
+                      }
+                  }).catch(err => {
+                      console.error('Ошибка проверки промокода', err);
+                      self.promoMessage = 'Ошибка при проверке промокода';
+                      self.appliedPromo = null;
+                      self.discountValue = 0;
+                  });
             },
             goToOrder() {
                 const selectedItems = this.items.filter(i => i.selected).length;

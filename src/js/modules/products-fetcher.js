@@ -405,6 +405,10 @@ class ProductsFetcher {
     // Построение корректного пути к изображению
     resolveImageUrl(imagePath) {
         if (!imagePath) return '';
+        // Если это data URL — возвращаем как есть
+        if (imagePath.startsWith('data:')) {
+            return imagePath;
+        }
         // Абсолютные и внешние ссылки не трогаем
         if (imagePath.startsWith('http') || imagePath.startsWith('/')) {
             return imagePath;

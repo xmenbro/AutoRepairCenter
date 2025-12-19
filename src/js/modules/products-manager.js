@@ -191,8 +191,11 @@ class ProductsManager {
                             <input type="number" name="price" min="0" required>
                         </div>
                         <div class="form-group">
-                            <label>Изображение (путь)</label>
-                            <input type="text" name="image" value="../images/cards/default.webp">
+                            <label>Изображение (файл)</label>
+                            <input type="file" name="imageFile" accept="image/*">
+                            <div class="image-preview-wrapper" style="margin-top:8px;">
+                                <img class="image-preview" src="../images/cards/default.webp" alt="preview" style="max-width:120px;max-height:80px;display:block;">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Наличие</label>
@@ -229,7 +232,24 @@ class ProductsManager {
             }
         });
 
-        // Обработчик отправки формы
+        // Обработчики превью и отправки формы
+        const $fileInput = modal.find('[name="imageFile"]');
+        const $previewImg = modal.find('.image-preview');
+
+        $fileInput.on('change', function() {
+            const file = this.files && this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    $previewImg.attr('src', ev.target.result).data('dataurl', ev.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // Если файл не выбран — показываем дефолтную картинку
+                $previewImg.attr('src', '../images/cards/default.webp').removeData('dataurl');
+            }
+        });
+
         modal.find('.admin-product-form').on('submit', (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -249,7 +269,8 @@ class ProductsManager {
             title: modal.find('[name="title"]').val().trim(),
             brand: modal.find('[name="brand"]').val().trim() || 'Unknown',
             price: parseInt(modal.find('[name="price"]').val()) || 0,
-            image: modal.find('[name="image"]').val().trim() || '../images/cards/default.webp',
+            // image will be set below (either from selected file or from path input)
+            image: '',
             availability: modal.find('[name="availability"]').val() || 'В наличии'
         };
 
@@ -264,54 +285,77 @@ class ProductsManager {
         const originalText = $submitBtn.text();
         $submitBtn.prop('disabled', true).text('Добавление...');
 
-        // Отправка на сервер
-        $.ajax({
-            url: 'http://localhost:3000/products/add',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                userId: this.userId,
-                product: formData
-            }),
-            dataType: 'json'
-        })
-        .done((response) => {
-            $submitBtn.prop('disabled', false).text(originalText);
-            
-            if (response.success) {
-                this.showNotification('Товар успешно добавлен', 'success');
-                modal.fadeOut(300, function() {
-                    $(this).remove();
-                });
+        // helper to send AJAX once image is ready
+        const sendAddRequest = () => {
+            $.ajax({
+                url: 'http://localhost:3000/products/add',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    userId: this.userId,
+                    product: formData
+                }),
+                dataType: 'json'
+            })
+            .done((response) => {
+                $submitBtn.prop('disabled', false).text(originalText);
                 
-                // Обновляем список товаров
-                if (window.productsFetcher) {
-                    window.productsFetcher.refresh();
-                    // Добавляем кнопки удаления после обновления
-                    setTimeout(() => {
-                        self.addDeleteButtonsToCards();
-                    }, 1000);
+                if (response.success) {
+                    this.showNotification('Товар успешно добавлен', 'success');
+                    modal.fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                    
+                    // Обновляем список товаров
+                    if (window.productsFetcher) {
+                        window.productsFetcher.refresh();
+                        // Добавляем кнопки удаления после обновления
+                        setTimeout(() => {
+                            self.addDeleteButtonsToCards();
+                        }, 1000);
+                    } else {
+                        // Перезагружаем страницу если productsFetcher недоступен
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    }
                 } else {
-                    // Перезагружаем страницу если productsFetcher недоступен
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1500);
+                    this.showNotification(response.message || 'Ошибка при добавлении товара', 'error');
                 }
-            } else {
-                this.showNotification(response.message || 'Ошибка при добавлении товара', 'error');
-            }
-        })
-        .fail((error) => {
-            $submitBtn.prop('disabled', false).text(originalText);
-            console.error('Ошибка при добавлении товара:', error);
-            let errorMsg = 'Ошибка при добавлении товара';
-            if (error.status === 403) {
-                errorMsg = 'Доступ запрещен. Требуются права администратора';
-            } else if (error.status === 401) {
-                errorMsg = 'Требуется авторизация';
-            }
-            this.showNotification(errorMsg, 'error');
-        });
+            })
+            .fail((error) => {
+                $submitBtn.prop('disabled', false).text(originalText);
+                console.error('Ошибка при добавлении товара:', error);
+                let errorMsg = 'Ошибка при добавлении товара';
+                if (error.status === 403) {
+                    errorMsg = 'Доступ запрещен. Требуются права администратора';
+                } else if (error.status === 401) {
+                    errorMsg = 'Требуется авторизация';
+                }
+                this.showNotification(errorMsg, 'error');
+            });
+        };
+
+        // Если выбран файл — читаем его как data URL и затем отправляем
+        const fileInput = modal.find('[name="imageFile"]')[0];
+        const file = fileInput && fileInput.files && fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                formData.image = ev.target.result; // data:<mime>;base64,...
+                sendAddRequest();
+            };
+            reader.onerror = (err) => {
+                console.error('Ошибка чтения файла изображения:', err);
+                $submitBtn.prop('disabled', false).text(originalText);
+                this.showNotification('Не удалось прочитать файл изображения', 'error');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // иначе используем дефолтную картинку
+            formData.image = '../images/cards/default.webp';
+            sendAddRequest();
+        }
     }
 
     // Удаление товара
