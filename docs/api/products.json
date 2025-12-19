@@ -4,7 +4,7 @@
   "products": [
     {
       "id": 1,
-      "image": "../images/cards/brakes.webp",
+      "image": "images/cards/brakes.webp",
       "title": "Тормозные колодки BOSCH",
       "brand": "BOSCH",
       "price": 1890,
@@ -12,7 +12,7 @@
     },
     {
       "id": 2,
-      "image": "../images/cards/filter.webp",
+      "image": "images/cards/filter.webp",
       "title": "Масляный фильтр MANN",
       "brand": "MANN",
       "price": 1250,
@@ -20,7 +20,7 @@
     },
     {
       "id": 3,
-      "image": "../images/cards/candle.webp",
+      "image": "images/cards/candle.webp",
       "title": "Свечи зажигания NGK",
       "brand": "NGK",
       "price": 2800,
@@ -28,7 +28,7 @@
     },
     {
       "id": 4,
-      "image": "../images/cards/air-filter.webp",
+      "image": "images/cards/air-filter.webp",
       "title": "Воздушный фильтр MAHLE",
       "brand": "MAHLE",
       "price": 680,
@@ -36,7 +36,7 @@
     },
     {
       "id": 5,
-      "image": "../images/cards/battery.webp",
+      "image": "images/cards/battery.webp",
       "title": "Аккумулятор VARTA",
       "brand": "VARTA",
       "price": 10990,
@@ -44,7 +44,7 @@
     },
     {
       "id": 6,
-      "image": "../images/cards/damper.webp",
+      "image": "images/cards/damper.webp",
       "title": "Амортизаторы KAYABA",
       "brand": "KAYABA",
       "price": 6500,
@@ -52,7 +52,7 @@
     },
     {
       "id": 7,
-      "image": "../images/cards/brake-disk.webp",
+      "image": "images/cards/brake-disk.webp",
       "title": "Тормозные диски BREMBO",
       "brand": "BREMBO",
       "price": 12500,
@@ -60,7 +60,7 @@
     },
     {
       "id": 8,
-      "image": "../images/cards/fuel-filter.webp",
+      "image": "images/cards/fuel-filter.webp",
       "title": "Топливный фильтр BOSCH",
       "brand": "BOSCH",
       "price": 890,
@@ -68,7 +68,7 @@
     },
     {
       "id": 9,
-      "image": "../images/cards/candle-glow.webp",
+      "image": "images/cards/candle-glow.webp",
       "title": "Свечи накаливания DENSO",
       "brand": "DENSO",
       "price": 3200,
@@ -76,7 +76,7 @@
     },
     {
       "id": 10,
-      "image": "../images/cards/salon-filter.webp",
+      "image": "images/cards/salon-filter.webp",
       "title": "Салонный фильтр MANN",
       "brand": "MANN",
       "price": 750,
@@ -84,7 +84,7 @@
     },
     {
       "id": 11,
-      "image": "../images/cards/battery-exide.webp",
+      "image": "images/cards/battery-exide.webp",
       "title": "Аккумулятор EXIDE",
       "brand": "EXIDE",
       "price": 8990,
@@ -92,7 +92,7 @@
     },
     {
       "id": 12,
-      "image": "../images/cards/racks.webp",
+      "image": "images/cards/racks.webp",
       "title": "Стойки стабилизатора MONROE",
       "brand": "MONROE",
       "price": 4200,
