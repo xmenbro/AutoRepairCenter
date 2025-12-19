@@ -423,7 +423,15 @@ class ProductsFetcher {
             normalizedPath = normalizedPath.substring(2);
         }
 
-        return `${this.options.imageBasePath}${normalizedPath}`;
+        const base = this.options.imageBasePath || '';
+        // Если путь уже абсолютен — возвращаем как есть
+        if (normalizedPath.startsWith('/')) return normalizedPath;
+        // Если normalizedPath уже начинается с базы, не дублируем её
+        if (base && normalizedPath.startsWith(base)) {
+            return base + normalizedPath.slice(base.length);
+        }
+
+        return `${base}${normalizedPath}`;
     }
 
     // Создание карточки товара

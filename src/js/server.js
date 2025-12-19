@@ -459,10 +459,62 @@ http.createServer(function(request, response) {
             }
         });
         
-    } else if (request.method === 'GET') {
+    } else if (request.method === 'GET' || request.method === 'HEAD') {
+        // Попытка отдать статический файл (из `src/html` или сборки `docs/`) перед обработкой API
+        try {
+            const localPath = (pathname === '/' || pathname === '') ? '/index.html' : pathname;
+
+            const candidates = [
+                path.join(__dirname, '..', 'html', localPath),           // src/html/...
+                path.join(__dirname, '..', '..', 'docs', localPath),     // docs/...
+                path.join(__dirname, '..', localPath)                    // src/...
+            ];
+
+            for (const fp of candidates) {
+                if (fs.existsSync(fp) && fs.statSync(fp).isFile()) {
+                    const ext = path.extname(fp).toLowerCase();
+                    const mimeTypes = {
+                        '.html': 'text/html; charset=utf-8',
+                        '.css': 'text/css; charset=utf-8',
+                        '.js': 'application/javascript; charset=utf-8',
+                        '.json': 'application/json; charset=utf-8',
+                        '.png': 'image/png',
+                        '.jpg': 'image/jpeg',
+                        '.jpeg': 'image/jpeg',
+                        '.webp': 'image/webp',
+                        '.svg': 'image/svg+xml',
+                        '.ico': 'image/x-icon'
+                    };
+
+                    const contentType = mimeTypes[ext] || 'application/octet-stream';
+                    const fileBuffer = fs.readFileSync(fp);
+                    response.writeHead(200, { 'Content-Type': contentType, 'Access-Control-Allow-Origin': '*' });
+                    response.end(fileBuffer);
+                    return;
+                }
+            }
+        } catch (err) {
+            console.error('Error serving static file:', err);
+            // fallthrough to API handlers
+        }
+
         // Получение списка товаров
         if (pathname === '/products' || pathname === '/api/products.json') {
             const productsData = readProducts();
+            // Normalize image paths for server-hosted site: make them absolute so client loads from same origin
+            if (productsData && Array.isArray(productsData.products)) {
+                productsData.products = productsData.products.map(p => {
+                    try {
+                        if (p && p.image && typeof p.image === 'string') {
+                            // remove leading ./ or ../ segments
+                            // replace any leading ./ or ../ with a single leading slash
+                            let img = p.image.replace(/^(\.\.\/|\.\/)+/, '/');
+                            p.image = img;
+                        }
+                    } catch (e) { /* ignore */ }
+                    return p;
+                });
+            }
             sendJSON(response, 200, productsData);
             return;
         }
