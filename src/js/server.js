@@ -462,7 +462,7 @@ http.createServer(function(request, response) {
     } else if (request.method === 'GET' || request.method === 'HEAD') {
         // Попытка отдать статический файл (из `src/html` или сборки `docs/`) перед обработкой API
         try {
-            const localPath = (pathname === '/' || pathname === '') ? '/index.html' : pathname;
+            const localPath = (pathname === '/' || pathname === '') ? 'index.html' : pathname.replace(/^\//, '');
 
             const candidates = [
                 path.join(__dirname, '..', 'html', localPath),           // src/html/...
