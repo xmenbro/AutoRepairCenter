@@ -152,8 +152,8 @@ class SignInForm {
                 if (response.redirectUrl) {
                     window.location.href = response.redirectUrl;
                 } else {
-                    // Или используем путь по умолчанию
-                    window.location.href = '../../../src/html/index.html';
+                    // Или используем путь по умолчанию (страницы находятся в `pages/`)
+                    window.location.href = '../index.html';
                 }
             }, 1000);
         } else {

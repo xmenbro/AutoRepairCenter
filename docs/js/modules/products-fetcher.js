@@ -6,9 +6,9 @@ class ProductsFetcher {
     constructor(options = {}) {
         this.options = {
             containerSelector: '.products-grid',
-            apiUrl: '../api/products.json',
+            apiUrl: 'api/products.json',
             cardsPerView: 4, // Количество видимых карточек
-            imageBasePath: '../', // Базовый путь к изображениям
+            imageBasePath: 'images/', // Базовый путь к изображениям
             ...options
         };
         

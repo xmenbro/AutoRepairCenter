@@ -31,9 +31,9 @@ $(document).ready(function() {
         setTimeout(() => {
             productsFetcher = new ProductsFetcher({
                 containerSelector: '.products-grid',
-                apiUrl: '../../api/products.json',
+                apiUrl: '../api/products.json',
                 cardsPerView: 4,
-                imageBasePath: '../../' // корректируем пути картинок для вложенной страницы
+                imageBasePath: '../' // корректируем пути картинок для вложенной страницы
             });
 
             // Сохраняем все товары после загрузки
