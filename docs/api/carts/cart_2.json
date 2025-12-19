@@ -1,0 +1,11 @@
+[
+  {
+    "id": 3,
+    "title": "Свечи зажигания NGK",
+    "brand": "NGK",
+    "image": "images/cards/candle.webp",
+    "price": 2800,
+    "availability": "В наличии",
+    "quantity": 1
+  }
+]

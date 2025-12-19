@@ -96,7 +96,8 @@ async function build() {
     await replaceInFile(file, [
       { regex: /\.\.\/\.\.\/(css|js|images)\//g, repl: '../$1/' },
       { regex: /\.\.\/(css|js|images)\//g, repl: '../$1/' },
-      { regex: /\.\.\/html\/pages\//g, repl: '' }
+      // Remove any number of ../ plus html/pages/ so links become relative to pages folder (e.g. detailing.html)
+      { regex: /(\.\.\/)+(html\/pages\/)/g, repl: '' }
     ]);
   }
 
@@ -116,6 +117,18 @@ async function build() {
     await replaceInFile(file, [
       { regex: /\.\.\/\.\.\/images\//g, repl: '../images/' }
     ]);
+  }
+
+  // Fix image paths inside any JSON files under docs/api (change ../images/... -> images/...)
+  try {
+    const apiJsonFiles = await findFiles(path.join(docsDir, 'api'), ['.json']);
+    for (const jf of apiJsonFiles) {
+      await replaceInFile(jf, [
+        { regex: /(\.\.\/)+images\//g, repl: 'images/' }
+      ]);
+    }
+  } catch (e) {
+    // ignore if no api folder or files
   }
 
   console.log('Docs build completed.');
