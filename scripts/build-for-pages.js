@@ -71,7 +71,7 @@ async function build() {
   await copyDir(srcPages, destPages);
 
   // copy assets
-  const assets = ['css', 'js', 'images'];
+  const assets = ['css', 'js', 'images', 'api'];
   for (const a of assets) {
     const s = path.join(srcDir, a);
     const d = path.join(docsDir, a);

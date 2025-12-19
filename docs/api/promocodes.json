@@ -1,0 +1,30 @@
+{
+  "status": "success",
+  "count": 3,
+  "promos": [
+    {
+      "id": 1,
+      "code": "WELCOME10",
+      "type": "percent",
+      "value": 10,
+      "description": "Скидка 10% на первый заказ",
+      "expires": "2099-12-31T23:59:59Z"
+    },
+    {
+      "id": 2,
+      "code": "SHIPFREE",
+      "type": "fixed",
+      "value": 500,
+      "description": "Скидка 500 руб. на доставку",
+      "expires": "2099-12-31T23:59:59Z"
+    },
+    {
+      "id": 3,
+      "code": "NEWYEAR50",
+      "type": "percent",
+      "value": 50,
+      "description": "Новогодняя скидка 50%",
+      "expires": "2026-01-15T23:59:59Z"
+    }
+  ]
+}
