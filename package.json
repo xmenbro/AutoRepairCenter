@@ -4,7 +4,8 @@
   "description": "There is a web site of auto repair center",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:docs": "node scripts/build-for-pages.js"
   },
   "repository": {
     "type": "git",
