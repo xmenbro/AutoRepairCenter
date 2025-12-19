@@ -60,10 +60,27 @@
             },
             normalizeImage(imagePath) {
                 if (!imagePath) return '';
-                if (imagePath.startsWith('../images/')) {
-                    return imagePath.replace('../images/', '../../images/');
+                // Leave data URLs and absolute/external URLs untouched
+                if (imagePath.startsWith('data:') || imagePath.startsWith('http') || imagePath.startsWith('/')) {
+                    return imagePath;
                 }
-                return imagePath;
+
+                // Normalize local-ish paths
+                let p = imagePath;
+                if (p.startsWith('./')) p = p.substring(2);
+
+                // If the path already goes up one level, keep it as-is
+                if (p.startsWith('../')) return p;
+
+                // If we're on a page under /pages/, images are one level up
+                const pathname = (typeof window !== 'undefined' && window.location && window.location.pathname) ? window.location.pathname : '';
+                const isPage = pathname.includes('/pages/');
+                if (isPage) {
+                    return `../${p}`;
+                }
+
+                // Default: return as provided (works for root-level pages)
+                return p;
             },
             formatPrice(price) {
                 if (price == null) return '0';
