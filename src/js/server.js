@@ -6,6 +6,7 @@ const path = require("path");
 // Пути к файлам данных
 const USERS_FILE = path.join(__dirname, '../api/users.json');
 const PRODUCTS_FILE = path.join(__dirname, '../api/products.json');
+const PROMOS_FILE = path.join(__dirname, '../api/promocodes.json');
 const CARTS_DIR = path.join(__dirname, '../api/carts');
 
 // Создаем директорию для корзин если её нет
@@ -41,6 +42,19 @@ function readProducts() {
     } catch (error) {
         console.error('Ошибка чтения products.json:', error);
         return { status: 'success', count: 0, products: [] };
+    }
+}
+
+function readPromos() {
+    try {
+        if (!fs.existsSync(PROMOS_FILE)) {
+            return { status: 'success', count: 0, promos: [] };
+        }
+        const data = fs.readFileSync(PROMOS_FILE, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        console.error('Ошибка чтения promocodes.json:', error);
+        return { status: 'success', count: 0, promos: [] };
     }
 }
 
@@ -385,6 +399,49 @@ http.createServer(function(request, response) {
                     }
                     return;
                 }
+
+                // Проверка промокода
+                if (pathname === '/promo/check' || pathname === '/check-promo') {
+                    if (!data.code) {
+                        sendJSON(response, 400, {
+                            success: false,
+                            message: 'Не передан код промокода'
+                        });
+                        return;
+                    }
+
+                    const promosData = readPromos();
+                    const code = (data.code || '').toString().trim().toLowerCase();
+                    const promo = (promosData.promos || []).find(p => (p.code || '').toString().toLowerCase() === code);
+
+                    if (!promo) {
+                        sendJSON(response, 404, {
+                            success: false,
+                            message: 'Промокод не найден'
+                        });
+                        return;
+                    }
+
+                    // Optionally check expiry
+                    if (promo.expires) {
+                        const now = new Date();
+                        const exp = new Date(promo.expires);
+                        if (!isNaN(exp.getTime()) && exp < now) {
+                            sendJSON(response, 410, {
+                                success: false,
+                                message: 'Промокод просрочен'
+                            });
+                            return;
+                        }
+                    }
+
+                    sendJSON(response, 200, {
+                        success: true,
+                        message: 'Промокод применим',
+                        promo: promo
+                    });
+                    return;
+                }
                 
                 // Неизвестный эндпоинт
                 sendJSON(response, 404, {
@@ -407,6 +464,13 @@ http.createServer(function(request, response) {
         if (pathname === '/products' || pathname === '/api/products.json') {
             const productsData = readProducts();
             sendJSON(response, 200, productsData);
+            return;
+        }
+
+        // Получение списка промокодов
+        if (pathname === '/api/promocodes.json' || pathname === '/promocodes') {
+            const promosData = readPromos();
+            sendJSON(response, 200, promosData);
             return;
         }
         
@@ -443,7 +507,9 @@ http.createServer(function(request, response) {
     console.log("5. Добавление товара: POST http://localhost:3000/products/add (admin)");
     console.log("6. Удаление товара: POST http://localhost:3000/products/delete (admin)");
     console.log("7. Получение товаров: GET http://localhost:3000/products");
+    console.log("8. Получение промокодов: GET http://localhost:3000/api/promocodes.json");
     console.log("8. Оформление заказа: POST http://localhost:3000/order");
+    console.log("9. Проверка промокода: POST http://localhost:3000/promo/check");
     console.log("\nТестовые аккаунты:");
     console.log("Администратор: login=admin, password=admin123");
     console.log("Пользователь: login=user, password=user123");

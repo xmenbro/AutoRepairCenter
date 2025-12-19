@@ -297,12 +297,13 @@
                         </div>
                     </div>
                     <div class="promo-code-wrapper">
-                        <input type="text" class="promo-code-input" placeholder="Промокод или купон">
-                        <button class="promo-code-btn" type="button">ПРИМЕНИТЬ</button>
+                        <input type="text" class="promo-code-input" placeholder="Промокод или купон" v-model="promoCode">
+                        <button class="promo-code-btn" type="button" @click.prevent="applyPromo">ПРИМЕНИТЬ</button>
                     </div>
+                    <div v-if="promoMessage" style="margin-top:8px;color:#0f57c9;font-weight:600">{{ promoMessage }}</div>
                     <div class="cost-info">
                         <span class="left-cost-info-part">Итого к оплате</span>
-                        <span class="right-cost-info-part">{{ formatPrice(totalPrice) }} руб.</span>
+                        <span class="right-cost-info-part">{{ formatPrice(finalPrice) }} руб.</span>
                     </div>
                     <button class="order-btn" @click.prevent="goToOrder">ПЕРЕЙТИ К ОФОРМЛЕНИЯ</button>
                 </div>
