@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа</title>
+    <!-- build:css css/pages/order.min.css -->
+    <link rel="stylesheet" href="css/pages/order.css">
+    <!-- /build -->
+</head>
+<body>
+    <!-- Форма оформления заказа -->
+    <div class="container">
+        <form action="#" method="post" class="auth-form order-form">
+            <button type="button" class="back-btn">
+                <a href="index.html"><img src="images/icons/arrow-back.png" alt="arrow-back"></a>
+            </button>
+            
+            <div class="logo">
+                <img src="images/icons/car.png" alt="Логотип">
+            </div>
+            
+            <h2 class="form-title">Оформление заказа</h2>
+            
+            <div class="form-group">
+                <label for="customer-name">ФИО</label>
+                <input type="text" name="customer-name" id="customer-name" placeholder="Введите ваше ФИО">
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" name="phone" id="phone" placeholder="+7 (999) 123-45-67">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" name="email" id="email" placeholder="Введите E-mail">
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Адрес доставки</label>
+                <input type="text" name="address" id="address" placeholder="Введите адрес доставки">
+            </div>
+            
+            <div class="form-group">
+                <label for="delivery-method">Способ доставки</label>
+                <select name="delivery-method" id="delivery-method">
+                    <option value="">Выберите способ доставки</option>
+                    <option value="courier">Курьером</option>
+                    <option value="pickup">Самовывоз</option>
+                    <option value="post">Почтой России</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="payment-method">Способ оплаты</label>
+                <select name="payment-method" id="payment-method">
+                    <option value="">Выберите способ оплаты</option>
+                    <option value="cash">Наличными при получении</option>
+                    <option value="card">Банковской картой</option>
+                    <option value="online">Онлайн оплата</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="comments">Комментарий к заказу</label>
+                <textarea name="comments" id="comments" rows="4" placeholder="Дополнительная информация к заказу (необязательно)"></textarea>
+            </div>
+            
+            <input type="submit" value="Оформить заказ" class="submit-btn">
+        </form>
+    </div>
+    
+    <!-- build:js js/pages/order.min.js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/modules/navigation.js"></script>
+    <script src="js/modules/validator.js"></script>
+    <script src="js/components/forms/order-form.js"></script>
+    <script src="js/modules/mobile-menu.js"></script>
+    <script src="js/app.js"></script>
+    <!-- /build -->
+</body>
+</html>
+

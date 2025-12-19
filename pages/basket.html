@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ARC</title>
+    <!-- build:css css/pages/basket.min.css -->
+    <link rel="stylesheet" href="css/pages/basket.css">
+    <!-- /build -->
+</head>
+<body>
+    <!-- Шапка сайта -->
+     <header>
+        <div class="header-container">
+            <img src="images/icons/car.png" alt="icon" height="70px" width="70px">
+            <div class="header-elements">
+                <div class="header-element">
+                    <img src="images/icons/phone.png" alt="phone">
+                    <p>Телефон</p>
+                    <a href="#">+79101234567</a>
+                </div>
+                <div class="header-element">
+                    <img src="images/icons/clock.png" alt="time">
+                    <p>Время работы</p>
+                    <a href="#">Пн-Вс 08:00 - 20:00</a>
+                </div>
+                <div class="header-element">
+                    <img src="images/icons/mail.png" alt="email">
+                    <p>Email</p>
+                    <a href="#">emailatc@gmail.com</a>
+                </div>
+            </div>
+            <div class="icons">
+                <a href="https://t.me" target="_blank" rel="noopener noreferrer"><img src="images/icons/telegram.png" alt="telegram"></a>
+                <a href="https://vk.com" target="_blank" rel="noopener noreferrer"><img src="images/icons/vk.png" alt="vk"></a>
+                <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer"><img src="images/icons/tik-tok.png" alt="tiktok"></a>
+            </div>
+        </div>
+     </header>
+   <!-- Навигационное меню -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="menu-item">
+                    <div class="hover-container">
+                        <div class="menu-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="menu-item"><a href="index.html">Главная</a></li>
+                <li class="menu-item"><a href="parts.html">Запчасти</a></li>
+                <li class="menu-item"><a href="auto-service.html">Автотехцентр</a></li>
+                <li class="menu-item"><a href="detailing.html">Детейлинг</a></li>
+                <li class="menu-item"><a href="tire-service.html">Шиномонтаж</a></li>
+                
+                <li class="spacer"></li>
+                
+                <li class="menu-item"><a href="#"><img src="images/icons/search.png" alt="search"></a></li>
+                <li class="menu-item"><a href="basket.html"><img src="images/icons/basket.png" alt="basket"></a></li>
+                <li class="menu-item"><a href="sign-in.html">Войти</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Скрытое меню -->
+    <div class="mobile-menu">
+        <div class="left-part">
+            <img src="images/icons/car.png" alt="car" class="icon">
+            <h2 class="menu-title">Каталог</h2>
+            <img src="images/icons/arrow.png" alt="arrow" class="arrow">
+            <ul class="menu-list">
+                <li class="list-item">
+                    <button class="list-btn">Запчасти</button>
+                </li>
+                <li class="list-item">
+                    <button class="list-btn">Плановое ТО</button>
+                </li>
+                <li class="list-item">
+                    <button class="list-btn">Кузовной ремонт</button>
+                </li>
+                <li class="list-item">
+                    <button class="list-btn">Замена масла</button>
+                </li>
+            </ul>
+        </div>
+        <div class="right-part">
+            <div class="guidance">
+                <div class="search">
+                    <input type="text" placeholder="Поиск" class="search-input">
+                    <button class="search-tool-btn">
+                        <img src="images/icons/search-tool.png" alt="search" class="search-tool-img">
+                    </button>
+                </div>
+                <div class="crossed">
+                    <button class="close-btn">
+                        <img src="images/icons/crossed.png" alt="close" class="close-img">
+                    </button>
+                </div>
+            </div>
+            <div class="content">
+                <div class="content-element">
+                    <h2 class="content-title">Запчасти</h2>
+                    <div class="grid-container">
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Двигатель</li>
+                                <li class="coll-list-element">Поршни</li>
+                                <li class="coll-list-element">Клапаны</li>
+                                <li class="coll-list-element">Ремни</li>
+                                <li class="coll-list-element">Генераторы</li>
+                                <li class="coll-list-element">Стартеры</li>
+                            </ul>
+                        </div>
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Трансмиссия</li>
+                                <li class="coll-list-element">Коробка передач</li>
+                                <li class="coll-list-element">Сцепление</li>
+                                <li class="coll-list-element">Валы</li>
+                                <li class="coll-list-element">Дифференциал</li>
+                                <li class="coll-list-element">Подшипники</li>
+                            </ul>
+                        </div>
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Тормозная система</li>
+                                <li class="coll-list-element">Колодки</li>
+                                <li class="coll-list-element">Диски</li>
+                                <li class="coll-list-element">Шланги</li>
+                                <li class="coll-list-element">Суппорта</li>
+                                <li class="coll-list-element">Цилиндры</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-element">
+                    <h2 class="content-title">Плановое ТО</h2>
+                    <div class="grid-container">
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Замена масла</li>
+                                <li class="coll-list-element">Диагностика ходовой</li>
+                                <li class="coll-list-element">Замена свечей</li>
+                                <li class="coll-list-element">Сход-развал</li>
+                                <li class="coll-list-element">Воздушный фильтр</li>
+                                <li class="coll-list-element">Чип-тюнинг</li>
+                            </ul>
+                        </div>
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Масло в КПП</li>
+                                <li class="coll-list-element">Проверка жидкостей</li>
+                                <li class="coll-list-element">Диагностика тормозов</li>
+                                <li class="coll-list-element">Тормозная жидкость</li>
+                                <li class="coll-list-element">Ремень ГРМ</li>
+                                <li class="coll-list-element">Кондиционер</li>
+                            </ul>
+                        </div>
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Электроника</li>
+                                <li class="coll-list-element">Аккумулятор</li>
+                                <li class="coll-list-element">Топливный фильтр</li>
+                                <li class="coll-list-element">Чистка инжектора</li>
+                                <li class="coll-list-element">Система охлаждения</li>
+                                <li class="coll-list-element">Диагностика</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-element">
+                    <h2 class="content-title">Кузовной ремонт</h2>
+                    <div class="grid-container">
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Выравнивание вмятин</li>
+                                <li class="coll-list-element">Ремонт бамперов</li>
+                                <li class="coll-list-element">Геометрия кузова</li>
+                                <li class="coll-list-element">Рихтовка</li>
+                                <li class="coll-list-element">Замена порогов</li>
+                                <li class="coll-list-element">Ремонт арок</li>
+                            </ul>
+                        </div>
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Локальная покраска</li>
+                                <li class="coll-list-element">Полная покраска</li>
+                                <li class="coll-list-element">Полировка</li>
+                                <li class="coll-list-element">Антикор</li>
+                                <li class="coll-list-element">Устранение царапин</li>
+                                <li class="coll-list-element">Бронирование пленкой</li>
+                            </ul>
+                        </div>
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Замена стекол</li>
+                                <li class="coll-list-element">Ремонт дверей</li>
+                                <li class="coll-list-element">Ремонт после ДТП</li>
+                                <li class="coll-list-element">Ремонт крыши</li>
+                                <li class="coll-list-element">Замена капота</li>
+                                <li class="coll-list-element">Арматурные работы</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-element">
+                    <h2 class="content-title">Замена масла</h2>
+                    <div class="grid-container">
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Синтетическое масло</li>
+                                <li class="coll-list-element">Полусинтетическое</li>
+                                <li class="coll-list-element">Минеральное</li>
+                                <li class="coll-list-element">Масло для дизеля</li>
+                                <li class="coll-list-element">Масло для турбо</li>
+                                <li class="coll-list-element">Сезонная замена</li>
+                            </ul>
+                        </div>
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Масло в АКПП</li>
+                                <li class="coll-list-element">Масло в МКПП</li>
+                                <li class="coll-list-element">Масло в редукторе</li>
+                                <li class="coll-list-element">Раздаточная коробка</li>
+                                <li class="coll-list-element">Промывка системы</li>
+                                <li class="coll-list-element">Масляный радиатор</li>
+                            </ul>
+                        </div>
+                        <div class="coll">
+                            <ul class="coll-list">
+                                <li class="coll-list-element">Масляный фильтр</li>
+                                <li class="coll-list-element">Топливный фильтр</li>
+                                <li class="coll-list-element">Воздушный фильтр</li>
+                                <li class="coll-list-element">Салонный фильтр</li>
+                                <li class="coll-list-element">Утилизация масла</li>
+                                <li class="coll-list-element">Подбор масла</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной раздел с корзиной -->
+    <main class="main" id="basket-app">
+        <!-- Vue will render the basket content here -->
+        <div v-cloak>
+            <div v-if="items.length === 0" class="empty-container" style="text-align: center; padding: 100px 20px;">
+                <h2 class="section-title">В корзине нет товаров</h2>
+                <button class="return-btn" style="margin-top: 30px; padding: 15px 40px; background-color: #0f57c9; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;"><a href="index.html" style="color: white; text-decoration: none;">К покупкам</a></button>
+            </div>
+
+            <div v-else class="main-container">
+                <div class="cart-left">
+                    <h2 class="section-title">КОРЗИНА</h2>
+                    <div class="select-all-wrapper">
+                        <input type="checkbox" id="choose-all" v-model="selectAll" @change="toggleSelectAll">
+                        <label for="choose-all">Выбрать всё</label>
+                    </div>
+                    <div class="card-container">
+                        <div class="card" v-for="item in items" :key="item.id" :data-product-id="item.id">
+                            <input type="checkbox" :id="`choose-${item.id}`" class="card-checkbox" v-model="item.selected" @change="updateOrderSummary">
+                            <img :src="normalizeImage(item.image)" :alt="item.title" class="card-image">
+                            <span class="card-name" v-html="escapeHtml(item.title)"></span>
+                            <div class="control">
+                                <button class="delete-btn" type="button" @click.prevent="removeItem(item.id)">
+                                    <img src="images/icons/trash.png" alt="Удалить" class="delete-icon">
+                                </button>
+                                <input type="number" class="count" v-model.number="item.quantity" min="1" @change="onQuantityChange(item)">
+                                <button class="add-btn" type="button" @click.prevent="increment(item)">+</button>
+                            </div>
+                            <span class="delivery">{{ calculateDeliveryDate() }}</span>
+                            <span class="price">{{ formatPrice(item.price * item.quantity) }} руб.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-container">
+                    <h5 class="order-title">Ваш заказ</h5>
+                    <div class="order-info">
+                        <div class="order-row">
+                            <span class="left-info-part">Всего</span>
+                            <span class="dotted-line"></span>
+                            <span class="right-info-part">{{ totalCount }} {{ getItemsText(totalCount) }}</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="left-info-part">Стоимость товаров в заказе</span>
+                            <span class="dotted-line"></span>
+                            <span class="right-info-part">{{ formatPrice(totalPrice) }} руб.</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="left-info-part">Дата доставки</span>
+                            <span class="dotted-line"></span>
+                            <span class="right-info-part">{{ calculateDeliveryDate() }}</span>
+                        </div>
+                    </div>
+                    <div class="promo-code-wrapper">
+                        <input type="text" class="promo-code-input" placeholder="Промокод или купон" v-model="promoCode">
+                        <button class="promo-code-btn" type="button" @click.prevent="applyPromo">ПРИМЕНИТЬ</button>
+                    </div>
+                    <div v-if="promoMessage" style="margin-top:8px;color:#0f57c9;font-weight:600">{{ promoMessage }}</div>
+                    <div class="cost-info">
+                        <span class="left-cost-info-part">Итого к оплате</span>
+                        <span class="right-cost-info-part">{{ formatPrice(finalPrice) }} руб.</span>
+                    </div>
+                    <button class="order-btn" @click.prevent="goToOrder">ПЕРЕЙТИ К ОФОРМЛЕНИЯ</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section first">
+                    <h4>Наши торговые центры находятся по адресам:</h4>
+                    <p>Г. Рязань, улица Зубкова, дом 1</p>
+                    <p>Г. Рязань, улица Есенина, дом 15</p>
+                    <div class="flex-container">
+                        <ul>
+                            <li><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><img src="images/icons/facebook.png" alt="facebook"></a></li>
+                            <li><a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer"><img src="images/icons/linkedIn.png" alt="LinkedIn"></a></li>
+                            <li><a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer"><img src="images/icons/youtube.png" alt="youtube"></a></li>
+                            <li><a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"><img src="images/icons/instagram.png" alt="instagram"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-section"></div>
+                <div class="footer-section">
+                    <h4>Заказ запчастей</h4>
+                    <ul>
+                        <li><a href="html/pages/detailing.html">Автомойка</a></li>
+                        <li><a href="html/pages/tire-service.html">Шиномонтаж</a></li>
+                        <li><a href="html/pages/auto-service.html">Замена масла</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Торговые центры</h4>
+                    <ul>
+                        <li><a href="html/pages/parts.html">Двигатели</a></li>
+                        <li><a href="html/pages/parts.html">Фильтры</a></li>
+                        <li><a href="html/pages/detailing.html">Детейлинг центр</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/modules/cart.js"></script>
+    <script src="js/modules/navigation.js"></script>
+    <script src="js/modules/mobile-menu.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="js/vue/basket-vue.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
