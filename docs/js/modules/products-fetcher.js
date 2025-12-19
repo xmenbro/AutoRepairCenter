@@ -8,7 +8,7 @@ class ProductsFetcher {
             containerSelector: '.products-grid',
             apiUrl: 'api/products.json',
             cardsPerView: 4, // Количество видимых карточек
-            imageBasePath: 'images/', // Базовый путь к изображениям
+            imageBasePath: '', // Базовый путь к изображениям — определяем в рантайме
             ...options
         };
         
@@ -23,6 +23,20 @@ class ProductsFetcher {
 
     // Инициализация
     init() {
+        // Если базовый путь к изображениям не указан — подбираем в рантайме
+        try {
+            if (!this.options.imageBasePath) {
+                const pathname = (typeof window !== 'undefined' && window.location && window.location.pathname) ? window.location.pathname : '';
+                // Для страниц внутри /pages/ нужно подниматься на уровень
+                if (pathname.includes('/pages/')) {
+                    this.options.imageBasePath = '../';
+                } else {
+                    this.options.imageBasePath = 'images/';
+                }
+            }
+        } catch (e) {
+            // ignore in non-browser environments
+        }
         if (this.$container.length) {
             this.setupCarouselButtons();
             this.updateCardsPerView();

@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": 2,
+    "title": "Масляный фильтр MANN",
+    "brand": "MANN",
+    "image": "images/cards/filter.webp",
+    "price": 1250,
+    "availability": "В наличии",
+    "quantity": 1
+  }
+]
